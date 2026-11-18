@@ -114,8 +114,14 @@ section{padding:clamp(5rem,11vw,8.5rem) 0;position:relative}
 .hero{position:relative;overflow:hidden;isolation:isolate}
 .hero-bg{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;
   -webkit-mask-image:radial-gradient(ellipse 42% 36% at 50% 50%,rgba(0,0,0,.2),#000 80%);mask-image:radial-gradient(ellipse 42% 36% at 50% 50%,rgba(0,0,0,.2),#000 80%)}
-.hero-bg::before{content:"";position:absolute;left:-60%;top:-60%;width:220%;height:220%;background:url("img/logo-tile.png") 0 0 / 220px 110px repeat;opacity:.1;transform:rotate(-30deg);animation:drift 14s linear infinite;will-change:transform}
-@keyframes drift{from{transform:rotate(-30deg) translate3d(0,0,0)}to{transform:rotate(-30deg) translate3d(220px,0,0)}}
+.code-rain{position:absolute;left:-75%;top:-75%;width:250%;height:250%;display:flex;flex-direction:column;justify-content:center;gap:1.15rem;transform:rotate(-30deg);opacity:.16}
+.code-rain .row{white-space:nowrap;font-family:var(--mono);font-size:13px;letter-spacing:.01em;color:#8a8a8f;width:max-content;animation:slide var(--d,80s) linear infinite;will-change:transform}
+.code-rain .row:nth-child(3n){font-size:15px;color:#a1a1a6}
+.code-rain .row:nth-child(4n+1){font-size:11px;opacity:.7}
+.code-rain .k{color:var(--signal)}
+.code-rain .s{color:#d6d6d9}
+.code-rain .c{color:#5a5a5f}
+@keyframes slide{from{transform:translate3d(-50%,0,0)}to{transform:translate3d(0,0,0)}}
 .hero > div{position:relative;z-index:1;opacity:0;transform:translateY(16px);animation:up 1s cubic-bezier(.2,.7,.2,1) .1s forwards}
 @keyframes up{to{opacity:1;transform:none}}
 
@@ -290,7 +296,7 @@ footer div{width:var(--wrap);margin:0 auto;padding:1.2rem 0;font-family:var(--mo
 
 <main id="top">
   <section class="hero">
-    <i class="hero-bg" aria-hidden="true"></i>
+    <i class="hero-bg" aria-hidden="true"><span class="code-rain" id="code-rain"></span></i>
     <div>
       <p class="eyebrow"><span class="dot"></span><span data-i18n="kicker">Geliştirici · Üretici · Yayıncı</span></p>
       <h1>Yusuf Kaan <em>Çelik</em></h1>
@@ -517,6 +523,47 @@ const $ = (s, r=document) => r.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const t = k => I18N[lang][k] ?? k;
 let ghRepos = null, ghState = "loading";
+
+const CODE = [
+  "RegisterNetEvent('ykc-police:client:cuff', function(target)",
+  "local radar = exports['ykc-hud']:GetRadar()",
+  "QBCore.Functions.Notify('Akbil yüklendi', 'success')",
+  "exports['qb-target']:AddBoxZone('metro_turnstile', coords, 1.2, 1.2)",
+  "TriggerServerEvent('ykc-fuel:server:pay', liters, 'bank')",
+  "local Player = QBCore.Functions.GetPlayer(source)",
+  "SendNUIMessage({ action = 'open', app = 'ls-rota' })",
+  "SetVehicleFuelLevel(vehicle, fuel + 0.25)",
+  "-- ykc-metro: NPC hattı Pillbox South → LSIA",
+  "CreateThread(function() while true do Wait(250) end end)",
+  "RegisterNUICallback('mdt:saveReport', function(data, cb)",
+  "MySQL.insert.await('INSERT INTO ykc_reports (title) VALUES (?)', { title })",
+  "if speed > limit then exports['ykc-police']:Flag(plate) end",
+  "lib.callback.register('ykc-phone:getApps', function() return apps end)",
+  "AddEventHandler('ykc-bus:client:board', function(line)",
+  "-- ykc-hud: araç, motor, tekne, uçak göstergeleri",
+  "local key = { plate = plate, owner = citizenid }",
+  "TaskStartScenarioInPlace(ped, 'PROP_HUMAN_SEAT_CHAIR', 0, true)",
+];
+function hl(line){
+  let h = esc(line);
+  if (line.trim().startsWith("--")) return `<span class="c">${h}</span>`;
+  h = h.replace(/(&#39;[^&]*?&#39;)/g, '<span class="s">$1</span>');
+  h = h.replace(/\b(local|function|end|if|then|return|while|true|do)\b/g, '<span class="k">$1</span>');
+  return h;
+}
+function renderCode(){
+  const el = $("#code-rain"); if (!el) return;
+  const rows = 26, gap = "\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0";
+  let html = "";
+  for (let r = 0; r < rows; r++){
+    const seq = [];
+    for (let i = 0; i < 6; i++) seq.push(hl(CODE[(r * 5 + i * 3) % CODE.length]));
+    const line = seq.join(gap) + gap;
+    html += `<span class="row" style="--d:${70 + (r * 37) % 50}s">${line}${line}</span>`;
+  }
+  el.innerHTML = html;
+}
+renderCode();
 
 function renderTicker(){
   const html = t("ticker").map(i => `<span>${esc(i)}</span>`).join("");
