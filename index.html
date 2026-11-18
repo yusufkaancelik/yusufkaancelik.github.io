@@ -139,7 +139,14 @@ section{padding:clamp(5rem,11vw,8.5rem) 0;position:relative}
 @media (min-width:900px){.about-wrap{grid-template-columns:minmax(260px,360px) 1fr}}
 .about-side{display:flex;flex-direction:column;align-items:center;gap:1.4rem}
 @media (min-width:900px){.about-side{position:sticky;top:88px}}
-.about-photo{width:min(300px,70vw);aspect-ratio:1;border-radius:50%;padding:5px;background:conic-gradient(from 210deg,var(--signal),rgba(198,255,61,.08) 40%,var(--signal) 70%,rgba(198,255,61,.08));box-shadow:0 0 80px rgba(198,255,61,.12)}
+.then-now{position:relative;width:min(300px,70vw);margin-bottom:5.5rem}
+.polaroid{position:absolute;right:-22%;bottom:-34%;width:58%;background:#f3f1ea;padding:7px 7px 0;border-radius:3px;transform:rotate(6deg);box-shadow:0 18px 40px rgba(0,0,0,.55);transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+.polaroid:hover{transform:rotate(1deg) scale(1.06)}
+.polaroid img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;display:block;border-radius:1px}
+.polaroid figcaption{font-family:var(--serif);font-style:italic;font-size:15px;color:#2a2a2a;text-align:center;padding:.45rem 0 .55rem;letter-spacing:0}
+@media (max-width:899px){.polaroid{right:-8%;width:52%}.polaroid figcaption{font-size:12px}}
+.about{overflow-x:clip}
+.about-photo{width:100%;aspect-ratio:1;border-radius:50%;padding:5px;background:conic-gradient(from 210deg,var(--signal),rgba(198,255,61,.08) 40%,var(--signal) 70%,rgba(198,255,61,.08));box-shadow:0 0 80px rgba(198,255,61,.12)}
 .about-photo img{width:100%;height:100%;border-radius:50%;object-fit:cover;border:4px solid var(--bg);background:var(--card)}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;width:100%;max-width:360px}
 .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1rem .6rem;text-align:center}
@@ -340,7 +347,10 @@ footer div{width:var(--wrap);margin:0 auto;padding:1.2rem 0;font-family:var(--mo
   <section class="s-a about" id="hakkimda">
     <div class="about-wrap">
       <div class="about-side rv">
-        <div class="about-photo"><img src="https://github.com/yusufkaancelik.png?size=600" alt="Yusuf Kaan Çelik" loading="lazy" width="300" height="300"></div>
+        <div class="then-now">
+          <div class="about-photo"><img src="https://github.com/yusufkaancelik.png?size=600" alt="Yusuf Kaan Çelik" loading="lazy" width="300" height="300"></div>
+          <figure class="polaroid"><img src="img/ilk-bilgisayar.jpg" alt="" loading="lazy" width="640" height="777"><figcaption data-i18n="then_caption">4 yaş · ilk bilgisayar</figcaption></figure>
+        </div>
         <div class="stats" id="about-stats"></div>
       </div>
       <div class="about-main rv">
@@ -513,7 +523,7 @@ const CONFIG = {
 const I18N = {
   tr: {
     nav_ai:"AI", nav_contact:"İletişim", nav_about:"Hakkımda",
-    about_eyebrow:"CH 00 — Hakkımda",
+    about_eyebrow:"CH 00 — Hakkımda", then_caption:"4 yaş · ilk bilgisayar", then_alt:"4 yaşında, tüplü monitörlü ilk bilgisayarın başında",
     about_title:"Bilgisayarı bozarak <em>başladım.</em>",
     about_p1:"4 yaşında bilgisayarın başına oturdum. Çoğu şeyi evdeki tüplü ekranlı bilgisayarı bozup tekrar çalıştırmaya uğraşırken öğrendim. Biraz garip ama okuma yazmayı da oyunların altyazılarından ve hile kodlarını yazarken söktüm; bilgisayarla aram o günden beri hep iyi.",
     about_p2:"Kodlamaya herkes gibi web siteleri yaparak başladım. Bugün kendi sunucum için FiveM scriptleri yazıyorum, AI karakterler ve el çizimi NFT'ler üretiyorum, Kick'te yayın yapıyorum.",
@@ -551,7 +561,7 @@ const I18N = {
   },
   en: {
     nav_ai:"AI", nav_contact:"Contact", nav_about:"About",
-    about_eyebrow:"CH 00 — About",
+    about_eyebrow:"CH 00 — About", then_caption:"age 4 · first computer", then_alt:"Age 4, at my first CRT-monitor computer",
     about_title:"I started by <em>breaking computers.</em>",
     about_p1:"I sat down at a computer when I was 4. I learned most things by breaking our old CRT-monitor PC at home and trying to get it working again. Odd as it sounds, I learned to read and write from game subtitles and typing in cheat codes; computers and I have got along ever since.",
     about_p2:"Like everyone else, I got into coding by building websites. Today I write FiveM scripts for my own server, create AI characters and hand-drawn NFTs, and stream on Kick.",
@@ -642,6 +652,7 @@ function renderAbout(){
     [CONFIG.nftCollections.length, t("st_nft")],
     [CONFIG.aiCharacters.length, t("st_ai")],
   ];
+  $(".polaroid img").alt = t("then_alt");
   $("#about-stats").innerHTML = st.map(([n,l]) => `<div class="stat"><b>${n}</b><span>${esc(l)}</span></div>`).join("");
   $("#timeline").innerHTML = t("timeline").map(([w,h,d]) => `<li><span class="when">${esc(w)}</span><h4>${esc(h)}</h4><p>${esc(d)}</p></li>`).join("");
 }
