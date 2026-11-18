@@ -126,6 +126,33 @@ section{padding:clamp(5rem,11vw,8.5rem) 0;position:relative}
 @media (min-width:1068px){.cards{grid-template-columns:repeat(3,1fr)}}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.9rem 1.8rem;display:flex;flex-direction:column;gap:.7rem;min-height:15rem;transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .35s,background .35s}
 .card:hover{transform:translateY(-4px);border-color:rgba(198,255,61,.35);background:var(--card-2)}
+.card.has-img{padding:0;overflow:hidden}
+.card.has-img .card-body{padding:1.4rem 1.8rem 1.9rem;display:flex;flex-direction:column;gap:.7rem;flex:1}
+.card-body{display:contents}
+.card.has-img .card-body{display:flex}
+.shot{position:relative;display:block;width:100%;aspect-ratio:16/9;border:0;padding:0;cursor:zoom-in;background:var(--bg);overflow:hidden;border-bottom:1px solid var(--line)}
+.shot img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.card:hover .shot img{transform:scale(1.035)}
+.shot .count{position:absolute;right:.7rem;bottom:.7rem;font-family:var(--mono);font-size:11px;padding:.25rem .6rem;border-radius:980px;background:rgba(0,0,0,.65);color:var(--signal);border:1px solid var(--line)}
+.cards.feat{grid-template-columns:1fr}
+@media (min-width:740px){.cards.feat{grid-template-columns:repeat(2,1fr)}.cards.feat .card:first-child{grid-column:1 / -1}}
+@media (min-width:1068px){
+  .cards.feat .card:first-child{display:grid;grid-template-columns:1.5fr 1fr}
+  .cards.feat .card:first-child .shot{height:100%;aspect-ratio:16/9;border-bottom:0;border-right:1px solid var(--line)}
+  .cards.feat .card:first-child .card-body{justify-content:center;padding:2.4rem}
+  .cards.feat .card:first-child h3{font-size:32px}
+}
+.cards.compact{margin-top:1.1rem}
+@media (min-width:1068px){.cards.compact{grid-template-columns:repeat(4,1fr)}}
+.cards.compact .card{min-height:13rem}
+.lb{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.9);backdrop-filter:blur(8px);display:none;place-items:center;padding:2rem 4rem;cursor:zoom-out}
+.lb.open{display:grid}
+.lb img{max-width:min(1500px,100%);max-height:86vh;border-radius:12px;box-shadow:0 20px 80px rgba(0,0,0,.6)}
+.lb-nav{display:none;position:fixed;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:rgba(20,20,20,.8);color:var(--ink);font-size:28px;line-height:1;cursor:pointer}
+.lb-nav:hover{border-color:var(--signal);color:var(--signal)}
+.lb.multi .lb-nav{display:grid;place-items:center}
+.lb-nav.prev{left:1rem}.lb-nav.next{right:1rem}
+.lb-count{position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:12px;color:var(--signal)}
 .card .num{font-family:var(--mono);font-size:12px;color:var(--signal);letter-spacing:.04em}
 .card h3{font-size:clamp(21px,1.8vw,24px);font-weight:600;line-height:1.17;letter-spacing:-.015em}
 .card p{font-size:15px;line-height:1.5;color:var(--ink-2)}
@@ -277,7 +304,8 @@ footer div{width:var(--wrap);margin:0 auto;padding:1.2rem 0;font-family:var(--mo
       <h2 data-i18n-html="fivem_title">Bir sunucu dolusu <em>script.</em></h2>
       <p data-i18n="fivem_desc">Kendi sunucum için QBCore üzerinde yazdığım ykc serisi: telefon, polis, toplu taşıma, HUD, envanter ve daha fazlası. Çoğu standart qb scriptlerinin yerine birebir takılabiliyor.</p>
     </div>
-    <div class="cards rv" id="fivem-grid"></div>
+    <div class="cards feat rv" id="fivem-grid"></div>
+    <div class="cards compact rv" id="fivem-more"></div>
     <div class="all rv"><p id="all-label"></p><div class="chips" id="all-chips"></div></div>
   </section>
 
@@ -337,6 +365,7 @@ footer div{width:var(--wrap);margin:0 auto;padding:1.2rem 0;font-family:var(--mo
   </section>
 </main>
 
+<div class="lb" id="lb" role="dialog" aria-modal="true"><button type="button" class="lb-nav prev" data-d="-1" aria-label="Önceki">‹</button><img alt=""><button type="button" class="lb-nav next" data-d="1" aria-label="Sonraki">›</button><span class="lb-count"></span></div>
 <footer><div>© <span id="year"></span> Yusuf Kaan Çelik</div></footer>
 
 <script>
@@ -356,12 +385,12 @@ const CONFIG = {
   // FiveM scriptlerin. Kendi scriptlerinle değiştir. url boş bırakılabilir.
   // Öne çıkan FiveM scriptleri (ykc serisi)
   fivemScripts: [
-    { name: "ykc-phone", tr: "Oyun içi tam özellikli akıllı telefon; metro, otobüs ve müzik gibi uygulamalar buna bağlanıyor.", en: "Full-featured in-game smartphone; metro, bus and music apps plug into it.", tags: ["React","NUI","ox_lib"], url: "" },
-    { name: "ykc-police", tr: "Polis mesleği: görev, kelepçe, dispatch, alkolmetre, hız radarı, delil sistemi, MDT tablet ve Bolingbroke hapishanesi.", en: "Police job: duty, cuffing, dispatch, breathalyzer, speed radar, evidence, MDT tablet and Bolingbroke jail.", tags: ["QBCore","Lua","MDT"], url: "" },
-    { name: "ykc-metro", tr: "LS Metro: NPC metro hattı, bilet / Akbil kartları, turnikeler, oturan yolcular, makinist mesleği ve LS Kart telefon uygulaması.", en: "LS Metro: NPC metro line, tickets / Akbil cards, turnstiles, seated passengers, driver job and LS Kart phone app.", tags: ["QBCore","NPC","Phone app"], url: "" },
+    { name: "ykc-phone", imgs: ["shots/phone-1.jpg"], tr: "Oyun içi tam özellikli akıllı telefon; metro, otobüs ve müzik gibi uygulamalar buna bağlanıyor.", en: "Full-featured in-game smartphone; metro, bus and music apps plug into it.", tags: ["React","NUI","ox_lib"], url: "" },
+    { name: "ykc-police", imgs: ["shots/police-1.jpg", "shots/police-2.jpg"], tr: "Polis mesleği: görev, kelepçe, dispatch, alkolmetre, hız radarı, delil sistemi, MDT tablet ve Bolingbroke hapishanesi.", en: "Police job: duty, cuffing, dispatch, breathalyzer, speed radar, evidence, MDT tablet and Bolingbroke jail.", tags: ["QBCore","Lua","MDT"], url: "" },
+    { name: "ykc-metro", imgs: ["shots/metro-1.jpg", "shots/metro-2.jpg", "shots/metro-3.jpg"], tr: "LS Metro: NPC metro hattı, bilet / Akbil kartları, turnikeler, oturan yolcular, makinist mesleği ve LS Kart telefon uygulaması.", en: "LS Metro: NPC metro line, tickets / Akbil cards, turnstiles, seated passengers, driver job and LS Kart phone app.", tags: ["QBCore","NPC","Phone app"], url: "" },
+    { name: "ykc-hud", imgs: ["shots/hud-1.jpg", "shots/hud-2.jpg", "shots/hud-3.jpg"], tr: "Durum ikonları, hız göstergesi, minimap, pusula; araç, motor, tekne ve uçak için ayrı göstergeler ve sürükle-bırak yerleşim düzenleyici.", en: "Status icons, speedometer, minimap, compass; separate gauges for cars, bikes, boats and planes, plus a drag-and-drop layout editor.", tags: ["QBCore","NUI","UI"], url: "" },
+    { name: "ykc-inventory + banking", imgs: ["shots/inventory-1.jpg"], tr: "qb-inventory üstüne modern envanter arayüzü (kıyafet, çanta, cüzdan) ve cüzdandaki banka kartlarını okuyan banka sistemi.", en: "Modern inventory UI on qb-inventory (clothing, bag, wallet) plus banking that reads bank cards from the wallet.", tags: ["QBCore","NUI","Drop-in"], url: "" },
     { name: "ykc-bus", tr: "LS Transit: tüm haritada oyun içinden düzenlenebilen NPC otobüs hatları, Akbil ile biniş, şoför mesleği ve LS Rota yol planlayıcı.", en: "LS Transit: map-wide NPC bus lines editable in game, Akbil boarding, driver job and LS Rota journey planner.", tags: ["QBCore","NPC","Editor"], url: "" },
-    { name: "ykc-hud", tr: "Durum ikonları, hız göstergesi, minimap, pusula; sürükle-bırak yerleşim düzenleme modu ve ayar menüsü.", en: "Status icons, speedometer, minimap, compass; drag-and-drop layout editor and settings menu.", tags: ["QBCore","NUI","UI"], url: "" },
-    { name: "ykc-inventory + banking", tr: "qb-inventory üstüne modern envanter arayüzü (kıyafet, çanta, cüzdan) ve cüzdandaki banka kartlarını okuyan banka sistemi.", en: "Modern inventory UI on qb-inventory (clothing, bag, wallet) plus banking that reads bank cards from the wallet.", tags: ["QBCore","NUI","Drop-in"], url: "" },
     { name: "ykc-fuel", tr: "Pompa tabancası ve hortum, her iki taraftan otomatik bağlantı, elektrikli araç şarjı, bidon, nakit / kartla ödeme.", en: "Pump nozzle and hose, auto-connect on either side, EV charging, jerry cans, cash / card payment.", tags: ["QBCore","Lua","Physics"], url: "" },
     { name: "ykc-burgershot", tr: "Burger Shot mesleği: kiosktan sipariş, mutfak istasyonları, çalışan yoksa NPC devreye giriyor.", en: "Burger Shot job: kiosk orders, kitchen stations, NPC fallback when no staff is on.", tags: ["QBCore","Job","NUI"], url: "" },
     { name: "ykc-music", tr: "Telefon için müzik uygulaması: YouTube arama/çalma, Spotify playlist içe aktarma ve 3D hoparlör modu.", en: "Phone music app: YouTube search/playback, Spotify playlist import and 3D speaker mode.", tags: ["Phone app","3D audio"], url: "" },
@@ -449,7 +478,7 @@ const I18N = {
     kick_title:"Canlı <em>yayında.</em>", kick_desc:"Sohbet, oyun ve geliştirme süreçleri; kanalı takip et, yayına girdiğimde bildirim al.",
     kick_btn:"Kanala git", kick_last:"Son yayın", kick_watch:"Tekrarını izle ›",
     contact_kicker:"// İletişim", contact_title:"Bir proje mi var?<br><em>Konuşalım.</em>",
-    view:"İncele ›", profile:"Profili gör ›"
+    view:"İncele ›", gallery:"görselleri aç", shot_alt:"ekran görüntüsü", profile:"Profili gör ›"
   },
   en: {
     nav_ai:"AI", nav_contact:"Contact",
@@ -473,7 +502,7 @@ const I18N = {
     kick_title:"Live on <em>Kick.</em>", kick_desc:"Chats, gaming and development sessions. Follow the channel to get notified when I go live.",
     kick_btn:"Go to channel", kick_last:"Latest stream", kick_watch:"Watch the replay ›",
     contact_kicker:"// Contact", contact_title:"Got a project?<br><em>Let's talk.</em>",
-    view:"View ›", profile:"View profile ›"
+    view:"View ›", gallery:"open gallery", shot_alt:"screenshot", profile:"View profile ›"
   }
 };
 
@@ -488,18 +517,25 @@ function renderTicker(){
   $("#ticker").innerHTML = html + html;
 }
 
-function renderFivem(){
-  $("#fivem-grid").innerHTML = CONFIG.fivemScripts.map((s,i) => {
-    const tag = s.url ? "a" : "div";
-    const attrs = s.url ? `href="${esc(s.url)}" target="_blank" rel="noopener"` : "";
-    return `<${tag} class="card" ${attrs}>
+function fivemCard(sc, i){
+  const tag = sc.url ? "a" : "div";
+  const attrs = sc.url ? `href="${esc(sc.url)}" target="_blank" rel="noopener"` : "";
+  const im = sc.imgs || [];
+  return `<${tag} class="card${im.length ? " has-img" : ""}" ${attrs}>
+    ${im.length ? `<button type="button" class="shot" data-set="${i}" aria-label="${esc(sc.name)} — ${t("gallery")}"><img src="${esc(im[0])}" alt="${esc(sc.name)} ${t("shot_alt")}" loading="lazy" decoding="async">${im.length > 1 ? `<span class="count">1 / ${im.length}</span>` : ""}</button>` : ""}
+    <div class="card-body">
       <span class="num">${String(i+1).padStart(2,"0")}</span>
-      <h3>${esc(s.name)}</h3>
-      <p>${esc(s[lang])}</p>
-      <div class="tags">${s.tags.map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div>
-      ${s.url ? `<span class="go">${t("view")}</span>` : ""}
-    </${tag}>`;
-  }).join("");
+      <h3>${esc(sc.name)}</h3>
+      <p>${esc(sc[lang])}</p>
+      <div class="tags">${sc.tags.map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div>
+      ${sc.url ? `<span class="go">${t("view")}</span>` : ""}
+    </div>
+  </${tag}>`;
+}
+function renderFivem(){
+  const list = CONFIG.fivemScripts.map((sc,i) => [sc,i]);
+  $("#fivem-grid").innerHTML = list.filter(([sc]) => sc.imgs).map(([sc,i]) => fivemCard(sc,i)).join("");
+  $("#fivem-more").innerHTML = list.filter(([sc]) => !sc.imgs).map(([sc,i]) => fivemCard(sc,i)).join("");
   $("#all-label").textContent = t("all_label").replace("{n}", CONFIG.allScripts.length);
   $("#all-chips").innerHTML = CONFIG.allScripts.map(n => `<span>${esc(n)}</span>`).join("");
 }
@@ -606,6 +642,23 @@ function applyLang(next){
 
 document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => applyLang(b.dataset.lang)));
 $("#year").textContent = new Date().getFullYear();
+
+let lbSet = [], lbIdx = 0;
+function lbShow(){ const lb = $("#lb"); lb.querySelector("img").src = lbSet[lbIdx]; lb.querySelector(".lb-count").textContent = lbSet.length > 1 ? `${lbIdx+1} / ${lbSet.length}` : ""; lb.classList.toggle("multi", lbSet.length > 1); }
+function lbOpen(set){ lbSet = set; lbIdx = 0; lbShow(); $("#lb").classList.add("open"); }
+function lbClose(){ $("#lb").classList.remove("open"); }
+function lbStep(d){ if (lbSet.length < 2) return; lbIdx = (lbIdx + d + lbSet.length) % lbSet.length; lbShow(); }
+document.addEventListener("click", e => {
+  const b = e.target.closest(".shot");
+  if (b){ e.preventDefault(); lbOpen(CONFIG.fivemScripts[+b.dataset.set].imgs); return; }
+  const nav = e.target.closest(".lb-nav");
+  if (nav){ e.stopPropagation(); lbStep(+nav.dataset.d); return; }
+  if (e.target.closest("#lb")) lbClose();
+});
+document.addEventListener("keydown", e => {
+  if (!$("#lb").classList.contains("open")) return;
+  if (e.key === "Escape") lbClose(); else if (e.key === "ArrowRight") lbStep(1); else if (e.key === "ArrowLeft") lbStep(-1);
+});
 
 let saved = null;
 try{ saved = localStorage.getItem("lang"); }catch(e){}
