@@ -101,8 +101,10 @@ section.ch-sec{padding:clamp(4rem,9vw,8rem) var(--pad);border-bottom:1px solid v
 .ch-sec > *:not(.big-num){position:relative;z-index:1}
 
 /* cards */
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
-.card{background:var(--bg);padding:1.6rem;display:flex;flex-direction:column;gap:.9rem;min-height:15rem;text-decoration:none;transition:background .25s}
+.grid{display:grid;grid-template-columns:1fr;gap:1px}
+@media (min-width:768px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1024px){.grid{grid-template-columns:repeat(3,1fr)}}
+.card{background:var(--bg);box-shadow:0 0 0 1px var(--line);padding:1.6rem;display:flex;flex-direction:column;gap:.9rem;min-height:15rem;text-decoration:none;transition:background .25s}
 .card:hover{background:var(--bg-2)}
 .card .meta{display:flex;justify-content:space-between;color:var(--ink-dim)}
 .card h3{font-size:var(--text-lg);line-height:1.15;letter-spacing:-.01em}
@@ -111,6 +113,12 @@ section.ch-sec{padding:clamp(4rem,9vw,8rem) var(--pad);border-bottom:1px solid v
 .tag{font-family:var(--mono);font-size:.72rem;border:1px solid var(--line);padding:.25rem .55rem;border-radius:999px;color:var(--ink-dim)}
 .card:hover .tag{border-color:#3b3d35}
 .card .go{font-family:var(--mono);font-size:.8rem;color:var(--signal)}
+
+.all-scripts{margin-top:2.5rem}
+.all-scripts p{color:var(--ink-dim);margin-bottom:1rem}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem}
+.chips span{font-family:var(--mono);font-size:.78rem;padding:.35rem .7rem;border:1px solid var(--line);border-radius:999px;transition:border-color .2s,color .2s}
+.chips span:hover{border-color:var(--signal);color:var(--signal)}
 
 /* github */
 .gh-note{margin-top:1.25rem;color:var(--ink-dim);font-family:var(--mono);font-size:.85rem}
@@ -224,9 +232,10 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem;paddin
     <div class="sec-head rv">
       <span class="sec-num">CH 01</span>
       <h2 data-i18n-html="fivem_title">FiveM &amp; <em>QBCore</em></h2>
-      <p data-i18n="fivem_desc">Roleplay sunucuları için QBCore framework'ü üzerinde script geliştiriyorum: sistemler, arayüzler ve sunucuya özel mekanikler.</p>
+      <p data-i18n="fivem_desc"></p>
     </div>
     <div class="grid rv" id="fivem-grid"></div>
+    <div class="all-scripts rv"><p class="mono" id="all-label"></p><div class="chips" id="all-chips"></div></div>
   </section>
 
   <!-- CH 02 GITHUB -->
@@ -314,11 +323,20 @@ const CONFIG = {
   ],
 
   // FiveM scriptlerin. Kendi scriptlerinle değiştir. url boş bırakılabilir.
+  // Öne çıkan FiveM scriptleri (ykc serisi)
   fivemScripts: [
-    { name: "qb-script-1", tr: "Scriptin ne yaptığını tek cümleyle anlat.", en: "Describe what the script does in one sentence.", tags: ["QBCore","Lua","NUI"], url: "" },
-    { name: "qb-script-2", tr: "Örn: İş sistemi, envanter entegrasyonu, özel menü.", en: "E.g. job system, inventory integration, custom menu.", tags: ["QBCore","Lua"], url: "" },
-    { name: "qb-script-3", tr: "Örn: Araç sistemi, ekonomi, mini oyun.", en: "E.g. vehicle system, economy, mini-game.", tags: ["QBCore","JS","HTML/CSS"], url: "" },
+    { name: "ykc-phone", tr: "Oyun içi tam özellikli akıllı telefon; metro, otobüs ve müzik gibi uygulamalar buna bağlanıyor.", en: "Full-featured in-game smartphone; metro, bus and music apps plug into it.", tags: ["React","NUI","ox_lib"], url: "" },
+    { name: "ykc-police", tr: "Polis mesleği: görev, kelepçe, dispatch, alkolmetre, hız radarı, delil sistemi, MDT tablet ve Bolingbroke hapishanesi.", en: "Police job: duty, cuffing, dispatch, breathalyzer, speed radar, evidence, MDT tablet and Bolingbroke jail.", tags: ["QBCore","Lua","MDT"], url: "" },
+    { name: "ykc-metro", tr: "LS Metro: NPC metro hattı, bilet / Akbil kartları, turnikeler, oturan yolcular, makinist mesleği ve LS Kart telefon uygulaması.", en: "LS Metro: NPC metro line, tickets / Akbil cards, turnstiles, seated passengers, driver job and LS Kart phone app.", tags: ["QBCore","NPC","Phone app"], url: "" },
+    { name: "ykc-bus", tr: "LS Transit: tüm haritada oyun içinden düzenlenebilen NPC otobüs hatları, Akbil ile biniş, şoför mesleği ve LS Rota yol planlayıcı.", en: "LS Transit: map-wide NPC bus lines editable in game, Akbil boarding, driver job and LS Rota journey planner.", tags: ["QBCore","NPC","Editor"], url: "" },
+    { name: "ykc-hud", tr: "Durum ikonları, hız göstergesi, minimap, pusula; sürükle-bırak yerleşim düzenleme modu ve ayar menüsü.", en: "Status icons, speedometer, minimap, compass; drag-and-drop layout editor and settings menu.", tags: ["QBCore","NUI","UI"], url: "" },
+    { name: "ykc-inventory + banking", tr: "qb-inventory üstüne modern envanter arayüzü (kıyafet, çanta, cüzdan) ve cüzdandaki banka kartlarını okuyan banka sistemi.", en: "Modern inventory UI on qb-inventory (clothing, bag, wallet) plus banking that reads bank cards from the wallet.", tags: ["QBCore","NUI","Drop-in"], url: "" },
+    { name: "ykc-fuel", tr: "Pompa tabancası ve hortum, her iki taraftan otomatik bağlantı, elektrikli araç şarjı, bidon, nakit / kartla ödeme.", en: "Pump nozzle and hose, auto-connect on either side, EV charging, jerry cans, cash / card payment.", tags: ["QBCore","Lua","Physics"], url: "" },
+    { name: "ykc-burgershot", tr: "Burger Shot mesleği: kiosktan sipariş, mutfak istasyonları, çalışan yoksa NPC devreye giriyor.", en: "Burger Shot job: kiosk orders, kitchen stations, NPC fallback when no staff is on.", tags: ["QBCore","Job","NUI"], url: "" },
+    { name: "ykc-music", tr: "Telefon için müzik uygulaması: YouTube arama/çalma, Spotify playlist içe aktarma ve 3D hoparlör modu.", en: "Phone music app: YouTube search/playback, Spotify playlist import and 3D speaker mode.", tags: ["Phone app","3D audio"], url: "" },
   ],
+  // Tüm ykc resource'ları (chip listesi)
+  allScripts: ["ykc-banking","ykc-burgershot","ykc-bus","ykc-chat","ykc-clothing","ykc-drinks","ykc-elevator","ykc-fuel","ykc-height","ykc-hotel","ykc-hud","ykc-inventory","ykc-jobadmin","ykc-loadscreen","ykc-market","ykc-metro","ykc-multicharacter","ykc-music","ykc-pausemenu","ykc-pets","ykc-pharmacy","ykc-phone","ykc-police","ykc-radialmenu","ykc-restroom","ykc-speedboost","ykc-target","ykc-theme","ykc-tuning","ykc-vehiclekeys"],
 
   // NFT karakterler: görselleri "nft" klasörüne at ve dosya adını yaz.
   // img boşsa renkli yer tutucu gösterilir.
@@ -353,7 +371,8 @@ const I18N = {
     guide:"Kanal rehberi", g1:"FiveM / QBCore", g2:"GitHub projeleri", g3:"NFT karakterler", g4:"AI içerik", g5:"Kick yayınları",
     ticker:["FiveM geliştirme","QBCore","Lua","AI karakterler","Higgsfield","NFT sanatı","Kick yayınları","Açık kaynak"],
     fivem_title:"FiveM &amp; <em>QBCore</em>",
-    fivem_desc:"Roleplay sunucuları için QBCore framework'ü üzerinde script geliştiriyorum: sistemler, arayüzler ve sunucuya özel mekanikler.",
+    fivem_desc:"Kendi sunucum için QBCore üzerinde sıfırdan yazdığım ykc serisi: telefon, polis, toplu taşıma, HUD, envanter ve daha fazlası. Çoğu standart qb scriptlerinin yerine birebir takılabiliyor.",
+    all_label:"// ykc serisindeki tüm resource'lar ({n})",
     gh_title:"GitHub <em>projeleri</em>",
     gh_desc:"Açık kaynak çalışmalarım. Bu liste GitHub'dan otomatik çekiliyor, yeni bir repo açtığımda burada da görünüyor.",
     gh_loading:"Repolar yükleniyor…", gh_error:"Repolar şu an yüklenemedi.", gh_all:"Tüm repolar GitHub'da →",
@@ -376,7 +395,8 @@ const I18N = {
     guide:"Channel guide", g1:"FiveM / QBCore", g2:"GitHub projects", g3:"NFT characters", g4:"AI content", g5:"Kick streams",
     ticker:["FiveM development","QBCore","Lua","AI characters","Higgsfield","NFT art","Kick streams","Open source"],
     fivem_title:"FiveM &amp; <em>QBCore</em>",
-    fivem_desc:"I build scripts on the QBCore framework for roleplay servers: systems, interfaces and server-specific mechanics.",
+    fivem_desc:"The ykc series I built from scratch on QBCore for my own server: phone, police, public transport, HUD, inventory and more. Most are drop-in replacements for the stock qb scripts.",
+    all_label:"// Every resource in the ykc series ({n})",
     gh_title:"GitHub <em>projects</em>",
     gh_desc:"My open-source work. This list is pulled live from GitHub, so new repos show up here automatically.",
     gh_loading:"Loading repos…", gh_error:"Couldn't load repos right now.", gh_all:"All repos on GitHub →",
@@ -411,13 +431,15 @@ function renderFivem(){
     const tag = s.url ? "a" : "div";
     const attrs = s.url ? `href="${esc(s.url)}" target="_blank" rel="noopener"` : "";
     return `<${tag} class="card" ${attrs}>
-      <div class="meta mono"><span>#${String(i+1).padStart(2,"0")}</span><span>Lua</span></div>
+      <div class="meta mono"><span>#${String(i+1).padStart(2,"0")}</span><span>ykc</span></div>
       <h3>${esc(s.name)}</h3>
       <p>${esc(s[lang])}</p>
       <div class="tags">${s.tags.map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div>
       ${s.url ? `<span class="go">${t("view")}</span>` : ""}
     </${tag}>`;
   }).join("");
+  $("#all-label").textContent = t("all_label").replace("{n}", CONFIG.allScripts.length);
+  $("#all-chips").innerHTML = CONFIG.allScripts.map(n => `<span>${esc(n)}</span>`).join("");
 }
 
 async function loadGithub(){
