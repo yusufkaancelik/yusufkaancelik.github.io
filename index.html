@@ -113,15 +113,15 @@ section{padding:clamp(5rem,11vw,8.5rem) 0;position:relative}
 .hero p.sub strong{color:var(--ink);font-weight:600}
 .hero{position:relative;overflow:hidden;isolation:isolate}
 .hero-bg{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;
-  -webkit-mask-image:radial-gradient(ellipse 42% 36% at 50% 50%,rgba(0,0,0,.2),#000 80%);mask-image:radial-gradient(ellipse 42% 36% at 50% 50%,rgba(0,0,0,.2),#000 80%)}
-.code-rain{position:absolute;left:-75%;top:-75%;width:250%;height:250%;display:flex;flex-direction:column;justify-content:center;gap:1.15rem;transform:rotate(-30deg);opacity:.16}
-.code-rain .row{white-space:nowrap;font-family:var(--mono);font-size:13px;letter-spacing:.01em;color:#8a8a8f;width:max-content;animation:slide var(--d,80s) linear infinite;will-change:transform}
+  -webkit-mask-image:radial-gradient(ellipse 42% 36% at 50% 50%,rgba(0,0,0,.4),#000 80%);mask-image:radial-gradient(ellipse 42% 36% at 50% 50%,rgba(0,0,0,.4),#000 80%)}
+.code-rain{position:absolute;left:50%;top:50%;width:0;height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.15rem;transform:rotate(-30deg);opacity:.16}
+.code-rain .row{flex:none;white-space:nowrap;font-family:var(--mono);font-size:13px;letter-spacing:.01em;color:#8a8a8f;width:max-content;animation:slide var(--d,80s) linear infinite;will-change:transform}
 .code-rain .row:nth-child(3n){font-size:15px;color:#a1a1a6}
 .code-rain .row:nth-child(4n+1){font-size:11px;opacity:.7}
 .code-rain .k{color:var(--signal)}
 .code-rain .s{color:#d6d6d9}
 .code-rain .c{color:#5a5a5f}
-@keyframes slide{from{transform:translate3d(-50%,0,0)}to{transform:translate3d(0,0,0)}}
+@keyframes slide{from{transform:translate3d(-25%,0,0)}to{transform:translate3d(25%,0,0)}}
 .hero > div{position:relative;z-index:1;opacity:0;transform:translateY(16px);animation:up 1s cubic-bezier(.2,.7,.2,1) .1s forwards}
 @keyframes up{to{opacity:1;transform:none}}
 
@@ -553,11 +553,11 @@ function hl(line){
 }
 function renderCode(){
   const el = $("#code-rain"); if (!el) return;
-  const rows = 26, gap = "\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0";
+  const rows = 64, gap = "\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0";
   let html = "";
   for (let r = 0; r < rows; r++){
     const seq = [];
-    for (let i = 0; i < 6; i++) seq.push(hl(CODE[(r * 5 + i * 3) % CODE.length]));
+    for (let i = 0; i < 12; i++) seq.push(hl(CODE[(r * 5 + i * 3) % CODE.length]));
     const line = seq.join(gap) + gap;
     html += `<span class="row" style="--d:${70 + (r * 37) % 50}s">${line}${line}</span>`;
   }
