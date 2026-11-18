@@ -134,6 +134,29 @@ section{padding:clamp(5rem,11vw,8.5rem) 0;position:relative}
 .ticker-track span::after{content:"✦";margin-left:2.5rem}
 @keyframes scroll{to{transform:translateX(-50%)}}
 
+/* ---------- about ---------- */
+.about-wrap{width:var(--wide);margin:0 auto;display:grid;grid-template-columns:1fr;gap:clamp(2.5rem,5vw,4.5rem);align-items:start}
+@media (min-width:900px){.about-wrap{grid-template-columns:minmax(260px,360px) 1fr}}
+.about-side{display:flex;flex-direction:column;align-items:center;gap:1.4rem}
+@media (min-width:900px){.about-side{position:sticky;top:88px}}
+.about-photo{width:min(300px,70vw);aspect-ratio:1;border-radius:50%;padding:5px;background:conic-gradient(from 210deg,var(--signal),rgba(198,255,61,.08) 40%,var(--signal) 70%,rgba(198,255,61,.08));box-shadow:0 0 80px rgba(198,255,61,.12)}
+.about-photo img{width:100%;height:100%;border-radius:50%;object-fit:cover;border:4px solid var(--bg);background:var(--card)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;width:100%;max-width:360px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1rem .6rem;text-align:center}
+.stat b{display:block;font-size:28px;font-weight:600;letter-spacing:-.02em;line-height:1}
+.stat span{display:block;margin-top:.4rem;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.about-main .eyebrow{text-align:left}
+.about-main h2{font-size:clamp(2rem,1.3rem + 2.8vw,3.25rem);font-weight:600;line-height:1.08;letter-spacing:-.025em;margin-bottom:1.4rem}
+.about-text{font-size:clamp(17px,1.4vw,19px);line-height:1.6;color:var(--ink-2);max-width:40rem}
+.about-text + .about-text{margin-top:1rem}
+.timeline{list-style:none;margin-top:2.6rem;border-left:1px solid var(--line);padding-left:1.6rem;display:flex;flex-direction:column;gap:1.5rem;max-width:40rem}
+.timeline li{position:relative}
+.timeline li::before{content:"";position:absolute;left:calc(-1.6rem - 5px);top:.35rem;width:9px;height:9px;border-radius:50%;background:var(--bg);border:2px solid var(--signal)}
+.timeline li:last-child::before{background:var(--signal);box-shadow:0 0 0 4px rgba(198,255,61,.15)}
+.timeline .when{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--signal)}
+.timeline h4{font-size:18px;font-weight:600;letter-spacing:-.01em;margin:.2rem 0 .15rem}
+.timeline p{font-size:15px;color:var(--ink-2);line-height:1.5}
+
 /* ---------- cards ---------- */
 .cards{width:var(--wide);margin:0 auto;display:grid;grid-template-columns:1fr;gap:1.1rem}
 @media (min-width:740px){.cards{grid-template-columns:repeat(2,1fr)}}
@@ -283,6 +306,7 @@ footer div{width:var(--wrap);margin:0 auto;padding:1.2rem 0;font-family:var(--mo
   <div class="nav-inner">
     <a href="#top" class="logo" aria-label="Yusuf Kaan Çelik — ana sayfa">YKÇ<span>.</span></a>
     <nav class="links" aria-label="Ana menü">
+      <a href="#hakkimda" data-i18n="nav_about">Hakkımda</a>
       <a href="#fivem">FiveM</a>
       <a href="#github">GitHub</a>
       <a href="#nft">NFT</a>
@@ -312,6 +336,22 @@ footer div{width:var(--wrap);margin:0 auto;padding:1.2rem 0;font-family:var(--mo
   </section>
 
   <div class="ticker" aria-hidden="true"><div class="ticker-track" id="ticker"></div></div>
+
+  <section class="s-a about" id="hakkimda">
+    <div class="about-wrap">
+      <div class="about-side rv">
+        <div class="about-photo"><img src="https://github.com/yusufkaancelik.png?size=600" alt="Yusuf Kaan Çelik" loading="lazy" width="300" height="300"></div>
+        <div class="stats" id="about-stats"></div>
+      </div>
+      <div class="about-main rv">
+        <p class="eyebrow" data-i18n="about_eyebrow">CH 00 — Hakkımda</p>
+        <h2 data-i18n-html="about_title">Bilgisayarı bozarak <em>başladım.</em></h2>
+        <p class="about-text" data-i18n="about_p1">4 yaşında bilgisayarın başına oturdum. Çoğu şeyi evdeki tüplü ekranlı bilgisayarı bozup tekrar çalıştırmaya uğraşırken öğrendim. Biraz garip ama okuma yazmayı da oyunların altyazılarından ve hile kodlarını yazarken söktüm; bilgisayarla aram o günden beri hep iyi.</p>
+        <p class="about-text" data-i18n="about_p2">Kodlamaya herkes gibi web siteleri yaparak başladım. Bugün kendi sunucum için FiveM scriptleri yazıyorum, AI karakterler ve el çizimi NFT'ler üretiyorum, Kick'te yayın yapıyorum.</p>
+        <ol class="timeline" id="timeline"></ol>
+      </div>
+    </div>
+  </section>
 
   <section class="s-b" id="fivem">
     <div class="head rv">
@@ -472,7 +512,21 @@ const CONFIG = {
    ========================================================= */
 const I18N = {
   tr: {
-    nav_ai:"AI", nav_contact:"İletişim",
+    nav_ai:"AI", nav_contact:"İletişim", nav_about:"Hakkımda",
+    about_eyebrow:"CH 00 — Hakkımda",
+    about_title:"Bilgisayarı bozarak <em>başladım.</em>",
+    about_p1:"4 yaşında bilgisayarın başına oturdum. Çoğu şeyi evdeki tüplü ekranlı bilgisayarı bozup tekrar çalıştırmaya uğraşırken öğrendim. Biraz garip ama okuma yazmayı da oyunların altyazılarından ve hile kodlarını yazarken söktüm; bilgisayarla aram o günden beri hep iyi.",
+    about_p2:"Kodlamaya herkes gibi web siteleri yaparak başladım. Bugün kendi sunucum için FiveM scriptleri yazıyorum, AI karakterler ve el çizimi NFT'ler üretiyorum, Kick'te yayın yapıyorum.",
+    st_scripts:"FiveM script", st_nft:"NFT koleksiyonu", st_ai:"AI karakter",
+    timeline:[
+      ["4 yaş","İlk bilgisayar","Tüplü ekranlı bir bilgisayar, bolca bozma ve tamir."],
+      ["İlk satırlar","Web siteleri","Koda herkes gibi web sayfaları yaparak girdim."],
+      ["2022","Chick Jones","Algorand üzerinde ilk NFT koleksiyonum."],
+      ["2025","Kick yayınları","kick.com/yusufkaancelik kanalında yayına başladım."],
+      ["2026","The Seven Deadly Sins","Jose Steel adıyla drop.art'ta yedi karakterlik koleksiyon."],
+      ["2026 · Q4","AI karakterler","Greta, Zara ve Dee: her gün paylaşan üç AI hesap."],
+      ["2026 · Q4","ykc FiveM serisi","QBCore üzerinde 30 resource'luk kendi script serim."],
+    ],
     kicker:"Geliştirici · Üretici · Yayıncı",
     ticker:["FiveM geliştirme","QBCore","Lua","AI karakterler","Higgsfield","NFT sanatı","Kick yayınları","Açık kaynak"],
     hero_sub:"<strong>FiveM scriptleri</strong> yazıyorum, <strong>AI karakterler</strong> ve elle çizdiğim <strong>NFT'ler</strong> üretiyorum, Kick'te yayın yapıyorum.",
@@ -496,7 +550,21 @@ const I18N = {
     view:"İncele ›", gallery:"görselleri aç", shot_alt:"ekran görüntüsü", profile:"Profili gör ›"
   },
   en: {
-    nav_ai:"AI", nav_contact:"Contact",
+    nav_ai:"AI", nav_contact:"Contact", nav_about:"About",
+    about_eyebrow:"CH 00 — About",
+    about_title:"I started by <em>breaking computers.</em>",
+    about_p1:"I sat down at a computer when I was 4. I learned most things by breaking our old CRT-monitor PC at home and trying to get it working again. Odd as it sounds, I learned to read and write from game subtitles and typing in cheat codes; computers and I have got along ever since.",
+    about_p2:"Like everyone else, I got into coding by building websites. Today I write FiveM scripts for my own server, create AI characters and hand-drawn NFTs, and stream on Kick.",
+    st_scripts:"FiveM scripts", st_nft:"NFT collections", st_ai:"AI characters",
+    timeline:[
+      ["Age 4","First computer","A CRT-monitor PC, lots of breaking and fixing."],
+      ["First lines","Websites","Like everyone, I got into code by building web pages."],
+      ["2022","Chick Jones","My first NFT collection, on Algorand."],
+      ["2025","Kick streams","Started streaming at kick.com/yusufkaancelik."],
+      ["2026","The Seven Deadly Sins","A seven-character collection on drop.art as Jose Steel."],
+      ["2026 · Q4","AI characters","Greta, Zara and Dee: three AI accounts posting daily."],
+      ["2026 · Q4","ykc FiveM series","My own 30-resource script series on QBCore."],
+    ],
     kicker:"Developer · Creator · Streamer",
     ticker:["FiveM development","QBCore","Lua","AI characters","Higgsfield","NFT art","Kick streams","Open source"],
     hero_sub:"I write <strong>FiveM scripts</strong>, create <strong>AI characters</strong> and hand-drawn <strong>NFTs</strong>, and stream on Kick.",
@@ -567,6 +635,16 @@ function renderCode(){
   el.innerHTML = html;
 }
 renderCode();
+
+function renderAbout(){
+  const st = [
+    [CONFIG.allScripts.length, t("st_scripts")],
+    [CONFIG.nftCollections.length, t("st_nft")],
+    [CONFIG.aiCharacters.length, t("st_ai")],
+  ];
+  $("#about-stats").innerHTML = st.map(([n,l]) => `<div class="stat"><b>${n}</b><span>${esc(l)}</span></div>`).join("");
+  $("#timeline").innerHTML = t("timeline").map(([w,h,d]) => `<li><span class="when">${esc(w)}</span><h4>${esc(h)}</h4><p>${esc(d)}</p></li>`).join("");
+}
 
 function renderTicker(){
   const html = t("ticker").map(i => `<span>${esc(i)}</span>`).join("");
@@ -692,7 +770,7 @@ function applyLang(next){
   document.querySelectorAll("[data-i18n-html]").forEach(el => el.innerHTML = t(el.dataset.i18nHtml));
   document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === lang));
   document.title = lang === "tr" ? "Yusuf Kaan Çelik — Portfolyo" : "Yusuf Kaan Çelik — Portfolio";
-  renderTicker(); renderFivem(); renderGithub(); renderNft(); renderAi();
+  renderAbout(); renderTicker(); renderFivem(); renderGithub(); renderNft(); renderAi();
   try{ localStorage.setItem("lang", lang); }catch(e){}
 }
 
