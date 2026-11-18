@@ -877,6 +877,7 @@ function applyLang(next){
   document.querySelectorAll("[data-i18n-html]").forEach(el => el.innerHTML = t(el.dataset.i18nHtml));
   document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === lang));
   document.title = lang === "tr" ? "Yusuf Kaan Çelik — Portfolyo" : "Yusuf Kaan Çelik — Portfolio";
+  document.querySelectorAll('a[href^="/fivem-script-yaptirma/"], a[href^="/custom-fivem-scripts/"]').forEach(a => a.setAttribute("href", lang === "tr" ? "/fivem-script-yaptirma/" : "/custom-fivem-scripts/"));
   renderAbout(); renderTicker(); renderFivem(); renderGithub(); renderNft(); renderAi();
   try{ localStorage.setItem("lang", lang); }catch(e){}
 }

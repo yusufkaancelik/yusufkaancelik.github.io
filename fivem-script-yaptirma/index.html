@@ -8,6 +8,9 @@
 <meta name="author" content="Yusuf Kaan Çelik">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="https://yusufkaancelik.me/fivem-script-yaptirma/">
+<link rel="alternate" hreflang="tr" href="https://yusufkaancelik.me/fivem-script-yaptirma/">
+<link rel="alternate" hreflang="en" href="https://yusufkaancelik.me/custom-fivem-scripts/">
+<link rel="alternate" hreflang="x-default" href="https://yusufkaancelik.me/fivem-script-yaptirma/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Yusuf Kaan Çelik">
 <meta property="og:title" content="Özel FiveM Script Yaptırma ve Sunucu Kurulumu">
@@ -17,6 +20,7 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="tr_TR">
+<meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Özel FiveM Script Yaptırma ve Sunucu Kurulumu">
 <meta name="twitter:description" content="QBCore uyumlu özel script, sunucu kurulumu, optimizasyon ve güvenlik.">
@@ -71,6 +75,10 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:100;op
 .lang{justify-self:end;display:flex;gap:2px;background:rgba(255,255,255,.08);border-radius:980px;padding:2px}
 .lang button{font-family:var(--mono);font-size:11px;font-weight:600;background:none;border:0;color:var(--ink-2);padding:.25rem .65rem;border-radius:980px;cursor:pointer;min-height:24px}
 .lang button[aria-pressed="true"]{background:var(--signal);color:#000}
+.nav-r{justify-self:end;display:flex;align-items:center;gap:.6rem}
+.lang a{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink-2);padding:.25rem .65rem;border-radius:980px;min-height:24px;display:inline-flex;align-items:center}
+.lang a[aria-current="page"]{background:var(--signal);color:#000}
+.lang a:not([aria-current="page"]):hover{color:var(--signal)}
 @media (max-width:767px){
   .nav{height:auto}
   .nav-inner{grid-template-columns:1fr auto;padding-top:.6rem}
@@ -402,7 +410,10 @@ footer a{color:var(--ink-2)} footer a:hover{color:var(--signal)}
       <a href="#sss">SSS</a>
       <a href="/">Portfolyo</a>
     </nav>
-    <a class="nav-cta" href="#teklif">Teklif al</a>
+    <div class="nav-r">
+      <div class="lang" role="group" aria-label="Dil / Language"><a href="/fivem-script-yaptirma/" hreflang="tr" data-lang="tr" aria-current="page">TR</a><a href="/custom-fivem-scripts/" hreflang="en" lang="en" data-lang="en" aria-current="false">EN</a></div>
+      <a class="nav-cta" href="#teklif">Teklif al</a>
+    </div>
   </div>
 </header>
 
@@ -649,6 +660,7 @@ function renderCode(){
 }
 renderCode();
 $("#year").textContent = new Date().getFullYear();
+try{ localStorage.setItem("lang", document.documentElement.lang); }catch(e){}
 const io = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => {
   if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }
 }), {threshold:.12}) : null;
