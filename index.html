@@ -164,6 +164,16 @@ section{padding:clamp(5rem,11vw,8.5rem) 0;position:relative}
 .timeline h4{font-size:18px;font-weight:600;letter-spacing:-.01em;margin:.2rem 0 .15rem}
 .timeline p{font-size:15px;color:var(--ink-2);line-height:1.5}
 
+.moments-label{margin-top:3rem;margin-bottom:1rem}
+.moments{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:44rem}
+@media (max-width:600px){.moments{grid-template-columns:1fr 1fr}.moments figure:first-child{grid-column:1 / -1}}
+.moments figure{margin:0}
+.moments button{display:block;width:100%;aspect-ratio:4/5;padding:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:zoom-in;background:var(--card)}
+@media (max-width:600px){.moments figure:first-child button{aspect-ratio:4/3}}
+.moments img{width:100%;height:100%;object-fit:cover;filter:saturate(.9);transition:transform .6s cubic-bezier(.2,.7,.2,1),filter .4s}
+.moments button:hover img{transform:scale(1.05);filter:saturate(1.05)}
+.moments figcaption{margin-top:.55rem;font-family:var(--serif);font-style:italic;font-size:15px;line-height:1.3;color:var(--ink-2)}
+
 /* ---------- cards ---------- */
 .cards{width:var(--wide);margin:0 auto;display:grid;grid-template-columns:1fr;gap:1.1rem}
 @media (min-width:740px){.cards{grid-template-columns:repeat(2,1fr)}}
@@ -359,6 +369,8 @@ footer div{width:var(--wrap);margin:0 auto;padding:1.2rem 0;font-family:var(--mo
         <p class="about-text" data-i18n="about_p1">4 yaşında bilgisayarın başına oturdum. Çoğu şeyi evdeki tüplü ekranlı bilgisayarı bozup tekrar çalıştırmaya uğraşırken öğrendim. Biraz garip ama okuma yazmayı da oyunların altyazılarından ve hile kodlarını yazarken söktüm; bilgisayarla aram o günden beri hep iyi.</p>
         <p class="about-text" data-i18n="about_p2">Kodlamaya herkes gibi web siteleri yaparak başladım. Bugün kendi sunucum için FiveM scriptleri yazıyorum, AI karakterler ve el çizimi NFT'ler üretiyorum, Kick'te yayın yapıyorum.</p>
         <ol class="timeline" id="timeline"></ol>
+        <p class="eyebrow moments-label" data-i18n="moments_label">// Kareler</p>
+        <div class="moments" id="moments"></div>
       </div>
     </div>
   </section>
@@ -510,6 +522,12 @@ const CONFIG = {
       tr: "Küçük sorunlar, devasa tepkiler. Her gün yeni bir felaket.", en: "Tiny problems, huge reactions. New disaster daily.",
       posts: [["img/dee-1.jpg","Dexy39vt76e"],["img/dee-2.jpg","DesaO73NrJ5"],["img/dee-3.jpg","DesZ46bNyb1"]] },
   ],
+  // Hakkımda > Kareler
+  moments: [
+    { img: "img/kare-html-ders.jpg", tr: "Çocuklara HTML öğretirken", en: "Teaching kids HTML" },
+    { img: "img/kare-laboratuvar.jpg", tr: "Laboratuvarda çılgın anlar", en: "Crazy moments in the lab" },
+    { img: "img/kare-virtuoz.jpg", tr: "Yapay zeka candır ama bir virtüöze ihtiyacı vardır", en: "AI is great, but it needs a virtuoso" },
+  ],
   kick: {
     avatar: "img/kick-avatar.jpg",
     banner: "img/kick-offline.jpg",
@@ -523,7 +541,7 @@ const CONFIG = {
 const I18N = {
   tr: {
     nav_ai:"AI", nav_contact:"İletişim", nav_about:"Hakkımda",
-    about_eyebrow:"CH 00 — Hakkımda", then_caption:"4 yaş · ilk bilgisayar", then_alt:"4 yaşında, tüplü monitörlü ilk bilgisayarın başında",
+    about_eyebrow:"CH 00 — Hakkımda", moments_label:"// Kareler", then_caption:"4 yaş · ilk bilgisayar", then_alt:"4 yaşında, tüplü monitörlü ilk bilgisayarın başında",
     about_title:"Bilgisayarı bozarak <em>başladım.</em>",
     about_p1:"4 yaşında bilgisayarın başına oturdum. Çoğu şeyi evdeki tüplü ekranlı bilgisayarı bozup tekrar çalıştırmaya uğraşırken öğrendim. Biraz garip ama okuma yazmayı da oyunların altyazılarından ve hile kodlarını yazarken söktüm; bilgisayarla aram o günden beri hep iyi.",
     about_p2:"Kodlamaya herkes gibi web siteleri yaparak başladım. Bugün kendi sunucum için FiveM scriptleri yazıyorum, AI karakterler ve el çizimi NFT'ler üretiyorum, Kick'te yayın yapıyorum.",
@@ -561,7 +579,7 @@ const I18N = {
   },
   en: {
     nav_ai:"AI", nav_contact:"Contact", nav_about:"About",
-    about_eyebrow:"CH 00 — About", then_caption:"age 4 · first computer", then_alt:"Age 4, at my first CRT-monitor computer",
+    about_eyebrow:"CH 00 — About", moments_label:"// Moments", then_caption:"age 4 · first computer", then_alt:"Age 4, at my first CRT-monitor computer",
     about_title:"I started by <em>breaking computers.</em>",
     about_p1:"I sat down at a computer when I was 4. I learned most things by breaking our old CRT-monitor PC at home and trying to get it working again. Odd as it sounds, I learned to read and write from game subtitles and typing in cheat codes; computers and I have got along ever since.",
     about_p2:"Like everyone else, I got into coding by building websites. Today I write FiveM scripts for my own server, create AI characters and hand-drawn NFTs, and stream on Kick.",
@@ -654,6 +672,7 @@ function renderAbout(){
   ];
   $(".polaroid img").alt = t("then_alt");
   $("#about-stats").innerHTML = st.map(([n,l]) => `<div class="stat"><b>${n}</b><span>${esc(l)}</span></div>`).join("");
+  $("#moments").innerHTML = CONFIG.moments.map((m,i) => `<figure><button type="button" class="moment" data-i="${i}" aria-label="${esc(m[lang])}"><img src="${esc(m.img)}" alt="${esc(m[lang])}" loading="lazy" decoding="async"></button><figcaption>${esc(m[lang])}</figcaption></figure>`).join("");
   $("#timeline").innerHTML = t("timeline").map(([w,h,d]) => `<li><span class="when">${esc(w)}</span><h4>${esc(h)}</h4><p>${esc(d)}</p></li>`).join("");
 }
 
@@ -790,12 +809,14 @@ $("#year").textContent = new Date().getFullYear();
 
 let lbSet = [], lbIdx = 0;
 function lbShow(){ const lb = $("#lb"); lb.querySelector("img").src = lbSet[lbIdx]; lb.querySelector(".lb-count").textContent = lbSet.length > 1 ? `${lbIdx+1} / ${lbSet.length}` : ""; lb.classList.toggle("multi", lbSet.length > 1); }
-function lbOpen(set){ lbSet = set; lbIdx = 0; lbShow(); $("#lb").classList.add("open"); }
+function lbOpen(set, i = 0){ lbSet = set; lbIdx = i; lbShow(); $("#lb").classList.add("open"); }
 function lbClose(){ $("#lb").classList.remove("open"); }
 function lbStep(d){ if (lbSet.length < 2) return; lbIdx = (lbIdx + d + lbSet.length) % lbSet.length; lbShow(); }
 document.addEventListener("click", e => {
   const b = e.target.closest(".shot");
   if (b){ e.preventDefault(); lbOpen(CONFIG.fivemScripts[+b.dataset.set].imgs); return; }
+  const mo = e.target.closest(".moment");
+  if (mo){ e.preventDefault(); lbOpen(CONFIG.moments.map(m => m.img), +mo.dataset.i); return; }
   const nav = e.target.closest(".lb-nav");
   if (nav){ e.stopPropagation(); lbStep(+nav.dataset.d); return; }
   if (e.target.closest("#lb")) lbClose();
