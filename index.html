@@ -303,8 +303,47 @@ a.person:hover{transform:translateY(-4px);border-color:rgba(198,255,61,.35)}
 /* ---------- contact ---------- */
 .contact{text-align:center}
 .contact .ctas{width:var(--wrap);margin:0 auto}
-.contact .head h2{font-size:clamp(2.6rem,1rem + 6vw,5.5rem);line-height:1}
+.contact .head h2{font-size:clamp(2.4rem,1rem + 4.5vw,4.5rem);line-height:1.02}
 
+.services{width:var(--wrap);margin:0 auto;display:grid;grid-template-columns:1fr;gap:1.1rem}
+@media (min-width:740px){.services{grid-template-columns:1fr 1fr}}
+.svc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:2rem 1.9rem;text-align:left;transition:border-color .35s,transform .35s cubic-bezier(.2,.7,.2,1)}
+.svc:hover{border-color:rgba(198,255,61,.35);transform:translateY(-3px)}
+.svc .num{font-family:var(--mono);font-size:12px;color:var(--signal);letter-spacing:.04em}
+.svc h3{font-size:clamp(22px,2vw,26px);font-weight:600;letter-spacing:-.015em;margin:.45rem 0 .6rem}
+.svc > p{font-size:15px;color:var(--ink-2);line-height:1.5}
+.svc ul{list-style:none;margin-top:1.1rem;display:flex;flex-direction:column;gap:.55rem}
+.svc li{position:relative;padding-left:1.4rem;font-size:15px;line-height:1.45}
+.svc li::before{content:"";position:absolute;left:0;top:.45rem;width:7px;height:7px;border-radius:50%;background:var(--signal)}
+.process{list-style:none;width:var(--wrap);margin:2.6rem auto 0;display:grid;grid-template-columns:1fr 1fr;gap:1rem;counter-reset:st}
+@media (min-width:900px){.process{grid-template-columns:repeat(4,1fr)}}
+.process li{text-align:left;border-top:1px solid var(--line);padding-top:1rem;counter-increment:st}
+.process li::before{content:"0" counter(st);display:block;font-family:var(--mono);font-size:12px;color:var(--signal);margin-bottom:.35rem}
+.process b{display:block;font-size:17px;font-weight:600}
+.process span{display:block;font-size:14px;color:var(--ink-2);margin-top:.25rem;line-height:1.45}
+.contact-box{width:var(--wrap);margin:3.5rem auto 0;display:grid;grid-template-columns:1fr;gap:1.1rem;text-align:left}
+@media (min-width:900px){.contact-box{grid-template-columns:1.7fr 1fr}}
+.cform{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:clamp(1.3rem,3vw,2rem);display:flex;flex-direction:column;gap:1rem}
+.row2{display:grid;grid-template-columns:1fr;gap:1rem}
+@media (min-width:600px){.row2{grid-template-columns:1fr 1fr}}
+.cform label{display:flex;flex-direction:column;gap:.4rem}
+.cform label > span{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.cform input,.cform select,.cform textarea{font:inherit;font-size:16px;letter-spacing:-.01em;color:var(--ink);background:var(--bg);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:.8rem .9rem;min-height:46px;outline:none;transition:border-color .2s,box-shadow .2s;width:100%}
+.cform textarea{resize:vertical;min-height:130px}
+.cform select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--ink-2) 50%),linear-gradient(135deg,var(--ink-2) 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px;background-repeat:no-repeat;padding-right:2.4rem}
+.cform input:focus,.cform select:focus,.cform textarea:focus{border-color:var(--signal);box-shadow:0 0 0 3px rgba(198,255,61,.15)}
+.cform .bad{border-color:var(--rec)!important}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.form-foot{display:flex;flex-wrap:wrap;align-items:center;gap:1rem}
+.form-foot .pill{border:0;cursor:pointer;font-family:inherit}
+.form-foot .pill[disabled]{opacity:.6;cursor:wait}
+.form-status{font-size:14px;color:var(--ink-2)}
+.form-status.ok{color:var(--signal)}
+.form-status.err{color:var(--rec)}
+.contact-side{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:clamp(1.3rem,3vw,2rem)}
+.contact-side .eyebrow{text-align:left}
+.contact-list{display:flex;flex-direction:column;gap:.55rem}
+.contact-list .pill{justify-content:space-between;width:100%}
 footer{background:var(--bg);border-top:1px solid var(--line)}
 footer div{width:var(--wrap);margin:0 auto;padding:1.2rem 0;font-family:var(--mono);font-size:12px;color:var(--ink-3);text-align:center;letter-spacing:.04em}
 
@@ -329,7 +368,7 @@ footer div{width:var(--wrap);margin:0 auto;padding:1.2rem 0;font-family:var(--mo
       <a href="#nft">NFT</a>
       <a href="#ai" data-i18n="nav_ai">AI</a>
       <a href="#kick">Kick</a>
-      <a href="#iletisim" data-i18n="nav_contact">İletişim</a>
+      <a href="#iletisim" data-i18n="nav_contact">Benimle çalış</a>
     </nav>
     <div class="lang" role="group" aria-label="Dil / Language">
       <button type="button" data-lang="tr" aria-pressed="true">TR</button>
@@ -435,10 +474,36 @@ footer div{width:var(--wrap);margin:0 auto;padding:1.2rem 0;font-family:var(--mo
 
   <section class="s-a contact" id="iletisim">
     <div class="head rv">
-      <p class="eyebrow" data-i18n="contact_kicker">// İletişim</p>
+      <p class="eyebrow" data-i18n="contact_kicker">CH 06 — Benimle çalış</p>
       <h2 data-i18n-html="contact_title">Bir proje mi var?<br><em>Konuşalım.</em></h2>
+      <p data-i18n="work_desc">Sunucun için özel bir script ya da baştan sona bir sunucu kurulumu mu lazım? Ne istediğini yaz, kapsam ve süreyle birlikte sana özel bir teklifle döneyim.</p>
     </div>
-    <div class="ctas rv" id="contact-links"></div>
+
+    <div class="services rv" id="services"></div>
+    <ol class="process rv" id="process"></ol>
+
+    <div class="contact-box rv">
+      <form class="cform" id="cform" novalidate>
+        <div class="row2">
+          <label><span data-i18n="f_name">Adın</span><input name="name" required autocomplete="name"></label>
+          <label><span data-i18n="f_email">E-posta</span><input name="email" type="email" required autocomplete="email"></label>
+        </div>
+        <div class="row2">
+          <label><span data-i18n="f_service">Ne lazım?</span><select name="service" id="f-service"></select></label>
+          <label><span data-i18n="f_discord">Discord (isteğe bağlı)</span><input name="discord" autocomplete="off"></label>
+        </div>
+        <label><span data-i18n="f_msg">Projeni anlat</span><textarea name="message" rows="5" required></textarea></label>
+        <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="form-foot">
+          <button type="submit" class="pill fill" id="f-btn" data-i18n="f_send">Gönder</button>
+          <p class="form-status" id="f-status" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+      <aside class="contact-side">
+        <p class="eyebrow" data-i18n="or_reach">// Ya da doğrudan</p>
+        <div class="contact-list" id="contact-links"></div>
+      </aside>
+    </div>
   </section>
 </main>
 
@@ -522,6 +587,13 @@ const CONFIG = {
       tr: "Küçük sorunlar, devasa tepkiler. Her gün yeni bir felaket.", en: "Tiny problems, huge reactions. New disaster daily.",
       posts: [["img/dee-1.jpg","Dexy39vt76e"],["img/dee-2.jpg","DesaO73NrJ5"],["img/dee-3.jpg","DesZ46bNyb1"]] },
   ],
+  // Benimle çalış
+  services: [
+    { tr: { t: "Özel FiveM script", d: "Sunucuna özel, QBCore uyumlu script; ihtiyacın ne ise sıfırdan.", b: ["Meslek, sistem ve mekanik scriptleri", "NUI arayüzler: telefon uygulaması, tablet, HUD, menü", "Mevcut bir scriptin yeniden yazılması veya Türkçeleştirilmesi", "Düzenlenebilir config, kurulum ve teslim desteği"] },
+      en: { t: "Custom FiveM scripts", d: "QBCore-compatible scripts built from scratch for your server.", b: ["Jobs, systems and gameplay mechanics", "NUI interfaces: phone apps, tablets, HUDs, menus", "Rewriting or translating an existing script", "Editable config, installation and handover support"] } },
+    { tr: { t: "FiveM sunucu kurulumu", d: "Sıfırdan açılışa hazır, düzgün çalışan bir QBCore sunucusu.", b: ["QBCore + txAdmin kurulumu ve yapılandırma", "Veritabanı ve temel ayarlar", "Hazır scriptlerin entegrasyonu, çakışmaların çözümü", "Performans kontrolü ve optimizasyon"] },
+      en: { t: "FiveM server setup", d: "A clean, launch-ready QBCore server from the ground up.", b: ["QBCore + txAdmin installation and configuration", "Database and base settings", "Integrating ready-made scripts, fixing conflicts", "Performance checks and optimisation"] } },
+  ],
   // Hakkımda > Kareler
   moments: [
     { img: "img/kare-html-ders.jpg", tr: "Çocuklara HTML öğretirken", en: "Teaching kids HTML" },
@@ -540,7 +612,7 @@ const CONFIG = {
    ========================================================= */
 const I18N = {
   tr: {
-    nav_ai:"AI", nav_contact:"İletişim", nav_about:"Hakkımda",
+    nav_ai:"AI", nav_contact:"Benimle çalış", nav_about:"Hakkımda",
     about_eyebrow:"CH 00 — Hakkımda", moments_label:"// Kareler", then_caption:"4 yaş · ilk bilgisayar", then_alt:"4 yaşında, tüplü monitörlü ilk bilgisayarın başında",
     about_title:"Bilgisayarı bozarak <em>başladım.</em>",
     about_p1:"4 yaşında bilgisayarın başına oturdum. Çoğu şeyi evdeki tüplü ekranlı bilgisayarı bozup tekrar çalıştırmaya uğraşırken öğrendim. Biraz garip ama okuma yazmayı da oyunların altyazılarından ve hile kodlarını yazarken söktüm; bilgisayarla aram o günden beri hep iyi.",
@@ -574,11 +646,16 @@ const I18N = {
     ai_intro:"Karakterleri Higgsfield ile üretiyorum; senaryo, kurgu ve paylaşım planı bende.",
     kick_title:"Canlı <em>yayında.</em>", kick_desc:"Sohbet, oyun ve geliştirme süreçleri; kanalı takip et, yayına girdiğimde bildirim al.",
     kick_btn:"Kanala git", kick_last:"Son yayın", kick_watch:"Tekrarını izle ›",
-    contact_kicker:"// İletişim", contact_title:"Bir proje mi var?<br><em>Konuşalım.</em>",
+    contact_kicker:"CH 06 — Benimle çalış", contact_title:"Bir proje mi var?<br><em>Konuşalım.</em>",
+    work_desc:"Sunucun için özel bir script ya da baştan sona bir sunucu kurulumu mu lazım? Ne istediğini yaz, kapsam ve süreyle birlikte sana özel bir teklifle döneyim.",
+    process:[["Anlat","Formdan ne istediğini kısaca yaz."],["Teklif","Kapsam, süre ve fiyatla geri dönerim."],["Geliştirme","Ara güncellemeler ve önizlemelerle ilerlerim."],["Teslim","Kurulumu yapar, sorunsuz çalıştığından emin olurum."]],
+    f_name:"Adın", f_email:"E-posta", f_service:"Ne lazım?", f_discord:"Discord (isteğe bağlı)", f_msg:"Projeni anlat", f_send:"Gönder", f_other:"Başka bir şey",
+    f_sending:"Gönderiliyor…", f_ok:"Mesajın ulaştı, en kısa sürede dönüş yapacağım.", f_err:"Mesaj gönderilemedi. Doğrudan yazabilirsin:", f_invalid:"Ad, geçerli bir e-posta ve mesaj gerekli.",
+    or_reach:"// Ya da doğrudan",
     view:"İncele ›", gallery:"görselleri aç", shot_alt:"ekran görüntüsü", profile:"Profili gör ›"
   },
   en: {
-    nav_ai:"AI", nav_contact:"Contact", nav_about:"About",
+    nav_ai:"AI", nav_contact:"Work with me", nav_about:"About",
     about_eyebrow:"CH 00 — About", moments_label:"// Moments", then_caption:"age 4 · first computer", then_alt:"Age 4, at my first CRT-monitor computer",
     about_title:"I started by <em>breaking computers.</em>",
     about_p1:"I sat down at a computer when I was 4. I learned most things by breaking our old CRT-monitor PC at home and trying to get it working again. Odd as it sounds, I learned to read and write from game subtitles and typing in cheat codes; computers and I have got along ever since.",
@@ -612,7 +689,12 @@ const I18N = {
     ai_intro:"I create the characters with Higgsfield and handle scripting, editing and the posting plan.",
     kick_title:"Live on <em>Kick.</em>", kick_desc:"Chats, gaming and development sessions. Follow the channel to get notified when I go live.",
     kick_btn:"Go to channel", kick_last:"Latest stream", kick_watch:"Watch the replay ›",
-    contact_kicker:"// Contact", contact_title:"Got a project?<br><em>Let's talk.</em>",
+    contact_kicker:"CH 06 — Work with me", contact_title:"Got a project?<br><em>Let's talk.</em>",
+    work_desc:"Need a custom script for your server, or a full server setup from scratch? Tell me what you need and I'll come back with a tailored quote, scope and timeline.",
+    process:[["Brief","Tell me briefly what you need via the form."],["Quote","I reply with scope, timeline and price."],["Build","I work in the open with updates and previews."],["Handover","I install it and make sure it runs smoothly."]],
+    f_name:"Your name", f_email:"Email", f_service:"What do you need?", f_discord:"Discord (optional)", f_msg:"Tell me about the project", f_send:"Send", f_other:"Something else",
+    f_sending:"Sending…", f_ok:"Message received, I'll get back to you soon.", f_err:"Couldn't send the message. Write to me directly:", f_invalid:"Name, a valid email and a message are required.",
+    or_reach:"// Or reach me directly",
     view:"View ›", gallery:"open gallery", shot_alt:"screenshot", profile:"View profile ›"
   }
 };
@@ -663,6 +745,14 @@ function renderCode(){
   el.innerHTML = html;
 }
 renderCode();
+
+function renderWork(){
+  $("#services").innerHTML = CONFIG.services.map((sv,i) => { const x = sv[lang]; return `<div class="svc"><span class="num">${String(i+1).padStart(2,"0")}</span><h3>${esc(x.t)}</h3><p>${esc(x.d)}</p><ul>${x.b.map(li => `<li>${esc(li)}</li>`).join("")}</ul></div>`; }).join("");
+  $("#process").innerHTML = t("process").map(([h,d]) => `<li><b>${esc(h)}</b><span>${esc(d)}</span></li>`).join("");
+  const sel = $("#f-service"), cur = sel.value;
+  sel.innerHTML = [...CONFIG.services.map(sv => sv[lang].t), t("f_other")].map((o,i) => `<option value="${i}">${esc(o)}</option>`).join("");
+  if (cur) sel.value = cur;
+}
 
 function renderAbout(){
   const st = [
@@ -784,14 +874,38 @@ function renderKick(){
 
 function renderContact(){
   const all = [
-    ...CONFIG.emails.map(e => ({label: e, url: "mailto:" + e, fill: true})),
+    ...CONFIG.emails.map(e => ({label: e, url: "mailto:" + e})),
     ...CONFIG.socials,
     {label: "Kick", url: `https://kick.com/${CONFIG.kickHandle}`},
     ...(CONFIG.githubUsername ? [{label: "GitHub", url: `https://github.com/${CONFIG.githubUsername}`}] : []),
   ];
   $("#contact-links").innerHTML = all.map(l =>
-    `<a class="pill ${l.fill ? "fill" : "line"}" href="${esc(l.url)}" ${l.url.startsWith("mailto:") ? "" : 'target="_blank" rel="noopener"'}>${esc(l.label)}</a>`).join("");
+    `<a class="pill line" href="${esc(l.url)}" ${l.url.startsWith("mailto:") ? "" : 'target="_blank" rel="noopener"'}><span>${esc(l.label)}</span><span aria-hidden="true">↗</span></a>`).join("");
 }
+
+// iletişim formu (FormSubmit)
+$("#cform").addEventListener("submit", async e => {
+  e.preventDefault();
+  const f = e.target, st = $("#f-status"), btn = $("#f-btn");
+  if (f._honey.value) return;
+  let ok = true;
+  ["name","email","message"].forEach(n => { const el = f[n]; const bad = !el.value.trim() || (n === "email" && !/^\S+@\S+\.\S+$/.test(el.value)); el.classList.toggle("bad", bad); if (bad) ok = false; });
+  if (!ok){ st.className = "form-status err"; st.textContent = t("f_invalid"); return; }
+  const service = f.service.options[f.service.selectedIndex].text;
+  btn.disabled = true; st.className = "form-status"; st.textContent = t("f_sending");
+  try{
+    const r = await fetch(`https://formsubmit.co/ajax/${CONFIG.emails[0]}`, {
+      method: "POST", headers: {"Content-Type": "application/json", "Accept": "application/json"},
+      body: JSON.stringify({ name: f.name.value, email: f.email.value, service, discord: f.discord.value, message: f.message.value,
+        _subject: `yusufkaancelik.me — ${service} — ${f.name.value}`, _template: "table", _captcha: "false", _replyto: f.email.value })
+    });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok || String(j.success) === "false") throw new Error(j.message || r.status);
+    f.reset(); renderWork(); st.className = "form-status ok"; st.textContent = t("f_ok");
+  }catch(err){
+    st.className = "form-status err"; st.innerHTML = esc(t("f_err")) + ` <a href="mailto:${esc(CONFIG.emails[0])}" style="color:inherit;text-decoration:underline">${esc(CONFIG.emails[0])}</a>`;
+  }finally{ btn.disabled = false; }
+});
 
 function applyLang(next){
   lang = next;
@@ -800,7 +914,7 @@ function applyLang(next){
   document.querySelectorAll("[data-i18n-html]").forEach(el => el.innerHTML = t(el.dataset.i18nHtml));
   document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === lang));
   document.title = lang === "tr" ? "Yusuf Kaan Çelik — Portfolyo" : "Yusuf Kaan Çelik — Portfolio";
-  renderAbout(); renderTicker(); renderFivem(); renderGithub(); renderNft(); renderAi();
+  renderWork(); renderAbout(); renderTicker(); renderFivem(); renderGithub(); renderNft(); renderAi();
   try{ localStorage.setItem("lang", lang); }catch(e){}
 }
 
