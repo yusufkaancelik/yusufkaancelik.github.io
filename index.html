@@ -344,6 +344,13 @@ a.person:hover{transform:translateY(-4px);border-color:rgba(198,255,61,.35)}
 .contact-side .eyebrow{text-align:left}
 .contact-list{display:flex;flex-direction:column;gap:.55rem}
 .contact-list .pill{justify-content:space-between;width:100%}
+.hire{width:var(--wrap);margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.4rem;text-align:left;background:linear-gradient(135deg,rgba(198,255,61,.1),rgba(198,255,61,.02) 60%),var(--card);border:1px solid rgba(198,255,61,.3);border-radius:18px;padding:clamp(1.5rem,4vw,2.4rem);transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .35s}
+.hire:hover{transform:translateY(-3px);border-color:var(--signal)}
+.hire-text{display:flex;flex-direction:column;gap:.45rem;max-width:36rem}
+.hire-text .eyebrow{margin:0;text-align:left}
+.hire-text b{font-size:clamp(22px,2.4vw,30px);font-weight:600;letter-spacing:-.02em;line-height:1.15}
+.hire-list{font-size:14px;color:var(--ink-2)}
+.contact-row{width:var(--wrap);margin:2rem auto 0}
 footer{background:var(--bg);border-top:1px solid var(--line)}
 footer div{width:var(--wrap);margin:0 auto;padding:1.2rem 0;font-family:var(--mono);font-size:12px;color:var(--ink-3);text-align:center;letter-spacing:.04em}
 
@@ -368,7 +375,7 @@ footer div{width:var(--wrap);margin:0 auto;padding:1.2rem 0;font-family:var(--mo
       <a href="#nft">NFT</a>
       <a href="#ai" data-i18n="nav_ai">AI</a>
       <a href="#kick">Kick</a>
-      <a href="#iletisim" data-i18n="nav_contact">Benimle çalış</a>
+      <a href="/fivem-script-yaptirma/" data-i18n="nav_contact">Benimle çalış</a>
     </nav>
     <div class="lang" role="group" aria-label="Dil / Language">
       <button type="button" data-lang="tr" aria-pressed="true">TR</button>
@@ -423,6 +430,7 @@ footer div{width:var(--wrap);margin:0 auto;padding:1.2rem 0;font-family:var(--mo
     <div class="cards feat rv" id="fivem-grid"></div>
     <div class="cards compact rv" id="fivem-more"></div>
     <div class="all rv"><p id="all-label"></p><div class="chips" id="all-chips"></div></div>
+    <p class="note rv"><a href="/fivem-script-yaptirma/" data-i18n="fivem_hire">Sunucun için özel FiveM script mi yaptırmak istiyorsun? →</a></p>
   </section>
 
   <section class="s-a" id="github">
@@ -475,35 +483,18 @@ footer div{width:var(--wrap);margin:0 auto;padding:1.2rem 0;font-family:var(--mo
   <section class="s-a contact" id="iletisim">
     <div class="head rv">
       <p class="eyebrow" data-i18n="contact_kicker">CH 06 — Benimle çalış</p>
-      <h2 data-i18n-html="contact_title">Bir proje mi var?<br><em>Konuşalım.</em></h2>
-      <p data-i18n="work_desc">Sunucun için özel bir script ya da baştan sona bir sunucu kurulumu mu lazım? Ne istediğini yaz, kapsam ve süreyle birlikte sana özel bir teklifle döneyim.</p>
+      <h2 data-i18n-html="contact_title"></h2>
+      <p data-i18n="work_desc">Sunucun için özel bir script, sunucu kurulumu, optimizasyon ya da güvenlik temizliği mi lazım? Tüm hizmetler ve teklif formu ayrı sayfada.</p>
     </div>
-
-    <div class="services rv" id="services"></div>
-    <ol class="process rv" id="process"></ol>
-
-    <div class="contact-box rv">
-      <form class="cform" id="cform" novalidate>
-        <div class="row2">
-          <label><span data-i18n="f_name">Adın</span><input name="name" required autocomplete="name"></label>
-          <label><span data-i18n="f_email">E-posta</span><input name="email" type="email" required autocomplete="email"></label>
-        </div>
-        <div class="row2">
-          <label><span data-i18n="f_service">Ne lazım?</span><select name="service" id="f-service"></select></label>
-          <label><span data-i18n="f_discord">Discord (isteğe bağlı)</span><input name="discord" autocomplete="off"></label>
-        </div>
-        <label><span data-i18n="f_msg">Projeni anlat</span><textarea name="message" rows="5" required></textarea></label>
-        <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <div class="form-foot">
-          <button type="submit" class="pill fill" id="f-btn" data-i18n="f_send">Gönder</button>
-          <p class="form-status" id="f-status" role="status" aria-live="polite"></p>
-        </div>
-      </form>
-      <aside class="contact-side">
-        <p class="eyebrow" data-i18n="or_reach">// Ya da doğrudan</p>
-        <div class="contact-list" id="contact-links"></div>
-      </aside>
-    </div>
+    <a class="hire rv" href="/fivem-script-yaptirma/">
+      <span class="hire-text">
+        <span class="eyebrow" data-i18n="hire_eyebrow">FiveM · QBCore</span>
+        <b data-i18n="hire_title">FiveM script yaptırma ve sunucu kurulumu</b>
+        <span class="hire-list" data-i18n="hire_list">Özel script · Sunucu kurulumu · Düzenleme & Türkçeleştirme · Optimizasyon · Güvenlik</span>
+      </span>
+      <span class="pill fill" data-i18n="hire_btn">Hizmetleri gör →</span>
+    </a>
+    <div class="ctas rv contact-row" id="contact-links"></div>
   </section>
 </main>
 
@@ -633,7 +624,7 @@ const I18N = {
     cta_work:"İşlerimi gör", cta_contact:"İletişime geç",
     fivem_title:"Bir sunucu dolusu <em>script.</em>",
     fivem_desc:"Kendi sunucum için QBCore üzerinde yazdığım ykc serisi: telefon, polis, toplu taşıma, HUD, envanter ve daha fazlası. Çoğu standart qb scriptlerinin yerine birebir takılabiliyor.",
-    all_label:"ykc serisindeki tüm resource'lar ({n})",
+    all_label:"ykc serisindeki tüm resource'lar ({n})", fivem_hire:"Sunucun için özel FiveM script mi yaptırmak istiyorsun? →",
     gh_title:"Açık kaynak <em>projeler.</em>",
     gh_desc:"Bu liste GitHub'dan otomatik çekiliyor; yeni bir repo açtığımda burada da görünüyor.",
     gh_loading:"Repolar yükleniyor…", gh_error:"Repolar şu an yüklenemedi.", gh_all:"Tüm repolar GitHub'da ›",
@@ -647,7 +638,8 @@ const I18N = {
     kick_title:"Canlı <em>yayında.</em>", kick_desc:"Sohbet, oyun ve geliştirme süreçleri; kanalı takip et, yayına girdiğimde bildirim al.",
     kick_btn:"Kanala git", kick_last:"Son yayın", kick_watch:"Tekrarını izle ›",
     contact_kicker:"CH 06 — Benimle çalış", contact_title:"Bir proje mi var?<br><em>Konuşalım.</em>",
-    work_desc:"Sunucun için özel bir script ya da baştan sona bir sunucu kurulumu mu lazım? Ne istediğini yaz, kapsam ve süreyle birlikte sana özel bir teklifle döneyim.",
+    work_desc:"Sunucun için özel bir script, sunucu kurulumu, optimizasyon ya da güvenlik temizliği mi lazım? Tüm hizmetler ve teklif formu ayrı sayfada.",
+    hire_eyebrow:"FiveM · QBCore", hire_title:"FiveM script yaptırma ve sunucu kurulumu", hire_list:"Özel script · Sunucu kurulumu · Düzenleme & Türkçeleştirme · Optimizasyon · Güvenlik", hire_btn:"Hizmetleri gör →",
     process:[["Anlat","Formdan ne istediğini kısaca yaz."],["Teklif","Kapsam, süre ve fiyatla geri dönerim."],["Geliştirme","Ara güncellemeler ve önizlemelerle ilerlerim."],["Teslim","Kurulumu yapar, sorunsuz çalıştığından emin olurum."]],
     f_name:"Adın", f_email:"E-posta", f_service:"Ne lazım?", f_discord:"Discord (isteğe bağlı)", f_msg:"Projeni anlat", f_send:"Gönder", f_other:"Başka bir şey",
     f_sending:"Gönderiliyor…", f_ok:"Mesajın ulaştı, en kısa sürede dönüş yapacağım.", f_err:"Mesaj gönderilemedi. Doğrudan yazabilirsin:", f_invalid:"Ad, geçerli bir e-posta ve mesaj gerekli.",
@@ -676,7 +668,7 @@ const I18N = {
     cta_work:"See my work", cta_contact:"Get in touch",
     fivem_title:"A server's worth of <em>scripts.</em>",
     fivem_desc:"The ykc series I built on QBCore for my own server: phone, police, public transport, HUD, inventory and more. Most are drop-in replacements for the stock qb scripts.",
-    all_label:"Every resource in the ykc series ({n})",
+    all_label:"Every resource in the ykc series ({n})", fivem_hire:"Want a custom FiveM script for your server? →",
     gh_title:"Open-source <em>projects.</em>",
     gh_desc:"This list is pulled live from GitHub, so new repos show up here automatically.",
     gh_loading:"Loading repos…", gh_error:"Couldn't load repos right now.", gh_all:"All repos on GitHub ›",
@@ -690,7 +682,8 @@ const I18N = {
     kick_title:"Live on <em>Kick.</em>", kick_desc:"Chats, gaming and development sessions. Follow the channel to get notified when I go live.",
     kick_btn:"Go to channel", kick_last:"Latest stream", kick_watch:"Watch the replay ›",
     contact_kicker:"CH 06 — Work with me", contact_title:"Got a project?<br><em>Let's talk.</em>",
-    work_desc:"Need a custom script for your server, or a full server setup from scratch? Tell me what you need and I'll come back with a tailored quote, scope and timeline.",
+    work_desc:"Need a custom script, a server setup, optimisation or a security clean-up? All services and the quote form are on a separate page.",
+    hire_eyebrow:"FiveM · QBCore", hire_title:"Custom FiveM scripts & server setup", hire_list:"Custom scripts · Server setup · Edits & translation · Optimisation · Security", hire_btn:"See services →",
     process:[["Brief","Tell me briefly what you need via the form."],["Quote","I reply with scope, timeline and price."],["Build","I work in the open with updates and previews."],["Handover","I install it and make sure it runs smoothly."]],
     f_name:"Your name", f_email:"Email", f_service:"What do you need?", f_discord:"Discord (optional)", f_msg:"Tell me about the project", f_send:"Send", f_other:"Something else",
     f_sending:"Sending…", f_ok:"Message received, I'll get back to you soon.", f_err:"Couldn't send the message. Write to me directly:", f_invalid:"Name, a valid email and a message are required.",
@@ -746,13 +739,6 @@ function renderCode(){
 }
 renderCode();
 
-function renderWork(){
-  $("#services").innerHTML = CONFIG.services.map((sv,i) => { const x = sv[lang]; return `<div class="svc"><span class="num">${String(i+1).padStart(2,"0")}</span><h3>${esc(x.t)}</h3><p>${esc(x.d)}</p><ul>${x.b.map(li => `<li>${esc(li)}</li>`).join("")}</ul></div>`; }).join("");
-  $("#process").innerHTML = t("process").map(([h,d]) => `<li><b>${esc(h)}</b><span>${esc(d)}</span></li>`).join("");
-  const sel = $("#f-service"), cur = sel.value;
-  sel.innerHTML = [...CONFIG.services.map(sv => sv[lang].t), t("f_other")].map((o,i) => `<option value="${i}">${esc(o)}</option>`).join("");
-  if (cur) sel.value = cur;
-}
 
 function renderAbout(){
   const st = [
@@ -874,38 +860,15 @@ function renderKick(){
 
 function renderContact(){
   const all = [
-    ...CONFIG.emails.map(e => ({label: e, url: "mailto:" + e})),
+    ...CONFIG.emails.map(e => ({label: e, url: "mailto:" + e, fill: false})),
     ...CONFIG.socials,
     {label: "Kick", url: `https://kick.com/${CONFIG.kickHandle}`},
     ...(CONFIG.githubUsername ? [{label: "GitHub", url: `https://github.com/${CONFIG.githubUsername}`}] : []),
   ];
   $("#contact-links").innerHTML = all.map(l =>
-    `<a class="pill line" href="${esc(l.url)}" ${l.url.startsWith("mailto:") ? "" : 'target="_blank" rel="noopener"'}><span>${esc(l.label)}</span><span aria-hidden="true">↗</span></a>`).join("");
+    `<a class="pill line" href="${esc(l.url)}" ${l.url.startsWith("mailto:") ? "" : 'target="_blank" rel="noopener"'}>${esc(l.label)}</a>`).join("");
 }
 
-// iletişim formu (FormSubmit)
-$("#cform").addEventListener("submit", async e => {
-  e.preventDefault();
-  const f = e.target, st = $("#f-status"), btn = $("#f-btn");
-  if (f._honey.value) return;
-  let ok = true;
-  ["name","email","message"].forEach(n => { const el = f[n]; const bad = !el.value.trim() || (n === "email" && !/^\S+@\S+\.\S+$/.test(el.value)); el.classList.toggle("bad", bad); if (bad) ok = false; });
-  if (!ok){ st.className = "form-status err"; st.textContent = t("f_invalid"); return; }
-  const service = f.service.options[f.service.selectedIndex].text;
-  btn.disabled = true; st.className = "form-status"; st.textContent = t("f_sending");
-  try{
-    const r = await fetch(`https://formsubmit.co/ajax/${CONFIG.emails[0]}`, {
-      method: "POST", headers: {"Content-Type": "application/json", "Accept": "application/json"},
-      body: JSON.stringify({ name: f.name.value, email: f.email.value, service, discord: f.discord.value, message: f.message.value,
-        _subject: `yusufkaancelik.me — ${service} — ${f.name.value}`, _template: "table", _captcha: "false", _replyto: f.email.value })
-    });
-    const j = await r.json().catch(() => ({}));
-    if (!r.ok || String(j.success) === "false") throw new Error(j.message || r.status);
-    f.reset(); renderWork(); st.className = "form-status ok"; st.textContent = t("f_ok");
-  }catch(err){
-    st.className = "form-status err"; st.innerHTML = esc(t("f_err")) + ` <a href="mailto:${esc(CONFIG.emails[0])}" style="color:inherit;text-decoration:underline">${esc(CONFIG.emails[0])}</a>`;
-  }finally{ btn.disabled = false; }
-});
 
 function applyLang(next){
   lang = next;
@@ -914,7 +877,7 @@ function applyLang(next){
   document.querySelectorAll("[data-i18n-html]").forEach(el => el.innerHTML = t(el.dataset.i18nHtml));
   document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === lang));
   document.title = lang === "tr" ? "Yusuf Kaan Çelik — Portfolyo" : "Yusuf Kaan Çelik — Portfolio";
-  renderWork(); renderAbout(); renderTicker(); renderFivem(); renderGithub(); renderNft(); renderAi();
+  renderAbout(); renderTicker(); renderFivem(); renderGithub(); renderNft(); renderAi();
   try{ localStorage.setItem("lang", lang); }catch(e){}
 }
 
