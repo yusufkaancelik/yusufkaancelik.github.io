@@ -123,12 +123,39 @@ section{padding:clamp(5rem,11vw,8.5rem) 0;position:relative}
 .nft figcaption{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;padding:.9rem 1rem;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#f5f5f7;background:linear-gradient(transparent,rgba(0,0,0,.75))}
 .nft-links{margin-top:3rem}
 
+.coll{width:var(--wide);margin:0 auto}
+.coll + .coll{margin-top:clamp(4rem,9vw,6.5rem)}
+.coll-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.2rem;margin-bottom:1.6rem}
+.coll-id{display:flex;align-items:center;gap:1rem}
+.coll-id img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid var(--signal)}
+.coll-id h3{font-size:clamp(24px,2.4vw,32px);font-weight:600;letter-spacing:-.02em;line-height:1.1}
+.coll-id .chain{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--signal)}
+.coll-id p{font-size:14px;color:var(--ink-2);margin-top:.25rem;max-width:34rem}
+.coll-banner{width:100%;aspect-ratio:16/6;object-fit:cover;border-radius:14px;border:1px solid var(--line);margin-bottom:1.1rem}
+.coll .nft-grid{width:100%}
+@media (min-width:1068px){.nft-grid.six{grid-template-columns:repeat(3,1fr)}}
+.nft-grid.seven{grid-template-columns:repeat(2,1fr)}
+@media (min-width:740px){.nft-grid.seven{grid-template-columns:repeat(4,1fr)}}
+@media (min-width:1068px){.nft-grid.seven{grid-template-columns:repeat(7,1fr)}}
+.nft-grid.seven .nft figcaption{justify-content:center}
+
 /* ---------- ai ---------- */
-.people{width:var(--wrap);margin:0 auto;display:grid;grid-template-columns:1fr;gap:1.1rem}
+.people{width:var(--wide);margin:0 auto;display:grid;grid-template-columns:1fr;gap:1.1rem}
 @media (min-width:740px){.people{grid-template-columns:repeat(3,1fr)}}
 .person{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:2.4rem 1.5rem 2rem;text-align:center;display:flex;flex-direction:column;align-items:center;gap:.4rem;transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .35s}
 a.person:hover{transform:translateY(-4px);border-color:rgba(198,255,61,.35)}
-.avatar{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;font-size:26px;font-weight:700;color:#000;margin-bottom:.9rem}
+.person{padding:2rem 1.2rem 1.2rem}
+.avatar{width:96px;height:96px;border-radius:50%;object-fit:cover;margin-bottom:.9rem;border:2px solid var(--signal);padding:3px;background:var(--bg)}
+.person .handle{font-family:var(--mono);font-size:12px;color:var(--signal);letter-spacing:.02em}
+.person p.bio{min-height:3em;margin:.2rem 0 .4rem;line-height:1.45}
+.socials{display:flex;gap:.5rem;justify-content:center;margin-bottom:1.1rem}
+.socials a{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;padding:.4rem .8rem;border-radius:980px;border:1px solid var(--line);color:var(--ink-2);transition:border-color .2s,color .2s;min-height:32px;display:inline-flex;align-items:center}
+.socials a:hover{border-color:var(--signal);color:var(--signal)}
+.posts{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;width:100%;margin-top:auto}
+.posts a{position:relative;aspect-ratio:9/16;border-radius:8px;overflow:hidden;background:var(--bg)}
+.posts img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .3s;opacity:.92}
+.posts a:hover img{transform:scale(1.06);opacity:1}
+.posts a::after{content:"▶";position:absolute;right:.4rem;bottom:.35rem;font-size:10px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.6)}
 .person h3{font-size:21px;font-weight:600;line-height:1.19}
 .person p{font-size:15px;color:var(--ink-2)}
 .person .more{font-family:var(--mono);font-size:12px;color:var(--signal);margin-top:.6rem}
@@ -136,14 +163,30 @@ a.person:hover{transform:translateY(-4px);border-color:rgba(198,255,61,.35)}
 
 /* ---------- kick ---------- */
 .kick{text-align:center}
-.screen{width:var(--wrap);margin:0 auto 2.4rem;aspect-ratio:16/7;border-radius:14px;border:1px solid var(--line);position:relative;overflow:hidden;display:grid;place-items:center;
+.screen{width:var(--wrap);margin:0 auto 1.2rem;aspect-ratio:16/7;border-radius:14px;border:1px solid var(--line);position:relative;overflow:hidden;display:grid;place-items:center;
   background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 2px,transparent 2px 4px),radial-gradient(ellipse at 50% 30%,#1d2a0e 0%,var(--bg-2) 70%)}
 .live{position:absolute;top:1rem;left:1rem;display:flex;gap:.5rem;align-items:center;font-family:var(--mono);font-size:12px;background:rgba(0,0,0,.6);border:1px solid var(--line);padding:.3rem .7rem;border-radius:980px}
 .live .dot{background:var(--rec);animation:none}
+.screen-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.35;filter:saturate(.8)}
+.screen::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.65))}
+.screen > *:not(.screen-bg){position:relative;z-index:1}
+.screen .live{position:absolute}
+.screen-id{display:flex;flex-direction:column;align-items:center;gap:1.1rem}
+.screen-id img{width:clamp(72px,9vw,108px);height:clamp(72px,9vw,108px);border-radius:50%;object-fit:cover;border:3px solid var(--signal)}
+.vod{width:var(--wrap);margin:0 auto 2.4rem;display:grid;grid-template-columns:1fr;gap:1.2rem;align-items:center;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1rem;transition:border-color .3s,transform .3s}
+.vod:hover{border-color:rgba(198,255,61,.35);transform:translateY(-3px)}
+@media (min-width:740px){.vod{grid-template-columns:320px 1fr}}
+.vod-thumb{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden}
+.vod-thumb img{width:100%;height:100%;object-fit:cover}
+.play{position:absolute;inset:0;margin:auto;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:var(--signal);color:#000;font-size:18px}
+.vod-text{display:flex;flex-direction:column;gap:.45rem;padding:.2rem .4rem}
+.vod-text .eyebrow{margin:0}
+.vod-text strong{font-size:clamp(19px,1.8vw,24px);font-weight:600;line-height:1.25;letter-spacing:-.01em}
+.vod-text .go{font-family:var(--mono);font-size:13px;color:var(--signal)}
 .screen .handle{font-size:clamp(2rem,1rem + 4.6vw,4.5rem);font-weight:600;letter-spacing:-.03em;line-height:1.05;padding:0 1rem}
 .screen .handle span{display:inline-block}
 .screen .handle span:first-child{color:var(--ink-3)}
-@media (max-width:480px){.screen{aspect-ratio:4/3}.screen .handle{font-size:clamp(1.8rem,9vw,2.4rem)}}
+@media (max-width:480px){.screen{aspect-ratio:1/1}.screen .handle{font-size:clamp(1.8rem,9vw,2.4rem)}}
 
 /* ---------- contact ---------- */
 .contact{text-align:center}
@@ -223,8 +266,7 @@ footer div{width:var(--wrap);margin:0 auto;padding:1.2rem 0;font-family:var(--mo
       <h2 data-i18n-html="nft_title"></h2>
       <p data-i18n="nft_desc"></p>
     </div>
-    <div class="nft-grid rv" id="nft-grid"></div>
-    <div class="ctas nft-links rv" id="nft-links"></div>
+    <div id="nft-cols"></div>
   </section>
 
   <section class="s-a" id="ai">
@@ -233,7 +275,7 @@ footer div{width:var(--wrap);margin:0 auto;padding:1.2rem 0;font-family:var(--mo
       <h2 data-i18n-html="ai_title"></h2>
       <p data-i18n="ai_desc"></p>
     </div>
-    <div class="people rv" id="ai-list"></div>
+    <div class="people" id="ai-list"></div>
     <p class="ai-intro rv" data-i18n-html="ai_intro"></p>
   </section>
 
@@ -243,7 +285,15 @@ footer div{width:var(--wrap);margin:0 auto;padding:1.2rem 0;font-family:var(--mo
       <h2 data-i18n-html="kick_title"></h2>
       <p data-i18n="kick_desc"></p>
     </div>
-    <a class="screen rv" id="kick-screen" href="#" target="_blank" rel="noopener"><span class="live"><span class="dot"></span>LIVE</span><span class="handle"><span>kick.com/</span><span id="kick-handle"></span></span></a>
+    <a class="screen rv" id="kick-screen" href="#" target="_blank" rel="noopener">
+      <img class="screen-bg" id="kick-banner" alt="" loading="lazy">
+      <span class="live"><span class="dot"></span>KICK</span>
+      <span class="screen-id"><img id="kick-avatar" alt="yusufkaancelik" loading="lazy"><span class="handle"><span>kick.com/</span><span id="kick-handle"></span></span></span>
+    </a>
+    <a class="vod rv" id="kick-vod" href="#" target="_blank" rel="noopener">
+      <span class="vod-thumb"><img id="vod-img" alt="" loading="lazy"><span class="play">▶</span></span>
+      <span class="vod-text"><span class="eyebrow" data-i18n="kick_last">Son yayın</span><strong id="vod-title"></strong><span class="go" data-i18n="kick_watch">Tekrarını izle ›</span></span>
+    </a>
     <div class="ctas rv"><a class="pill fill" id="kick-btn" href="#" target="_blank" rel="noopener"><span data-i18n="kick_btn">Kanala git</span></a></div>
   </section>
 
@@ -288,29 +338,58 @@ const CONFIG = {
   // Tüm ykc resource'ları (chip listesi)
   allScripts: ["ykc-banking","ykc-burgershot","ykc-bus","ykc-chat","ykc-clothing","ykc-drinks","ykc-elevator","ykc-fuel","ykc-height","ykc-hotel","ykc-hud","ykc-inventory","ykc-jobadmin","ykc-loadscreen","ykc-market","ykc-metro","ykc-multicharacter","ykc-music","ykc-pausemenu","ykc-pets","ykc-pharmacy","ykc-phone","ykc-police","ykc-radialmenu","ykc-restroom","ykc-speedboost","ykc-target","ykc-theme","ykc-tuning","ykc-vehiclekeys"],
 
-  // NFT karakterler: görselleri "nft" klasörüne at ve dosya adını yaz.
-  // img boşsa renkli yer tutucu gösterilir.
-  nfts: [
-    { name: "Karakter #01", img: "" },
-    { name: "Karakter #02", img: "" },
-    { name: "Karakter #03", img: "" },
-    { name: "Karakter #04", img: "" },
-    { name: "Karakter #05", img: "" },
-    { name: "Karakter #06", img: "" },
-    { name: "Karakter #07", img: "" },
-    { name: "Karakter #08", img: "" },
-  ],
-  nftLinks: [
-    { label: { tr: "Koleksiyonu gör", en: "View collection" }, url: "https://drop.art/bm/3NF2xXDJfuebU0rGbnhB9h" },
-    { label: { tr: "X: @TheChickNft", en: "X: @TheChickNft" }, url: "https://x.com/TheChickNft" },
+  // NFT koleksiyonları (görseller nft/ klasöründe)
+  nftCollections: [
+    {
+      name: "The Seven Deadly Sins",
+      chain: "Tezos · drop.art",
+      banner: "nft/sins-banner.jpg",
+      desc: { tr: "Yedi ölümcül günahı yedi karakterle anlatan koleksiyon.", en: "The seven deadly sins as seven characters." },
+      link: { label: { tr: "drop.art'ta gör", en: "View on drop.art" }, url: "https://drop.art/bm/3NF2xXDJfuebU0rGbnhB9h" },
+      items: [
+        { img: "sins-1.jpg", tr: "Şehvet", en: "Lust" },
+        { img: "sins-2.jpg", tr: "Kıskançlık", en: "Envy" },
+        { img: "sins-3.jpg", tr: "Kibir", en: "Pride" },
+        { img: "sins-4.jpg", tr: "Gazap", en: "Wrath" },
+        { img: "sins-5.jpg", tr: "Açgözlülük", en: "Greed" },
+        { img: "sins-6.jpg", tr: "Oburluk", en: "Gluttony" },
+        { img: "sins-7.jpg", tr: "Tembellik", en: "Sloth" },
+      ],
+    },
+    {
+      name: "Chick Jones",
+      chain: "Algorand · @TheChickNft",
+      avatar: "nft/chick-avatar.jpg",
+      desc: { tr: "\"Don't think too much, just have fun.\" Her biri farklı kostümlü civciv koleksiyonu.", en: "\"Don't think too much, just have fun.\" A collection of chicks, each in its own outfit." },
+      link: { label: { tr: "X'te gör", en: "View on X" }, url: "https://x.com/TheChickNft" },
+      items: [
+        { img: "chick-1.jpg", tr: "", en: "" },
+        { img: "chick-2.jpg", tr: "Chick #54", en: "Chick #54" },
+        { img: "chick-3.jpg", tr: "", en: "" },
+        { img: "chick-4.jpg", tr: "", en: "" },
+        { img: "chick-5.jpg", tr: "", en: "" },
+        { img: "chick-6.jpg", tr: "", en: "" },
+      ],
+    },
   ],
 
-  // AI karakter hesapları
+  // AI karakter hesapları (görseller img/ klasöründe)
   aiCharacters: [
-    { name: "Greta Vos", tr: "Sağlık ve iyi yaşam", en: "Health & wellbeing", color: "#c6ff3d", url: "" },
-    { name: "Zara Mensah", tr: "İlişkiler", en: "Relationships", color: "#ff4d2e", url: "" },
-    { name: "Dee | Daily Disasters", tr: "Günlük felaketler, mizah", en: "Daily disasters, comedy", color: "#ece8dc", url: "https://instagram.com/dee.disaster" },
+    { name: "Greta Vos", handle: "getup.greta", avatar: "img/greta-avatar.jpg",
+      tr: "101 yaşında ve hâlâ hareket ediyor; 70 yaş üstü için nazik güç ve denge.", en: "101 years young; gentle strength & balance for 70+.",
+      posts: [["img/greta-1.jpg","DfYy6Wru58Y"],["img/greta-2.jpg","DfWD5uVAhYq"],["img/greta-3.jpg","DfQ1S_Sgqqj"]] },
+    { name: "Zara Mensah", handle: "zara.unmatched", avatar: "img/zara-avatar.jpg",
+      tr: "800'den fazla flört profili yazmış; artık kamerada dürüstçe flört ediyor.", en: "Wrote 800+ dating profiles; now dating honestly, on camera.",
+      posts: [["img/zara-1.jpg","DfY3gjVRMNG"],["img/zara-2.jpg","DfWEd8MRGQe"],["img/zara-3.jpg","DfQ243FM9vb"]] },
+    { name: "Dee", handle: "dee.disaster", avatar: "img/dee-avatar.jpg",
+      tr: "Küçük sorunlar, devasa tepkiler. Her gün yeni bir felaket.", en: "Tiny problems, huge reactions. New disaster daily.",
+      posts: [["img/dee-1.jpg","Dexy39vt76e"],["img/dee-2.jpg","DesaO73NrJ5"],["img/dee-3.jpg","DesZ46bNyb1"]] },
   ],
+  kick: {
+    avatar: "img/kick-avatar.jpg",
+    banner: "img/kick-offline.jpg",
+    lastVod: { img: "img/kick-vod-1.jpg", title: "Pirate Token çıkmıyor :( ÇIK ARTIK !!!!", url: "https://kick.com/yusufkaancelik/videos/79ceb919-b70d-4cd4-a4c2-fe79601f76fd" },
+  },
 };
 
 /* =========================================================
@@ -331,13 +410,13 @@ const I18N = {
     gh_loading:"Repolar yükleniyor…", gh_error:"Repolar şu an yüklenemedi.", gh_all:"Tüm repolar GitHub'da ›",
     gh_setup:"GitHub kullanıcı adını CONFIG içinde ayarla.", gh_empty:"Henüz açık repo yok.", gh_nodesc:"Açıklama yok.", updated:"Güncellendi",
     nft_title:"Elle çizilmiş <em>karakterler.</em>",
-    nft_desc:"Her biri elle tasarlanmış karakter koleksiyonum. AI yok, şablon yok; her çizgi benden.",
+    nft_desc:"Elle tasarladığım iki koleksiyon: yedi ölümcül günah ve Chick Jones.",
     ai_eyebrow:"CH 04 — AI içerik",
     ai_title:"Her gün paylaşan <em>karakterler.</em>",
-    ai_desc:"Instagram ve TikTok'ta her gün paylaşım yapan AI karakter hesapları yönetiyorum.",
+    ai_desc:"Instagram ve TikTok'ta her gün paylaşım yapan üç AI karakter hesabı yönetiyorum.",
     ai_intro:"Karakterleri Higgsfield ile üretiyorum; senaryo, kurgu ve paylaşım planı bende.",
     kick_title:"Canlı <em>yayında.</em>", kick_desc:"Sohbet, oyun ve geliştirme süreçleri; kanalı takip et, yayına girdiğimde bildirim al.",
-    kick_btn:"Kanala git",
+    kick_btn:"Kanala git", kick_last:"Son yayın", kick_watch:"Tekrarını izle ›",
     contact_kicker:"// İletişim", contact_title:"Bir proje mi var?<br><em>Konuşalım.</em>",
     view:"İncele ›", profile:"Profili gör ›"
   },
@@ -355,13 +434,13 @@ const I18N = {
     gh_loading:"Loading repos…", gh_error:"Couldn't load repos right now.", gh_all:"All repos on GitHub ›",
     gh_setup:"Set your GitHub username in CONFIG.", gh_empty:"No public repos yet.", gh_nodesc:"No description.", updated:"Updated",
     nft_title:"Hand-drawn <em>characters.</em>",
-    nft_desc:"My collection of hand-designed characters. No AI, no templates; every line is mine.",
+    nft_desc:"Two hand-designed collections: the seven deadly sins and Chick Jones.",
     ai_eyebrow:"CH 04 — AI content",
     ai_title:"Characters that post <em>every day.</em>",
-    ai_desc:"I run AI character accounts that post daily on Instagram and TikTok.",
+    ai_desc:"I run three AI character accounts that post daily on Instagram and TikTok.",
     ai_intro:"I create the characters with Higgsfield and handle scripting, editing and the posting plan.",
     kick_title:"Live on <em>Kick.</em>", kick_desc:"Chats, gaming and development sessions. Follow the channel to get notified when I go live.",
-    kick_btn:"Go to channel",
+    kick_btn:"Go to channel", kick_last:"Latest stream", kick_watch:"Watch the replay ›",
     contact_kicker:"// Contact", contact_title:"Got a project?<br><em>Let's talk.</em>",
     view:"View ›", profile:"View profile ›"
   }
@@ -431,32 +510,45 @@ function renderGithub(){
 }
 
 function renderNft(){
-  $("#nft-grid").innerHTML = CONFIG.nfts.map((n,i) => {
-    const media = n.img
-      ? `<img src="nft/${esc(n.img)}" alt="${esc(n.name)}" loading="lazy" decoding="async">`
-      : `<div class="ph" style="background:${["#c6ff3d","#ff4d2e","#ece8dc","#7fd1ff","#ffb43d","#d6a6ff"][i % 6]}">${String(i+1).padStart(2,"0")}</div>`;
-    return `<figure class="nft">${media}<figcaption><span>${esc(n.name)}</span><span style="color:var(--signal)">${lang === "tr" ? "El yapımı" : "Hand-made"}</span></figcaption></figure>`;
-  }).join("");
-  $("#nft-links").innerHTML = CONFIG.nftLinks.map((l,i) =>
-    `<a class="pill ${i ? "line" : "fill"}" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label[lang])}</a>`).join("");
+  $("#nft-cols").innerHTML = CONFIG.nftCollections.map(c => `
+    <div class="coll rv in">
+      <div class="coll-head">
+        <div class="coll-id">
+          ${c.avatar ? `<img src="${esc(c.avatar)}" alt="${esc(c.name)}" loading="lazy">` : ""}
+          <div><span class="chain">${esc(c.chain)}</span><h3>${esc(c.name)}</h3><p>${esc(c.desc[lang])}</p></div>
+        </div>
+        <a class="pill line" href="${esc(c.link.url)}" target="_blank" rel="noopener">${esc(c.link.label[lang])}</a>
+      </div>
+      ${c.banner ? `<img class="coll-banner" src="${esc(c.banner)}" alt="${esc(c.name)}" loading="lazy">` : ""}
+      <div class="nft-grid ${c.items.length === 7 ? "seven" : c.items.length === 6 ? "six" : ""}">
+        ${c.items.map(n => `<figure class="nft"><img src="nft/${esc(n.img)}" alt="${esc(c.name)} — ${esc(n[lang])}" loading="lazy" decoding="async">${n[lang] ? `<figcaption><span>${esc(n[lang])}</span></figcaption>` : ""}</figure>`).join("")}
+      </div>
+    </div>`).join("");
 }
 
 function renderAi(){
-  $("#ai-list").innerHTML = CONFIG.aiCharacters.map(c => {
-    const tag = c.url ? "a" : "div";
-    const attrs = c.url ? `href="${esc(c.url)}" target="_blank" rel="noopener"` : "";
-    const initials = c.name.split(/\s|\|/).filter(Boolean).slice(0,2).map(w=>w[0]).join("");
-    return `<${tag} class="person" ${attrs}>
-      <span class="avatar" style="background:${esc(c.color || "#c6ff3d")}">${esc(initials)}</span>
-      <h3>${esc(c.name)}</h3><p>${esc(c[lang])}</p>
-      ${c.url ? `<span class="more">${t("profile")}</span>` : ""}
-    </${tag}>`;
-  }).join("");
+  $("#ai-list").innerHTML = CONFIG.aiCharacters.map(c => `
+    <div class="person rv in">
+      <img class="avatar" src="${esc(c.avatar)}" alt="${esc(c.name)}" loading="lazy">
+      <h3>${esc(c.name)}</h3>
+      <span class="handle">@${esc(c.handle)}</span>
+      <p class="bio">${esc(c[lang])}</p>
+      <div class="socials">
+        <a href="https://instagram.com/${esc(c.handle)}" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.tiktok.com/@${esc(c.handle)}" target="_blank" rel="noopener">TikTok</a>
+      </div>
+      <div class="posts">${c.posts.map(([img, code]) => `<a href="https://www.instagram.com/reel/${esc(code)}/" target="_blank" rel="noopener" aria-label="${esc(c.name)} reel"><img src="${esc(img)}" alt="" loading="lazy" decoding="async"></a>`).join("")}</div>
+    </div>`).join("");
 }
 
 function renderKick(){
   $("#kick-btn").href = $("#kick-screen").href = `https://kick.com/${CONFIG.kickHandle}`;
   $("#kick-handle").textContent = CONFIG.kickHandle;
+  $("#kick-banner").src = CONFIG.kick.banner;
+  $("#kick-avatar").src = CONFIG.kick.avatar;
+  $("#kick-vod").href = CONFIG.kick.lastVod.url;
+  $("#vod-img").src = CONFIG.kick.lastVod.img;
+  $("#vod-title").textContent = CONFIG.kick.lastVod.title;
 }
 
 function renderContact(){
