@@ -205,7 +205,7 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem;paddin
 <main id="top">
   <section class="hero">
     <div>
-      <p class="hero-kicker mono" data-i18n="kicker">// Gebze, TR — geliştirici · üretici · yayıncı</p>
+      <p class="hero-kicker mono" data-i18n="kicker">// geliştirici · üretici · yayıncı</p>
       <h1>
         <span class="line"><span>Yusuf Kaan</span></span>
         <span class="line"><span><em>Çelik</em></span></span>
@@ -305,7 +305,7 @@ footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem;paddin
 
 <footer class="mono">
   <span>© <span id="year"></span> Yusuf Kaan Çelik</span>
-  <span data-i18n="footer">Gebze'den yayındayız.</span>
+  <span data-i18n="footer">Yayın devam ediyor.</span>
 </footer>
 
 <script>
@@ -316,10 +316,10 @@ const CONFIG = {
   githubUsername: "yusufkaancelik",
   githubHideForks: true,
   kickHandle: "yusufkaancelik",
-  email: "",   // ör. "ben@yusufkaancelik.me"
+  emails: ["yusufkaancelk@gmail.com", "ananasli.gofret@gmail.com"],
   socials: [
-    // { label: "Instagram", url: "https://instagram.com/..." },
-    // { label: "X / Twitter", url: "https://x.com/..." },
+    { label: "LinkedIn", url: "https://www.linkedin.com/in/yusufkaancelik" },
+    { label: "Instagram", url: "https://instagram.com/yusuf.kaancelik" },
   ],
 
   // FiveM scriptlerin. Kendi scriptlerinle değiştir. url boş bırakılabilir.
@@ -350,7 +350,10 @@ const CONFIG = {
     { name: "Karakter #07", img: "" },
     { name: "Karakter #08", img: "" },
   ],
-  nftCollectionUrl: "",   // OpenSea vb. koleksiyon linki (opsiyonel)
+  nftLinks: [
+    { label: { tr: "Koleksiyonu gör", en: "View collection" }, url: "https://drop.art/bm/3NF2xXDJfuebU0rGbnhB9h" },
+    { label: { tr: "X: @TheChickNft", en: "X: @TheChickNft" }, url: "https://x.com/TheChickNft" },
+  ],
 
   // AI karakter hesapları
   aiCharacters: [
@@ -366,7 +369,7 @@ const CONFIG = {
 const I18N = {
   tr: {
     onair:"Yayında", nav_contact:"İletişim",
-    kicker:"// Gebze, TR — geliştirici · üretici · yayıncı",
+    kicker:"// geliştirici · üretici · yayıncı",
     hero_sub:"<strong>FiveM scriptleri</strong> yazıyorum, <strong>AI karakterler</strong> ve elle çizdiğim <strong>NFT'ler</strong> üretiyorum, Kick'te yayın yapıyorum. Hepsi tek bir kanalda.",
     guide:"Kanal rehberi", g1:"FiveM / QBCore", g2:"GitHub projeleri", g3:"NFT karakterler", g4:"AI içerik", g5:"Kick yayınları",
     ticker:["FiveM geliştirme","QBCore","Lua","AI karakterler","Higgsfield","NFT sanatı","Kick yayınları","Açık kaynak"],
@@ -386,11 +389,11 @@ const I18N = {
     kick_title:"Kick <em>yayınları</em>", kick_desc:"Canlı yayınlarda sohbet, oyun ve geliştirme süreçleri.",
     kick_side:"Kanalı takip et, yayına girdiğimde bildirim al.", kick_btn:"Kanala git",
     contact_kicker:"// İletişim", contact_title:"Bir proje mi var?<br><em>Konuşalım.</em>",
-    footer:"Gebze'den yayındayız.", view:"İncele ↗"
+    footer:"Yayın devam ediyor.", view:"İncele ↗"
   },
   en: {
     onair:"On air", nav_contact:"Contact",
-    kicker:"// Gebze, TR — developer · creator · streamer",
+    kicker:"// developer · creator · streamer",
     hero_sub:"I write <strong>FiveM scripts</strong>, create <strong>AI characters</strong> and hand-drawn <strong>NFTs</strong>, and stream on Kick. All on one channel.",
     guide:"Channel guide", g1:"FiveM / QBCore", g2:"GitHub projects", g3:"NFT characters", g4:"AI content", g5:"Kick streams",
     ticker:["FiveM development","QBCore","Lua","AI characters","Higgsfield","NFT art","Kick streams","Open source"],
@@ -410,7 +413,7 @@ const I18N = {
     kick_title:"Kick <em>streams</em>", kick_desc:"Live chats, gaming and development sessions.",
     kick_side:"Follow the channel to get notified when I go live.", kick_btn:"Go to channel",
     contact_kicker:"// Contact", contact_title:"Got a project?<br><em>Let's talk.</em>",
-    footer:"Broadcasting from Gebze.", view:"View ↗"
+    footer:"Still on air.", view:"View ↗"
   }
 };
 
@@ -488,11 +491,9 @@ function renderNft(){
     return `<figure class="nft">${media}<figcaption><span>${esc(n.name)}</span><span>${t("nft_tag")}</span></figcaption></figure>`;
   }).join("");
   const sec = $("#nft");
-  let link = $("#nft-link");
-  if (CONFIG.nftCollectionUrl){
-    if (!link){ link = document.createElement("a"); link.id = "nft-link"; link.className = "btn ghost"; link.target = "_blank"; link.rel = "noopener"; link.style.marginTop = "3rem"; sec.appendChild(link); }
-    link.href = CONFIG.nftCollectionUrl; link.textContent = t("nft_link");
-  }
+  let box = $("#nft-links");
+  if (!box){ box = document.createElement("div"); box.id = "nft-links"; box.className = "contact-links"; sec.appendChild(box); }
+  box.innerHTML = CONFIG.nftLinks.map((l,i) => `<a class="btn ${i ? "ghost" : ""}" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label[lang])} ↗</a>`).join("");
 }
 
 function renderAi(){
@@ -516,8 +517,8 @@ function renderKick(){
 }
 
 function renderContact(){
-  const links = [...(CONFIG.email ? [{label: CONFIG.email, url: "mailto:" + CONFIG.email, primary: true}] : []),
-    {label: "Kick", url: `https://kick.com/${CONFIG.kickHandle}`, primary: !CONFIG.email},
+  const links = [...CONFIG.emails.map(e => ({label: e, url: "mailto:" + e, primary: true})),
+    {label: "Kick", url: `https://kick.com/${CONFIG.kickHandle}`},
     ...(CONFIG.githubUsername !== "GITHUB_KULLANICI_ADIN" ? [{label:"GitHub", url:`https://github.com/${CONFIG.githubUsername}`}] : []),
     ...CONFIG.socials];
   $("#contact-links").innerHTML = links.map(l =>
