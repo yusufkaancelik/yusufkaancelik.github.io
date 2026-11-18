@@ -75,6 +75,8 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:100;op
 .lang{justify-self:end;display:flex;gap:2px;background:rgba(255,255,255,.08);border-radius:980px;padding:2px}
 .lang button{font-family:var(--mono);font-size:11px;font-weight:600;background:none;border:0;color:var(--ink-2);padding:.25rem .65rem;border-radius:980px;cursor:pointer;min-height:24px}
 .lang button[aria-pressed="true"]{background:var(--signal);color:#000}
+.svc-more{display:inline-block;margin-top:1rem;font-family:var(--mono);font-size:12px;color:var(--signal)}
+.svc-more:hover{text-decoration:underline}
 .nav-r{justify-self:end;display:flex;align-items:center;gap:.6rem}
 .lang a{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink-2);padding:.25rem .65rem;border-radius:980px;min-height:24px;display:inline-flex;align-items:center}
 .lang a[aria-current="page"]{background:var(--signal);color:#000}
@@ -499,6 +501,7 @@ footer a{color:var(--ink-2)} footer a:hover{color:var(--signal)}
           <li>Açık bırakılmış event'lerin güvenli hale getirilmesi</li>
           <li>Sonrası için güvenlik önerileri</li>
         </ul>
+        <a class="svc-more" href="/fivem-leak-script-tehlikeleri/">Rehber: Leak script neden tehlikeli? →</a>
       </article>
       <a class="svc svc-cta" href="#teklif">
         <span class="num">?</span>
@@ -563,7 +566,7 @@ footer a{color:var(--ink-2)} footer a:hover{color:var(--signal)}
       <details class="qa"><summary><h3>Hangi framework ile çalışıyorsun?</h3></summary><p>Ana framework&#x27;üm QBCore; ox_lib, oxmysql ve qb-target gibi yaygın kütüphanelerle çalışıyorum. Arayüzler için NUI (HTML/CSS/JavaScript, gerektiğinde React) kullanıyorum.</p></details>
       <details class="qa"><summary><h3>Teslim edilen script şifreli mi, kod bana mı ait?</h3></summary><p>Hayır, şifreli değil. Yazdığım scriptleri açık kaynak teslim ediyorum; kodu istediğin gibi okuyabilir, düzenleyebilir ve geliştirebilirsin.</p></details>
       <details class="qa"><summary><h3>Satın aldığım bir scripti düzenleyebilir misin?</h3></summary><p>Script şifresizse evet: hata düzeltme, yeni özellik ekleme ve Türkçeleştirme yapabilirim. FiveM Escrow ile şifrelenmiş scriptlerin kodu açılamadığı için bunlarda değişiklik yapmak mümkün değil.</p></details>
-      <details class="qa"><summary><h3>Leak script kullanıyorum, sunucum tehlikede mi?</h3></summary><p>Leak scriptler sıklıkla arka kapı (backdoor) içerir; bu da sunucuna ve veritabanına yetkisiz erişim anlamına gelebilir. Kaynaklarını tarayıp şüpheli kodu bulabilir ve temizleyebilirim. Ciddi bir bulaşma varsa şifrelerin değiştirilmesi ve bazen sunucunun yeniden kurulması gerekir; bunu da baştan açıkça söylerim.</p></details>
+      <details class="qa"><summary><h3>Leak script kullanıyorum, sunucum tehlikede mi?</h3></summary><p>Leak scriptler sıklıkla arka kapı (backdoor) içerir; bu da sunucuna ve veritabanına yetkisiz erişim anlamına gelebilir. Kaynaklarını tarayıp şüpheli kodu bulabilir ve temizleyebilirim. Ciddi bir bulaşma varsa şifrelerin değiştirilmesi ve bazen sunucunun yeniden kurulması gerekir; bunu da baştan açıkça söylerim. Detaylar için: <a href="/fivem-leak-script-tehlikeleri/" style="color:var(--signal);text-decoration:underline">Leak script neden tehlikeli?</a></p></details>
       <details class="qa"><summary><h3>Sunucum çok kasıyor, optimizasyon yapabilir misin?</h3></summary><p>Evet. Resmon&#x27;da yüksek ms kullanan scriptleri tespit edip gereksiz döngüleri ve thread&#x27;leri temizliyor, mümkün olan işleri sunucu tarafına taşıyorum. Önce ve sonra değerlerini birlikte karşılaştırıyoruz.</p></details>
       <details class="qa"><summary><h3>FiveM sunucu kurulumunda hosting dahil mi?</h3></summary><p>Sunucu (VPS ya da FiveM hosting) sana ait olur; ben kurulumu, QBCore ve txAdmin yapılandırmasını, veritabanını ve aldığın scriptlerin entegrasyonunu yapıyorum. Hangi hosting&#x27;in sana uygun olduğu konusunda da yardımcı olabilirim.</p></details>
       <details class="qa"><summary><h3>Teslimden sonra destek veriyor musun?</h3></summary><p>Evet, scripti sunucuna kuruyor ve sorunsuz çalıştığından emin olana kadar destek veriyorum. Sonradan gelen ek özellik istekleri için ayrıca konuşuyoruz.</p></details>
@@ -614,7 +617,7 @@ footer a{color:var(--ink-2)} footer a:hover{color:var(--signal)}
   </section>
 </main>
 
-<footer><div>© <span id="year"></span> Yusuf Kaan Çelik · <a href="/">Portfolyo</a> · <a href="#teklif">FiveM script yaptırma</a></div></footer>
+<footer><div>© <span id="year"></span> Yusuf Kaan Çelik · <a href="/">Portfolyo</a> · <a href="#teklif">FiveM script yaptırma</a> · <a href="/fivem-leak-script-tehlikeleri/">Leak script rehberi</a></div></footer>
 
 <script>
 const $ = (s, r=document) => r.querySelector(s);

