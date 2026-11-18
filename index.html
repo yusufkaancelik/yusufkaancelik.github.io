@@ -7,142 +7,151 @@
 <meta name="description" content="FiveM / QBCore geliştiricisi, AI içerik üreticisi, NFT karakter tasarımcısı ve yayıncı.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --black:#000;
-  --gray:#f5f5f7;
-  --white:#fff;
-  --ink:#1d1d1f;
-  --ink-2:rgba(0,0,0,.8);
-  --ink-3:rgba(0,0,0,.48);
-  --dark-card:#1d1d1f;
-  --dark-card-2:#272729;
-  --blue:#0071e3;
-  --link:#0066cc;
-  --link-dark:#2997ff;
+  --bg:#000;
+  --bg-2:#0e0f0c;
+  --card:#16171a;
+  --card-2:#1d1e1b;
+  --line:rgba(255,255,255,.08);
+  --ink:#f5f5f7;
+  --ink-2:#a1a1a6;
+  --ink-3:#6e6e73;
+  --signal:#c6ff3d;
+  --rec:#ff4d2e;
   --font:-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --serif:"Instrument Serif", Georgia, serif;
+  --mono:"JetBrains Mono", ui-monospace, monospace;
   --wrap:min(980px, 100% - 2.5rem);
   --wide:min(1180px, 100% - 2.5rem);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scroll-padding-top:48px}
-body{font-family:var(--font);font-size:17px;line-height:1.47;letter-spacing:-.022em;color:var(--ink);background:var(--white);-webkit-font-smoothing:antialiased}
+body{font-family:var(--font);font-size:17px;line-height:1.47;letter-spacing:-.022em;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
-:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+::selection{background:var(--signal);color:#000}
+:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--signal);letter-spacing:-.01em}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
 /* ---------- nav ---------- */
-.nav{position:sticky;top:0;z-index:50;height:48px;background:rgba(22,22,23,.8);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);color:#fff}
+.nav{position:sticky;top:0;z-index:50;height:48px;background:rgba(10,10,10,.72);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line)}
 .nav-inner{width:var(--wrap);height:100%;margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
-.logo{font-size:17px;font-weight:600;letter-spacing:-.02em;justify-self:start;opacity:.92}
+.logo{font-size:17px;font-weight:700;letter-spacing:-.02em;justify-self:start}
+.logo span{color:var(--signal)}
 .links{display:flex;gap:clamp(1rem,3vw,2.2rem);font-size:12px;letter-spacing:-.01em}
-.links a{opacity:.8;transition:opacity .2s;padding:.9rem 0}
-.links a:hover{opacity:1}
-.lang{justify-self:end;display:flex;gap:2px;background:rgba(255,255,255,.1);border-radius:980px;padding:2px}
-.lang button{font:inherit;font-size:11px;font-weight:500;background:none;border:0;color:rgba(255,255,255,.75);padding:.25rem .65rem;border-radius:980px;cursor:pointer;min-height:24px}
-.lang button[aria-pressed="true"]{background:#fff;color:var(--ink)}
+.links a{color:var(--ink-2);transition:color .2s;padding:.9rem 0}
+.links a:hover{color:var(--signal)}
+.lang{justify-self:end;display:flex;gap:2px;background:rgba(255,255,255,.08);border-radius:980px;padding:2px}
+.lang button{font-family:var(--mono);font-size:11px;font-weight:600;background:none;border:0;color:var(--ink-2);padding:.25rem .65rem;border-radius:980px;cursor:pointer;min-height:24px}
+.lang button[aria-pressed="true"]{background:var(--signal);color:#000}
 @media (max-width:767px){
   .nav{height:auto}
-  .nav-inner{grid-template-columns:1fr auto;row-gap:0;padding-top:.6rem}
+  .nav-inner{grid-template-columns:1fr auto;padding-top:.6rem}
   .links{grid-column:1 / -1;grid-row:2;justify-content:center;gap:1.1rem;overflow-x:auto}
   .links a{padding:.7rem 0}
 }
 
 /* ---------- shared ---------- */
-section{padding:clamp(5rem,11vw,8.5rem) 0}
-.s-black{background:var(--black);color:#fff}
-.s-gray{background:var(--gray)}
-.s-white{background:var(--white)}
+section{padding:clamp(5rem,11vw,8.5rem) 0;position:relative}
+.s-a{background:var(--bg)}
+.s-b{background:var(--bg-2)}
 .head{width:var(--wrap);margin:0 auto clamp(2.5rem,6vw,4rem);text-align:center}
-.eyebrow{font-size:clamp(17px,1.6vw,21px);font-weight:600;color:var(--ink-3);margin-bottom:.5rem;letter-spacing:.01em}
-.s-black .eyebrow{color:#86868b}
-.head h2{font-size:clamp(2.25rem,1.4rem + 3.4vw,3.5rem);font-weight:600;line-height:1.07;letter-spacing:-.015em}
-.head p{max-width:40rem;margin:1.1rem auto 0;font-size:clamp(17px,1.5vw,21px);line-height:1.38;color:var(--ink-2)}
-.s-black .head p{color:#a1a1a6}
+.eyebrow{font-family:var(--mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--signal);margin-bottom:1rem}
+.head h2{font-size:clamp(2.25rem,1.4rem + 3.4vw,3.75rem);font-weight:600;line-height:1.07;letter-spacing:-.025em}
+.head p:not(.eyebrow){max-width:40rem;margin:1.1rem auto 0;font-size:clamp(17px,1.5vw,21px);line-height:1.4;color:var(--ink-2)}
 
-.pill{display:inline-flex;align-items:center;gap:.35rem;min-height:44px;padding:0 1.35rem;border-radius:980px;font-size:17px;transition:background .2s,color .2s,border-color .2s}
-.pill.fill{background:var(--blue);color:#fff}
-.pill.fill:hover{background:#0077ed}
-.pill.line{border:1px solid var(--blue);color:var(--blue)}
-.pill.line:hover{background:var(--blue);color:#fff}
-.s-black .pill.line{border-color:var(--link-dark);color:var(--link-dark)}
-.s-black .pill.line:hover{background:var(--link-dark);color:#000}
-.more{color:var(--link);font-size:17px}
-.more:hover{text-decoration:underline}
-.s-black .more{color:var(--link-dark)}
+.pill{display:inline-flex;align-items:center;gap:.35rem;min-height:44px;padding:0 1.4rem;border-radius:980px;font-size:16px;font-weight:500;transition:background .2s,color .2s,border-color .2s,transform .2s}
+.pill.fill{background:var(--signal);color:#000}
+.pill.fill:hover{background:#d4ff66;transform:translateY(-1px)}
+.pill.line{border:1px solid rgba(255,255,255,.22);color:var(--ink)}
+.pill.line:hover{border-color:var(--signal);color:var(--signal)}
 .ctas{display:flex;flex-wrap:wrap;gap:.9rem;justify-content:center}
 
 /* ---------- hero ---------- */
-.hero{background:var(--black);color:#fff;text-align:center;min-height:calc(100svh - 48px);display:grid;place-items:center;padding:6rem 1.25rem}
-.hero .eyebrow{color:#86868b}
-.hero h1{font-size:clamp(3rem,1rem + 8vw,6.5rem);font-weight:600;line-height:1.04;letter-spacing:-.03em}
-.hero h1 span{display:block;background:linear-gradient(180deg,#fff 30%,#a1a1a6);-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero p.sub{max-width:36rem;margin:1.5rem auto 2.4rem;font-size:clamp(19px,1.9vw,24px);line-height:1.33;color:#a1a1a6}
-.hero p.sub strong{color:#fff;font-weight:600}
-.hero .pill.line{border-color:var(--link-dark);color:var(--link-dark)}
-.hero .pill.line:hover{background:var(--link-dark);color:#000}
+.hero{text-align:center;min-height:calc(100svh - 48px - 44px);display:grid;place-items:center;padding:6rem 1.25rem;background:radial-gradient(ellipse 60% 50% at 50% 40%,rgba(198,255,61,.09),transparent 70%),var(--bg)}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:.6rem;color:var(--ink-2);margin-bottom:1.4rem}
+.dot{width:.5rem;height:.5rem;border-radius:50%;background:var(--signal);box-shadow:0 0 0 0 rgba(198,255,61,.6);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 .5rem rgba(198,255,61,0)}100%{box-shadow:0 0 0 0 rgba(198,255,61,0)}}
+.hero h1{font-size:clamp(3.2rem,1rem + 9vw,7.5rem);font-weight:600;line-height:.98;letter-spacing:-.04em}
+.hero h1 em{font-size:1.08em;display:inline-block;padding-right:.05em}
+.hero p.sub{max-width:36rem;margin:1.6rem auto 2.4rem;font-size:clamp(19px,1.9vw,23px);line-height:1.38;color:var(--ink-2)}
+.hero p.sub strong{color:var(--ink);font-weight:600}
 .hero > div{opacity:0;transform:translateY(16px);animation:up 1s cubic-bezier(.2,.7,.2,1) .1s forwards}
 @keyframes up{to{opacity:1;transform:none}}
 
+/* ---------- ticker ---------- */
+.ticker{overflow:hidden;white-space:nowrap;background:var(--signal);color:#000;height:44px;display:flex;align-items:center}
+.ticker-track{display:inline-flex;gap:2.5rem;animation:scroll 34s linear infinite;font-family:var(--mono);font-weight:600;text-transform:uppercase;font-size:13px;letter-spacing:.04em}
+.ticker-track span::after{content:"✦";margin-left:2.5rem}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
 /* ---------- cards ---------- */
-.cards{width:var(--wide);margin:0 auto;display:grid;grid-template-columns:1fr;gap:1.25rem}
+.cards{width:var(--wide);margin:0 auto;display:grid;grid-template-columns:1fr;gap:1.1rem}
 @media (min-width:740px){.cards{grid-template-columns:repeat(2,1fr)}}
 @media (min-width:1068px){.cards{grid-template-columns:repeat(3,1fr)}}
-.card{background:#fff;border-radius:12px;padding:2rem 1.9rem;display:flex;flex-direction:column;gap:.7rem;min-height:15rem;transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s}
-.card:hover{transform:translateY(-4px);box-shadow:rgba(0,0,0,.12) 3px 5px 30px 0}
-.s-white .card{background:var(--gray)}
-.card .num{font-size:12px;font-weight:600;color:var(--ink-3);letter-spacing:.02em}
-.card h3{font-size:clamp(21px,1.8vw,24px);font-weight:600;line-height:1.17;letter-spacing:-.01em}
-.card p{font-size:15px;line-height:1.47;color:var(--ink-2)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.9rem 1.8rem;display:flex;flex-direction:column;gap:.7rem;min-height:15rem;transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .35s,background .35s}
+.card:hover{transform:translateY(-4px);border-color:rgba(198,255,61,.35);background:var(--card-2)}
+.card .num{font-family:var(--mono);font-size:12px;color:var(--signal);letter-spacing:.04em}
+.card h3{font-size:clamp(21px,1.8vw,24px);font-weight:600;line-height:1.17;letter-spacing:-.015em}
+.card p{font-size:15px;line-height:1.5;color:var(--ink-2)}
 .tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:auto;padding-top:.6rem}
-.tag{font-size:12px;color:var(--ink-3);background:var(--gray);padding:.25rem .65rem;border-radius:980px}
-.s-white .card .tag{background:#fff}
-.card .go{color:var(--link);font-size:15px}
+.tag{font-family:var(--mono);font-size:11px;color:var(--ink-2);border:1px solid var(--line);padding:.22rem .6rem;border-radius:980px}
+.card .go{font-family:var(--mono);color:var(--signal);font-size:13px}
 
 .all{width:var(--wrap);margin:3.5rem auto 0;text-align:center}
-.all p{font-size:14px;color:var(--ink-3);margin-bottom:1rem}
+.all p{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);margin-bottom:1rem}
 .chips{display:flex;flex-wrap:wrap;gap:.45rem;justify-content:center}
-.chips span{font-size:13px;padding:.4rem .85rem;border-radius:980px;background:#fff;color:var(--ink-2)}
+.chips span{font-family:var(--mono);font-size:12px;padding:.4rem .85rem;border-radius:980px;border:1px solid var(--line);color:var(--ink-2);transition:border-color .2s,color .2s}
+.chips span:hover{border-color:var(--signal);color:var(--signal)}
 
 .note{width:var(--wrap);margin:2.25rem auto 0;text-align:center;font-size:15px;color:var(--ink-3)}
-.note a{color:var(--link)}
+.note a{color:var(--signal)}
 .note a:hover{text-decoration:underline}
 
 /* ---------- nft ---------- */
 .nft-grid{width:var(--wide);margin:0 auto;display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(.6rem,1.4vw,1.1rem)}
 @media (min-width:740px){.nft-grid{grid-template-columns:repeat(3,1fr)}}
 @media (min-width:1068px){.nft-grid{grid-template-columns:repeat(4,1fr)}}
-.nft{position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;background:var(--dark-card)}
+.nft{position:relative;aspect-ratio:1;border-radius:14px;overflow:hidden;background:var(--card);border:1px solid var(--line)}
 .nft img,.nft .ph{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
 .nft:hover img,.nft:hover .ph{transform:scale(1.04)}
-.ph{display:grid;place-items:center;font-size:clamp(2rem,5vw,3.2rem);font-weight:600;letter-spacing:-.03em;color:#424245;background:linear-gradient(160deg,#2a2a2d,#161617)}
-.nft figcaption{position:absolute;left:0;right:0;bottom:0;padding:1rem;font-size:13px;color:#f5f5f7;background:linear-gradient(transparent,rgba(0,0,0,.65))}
+.ph{display:grid;place-items:center;font-family:var(--serif);font-style:italic;font-size:clamp(2.4rem,6vw,4rem);color:#000}
+.nft figcaption{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;padding:.9rem 1rem;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#f5f5f7;background:linear-gradient(transparent,rgba(0,0,0,.75))}
 .nft-links{margin-top:3rem}
 
 /* ---------- ai ---------- */
-.people{width:var(--wrap);margin:0 auto;display:grid;grid-template-columns:1fr;gap:1.25rem}
+.people{width:var(--wrap);margin:0 auto;display:grid;grid-template-columns:1fr;gap:1.1rem}
 @media (min-width:740px){.people{grid-template-columns:repeat(3,1fr)}}
-.person{background:#fff;border-radius:12px;padding:2.4rem 1.5rem 2rem;text-align:center;display:flex;flex-direction:column;align-items:center;gap:.4rem;transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s}
-a.person:hover{transform:translateY(-4px);box-shadow:rgba(0,0,0,.12) 3px 5px 30px 0}
-.avatar{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;font-size:28px;font-weight:600;color:#fff;background:linear-gradient(160deg,#3a3a3c,#1d1d1f);margin-bottom:.9rem}
+.person{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:2.4rem 1.5rem 2rem;text-align:center;display:flex;flex-direction:column;align-items:center;gap:.4rem;transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .35s}
+a.person:hover{transform:translateY(-4px);border-color:rgba(198,255,61,.35)}
+.avatar{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;font-size:26px;font-weight:700;color:#000;margin-bottom:.9rem}
 .person h3{font-size:21px;font-weight:600;line-height:1.19}
-.person p{font-size:15px;color:var(--ink-3)}
-.person .more{font-size:15px;margin-top:.6rem}
+.person p{font-size:15px;color:var(--ink-2)}
+.person .more{font-family:var(--mono);font-size:12px;color:var(--signal);margin-top:.6rem}
 .ai-intro{width:var(--wrap);margin:3rem auto 0;text-align:center;font-size:15px;color:var(--ink-3)}
 
 /* ---------- kick ---------- */
 .kick{text-align:center}
-.kick .handle{font-size:clamp(2.4rem,1rem + 6vw,5.5rem);font-weight:600;letter-spacing:-.03em;line-height:1.05;margin:0 auto 2.2rem;width:var(--wrap)}
-.kick .handle span{color:#86868b;display:inline-block}
-@media (max-width:480px){.kick .handle{font-size:clamp(2rem,10vw,2.6rem)}}
+.screen{width:var(--wrap);margin:0 auto 2.4rem;aspect-ratio:16/7;border-radius:14px;border:1px solid var(--line);position:relative;overflow:hidden;display:grid;place-items:center;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 2px,transparent 2px 4px),radial-gradient(ellipse at 50% 30%,#1d2a0e 0%,var(--bg-2) 70%)}
+.live{position:absolute;top:1rem;left:1rem;display:flex;gap:.5rem;align-items:center;font-family:var(--mono);font-size:12px;background:rgba(0,0,0,.6);border:1px solid var(--line);padding:.3rem .7rem;border-radius:980px}
+.live .dot{background:var(--rec);animation:none}
+.screen .handle{font-size:clamp(2rem,1rem + 4.6vw,4.5rem);font-weight:600;letter-spacing:-.03em;line-height:1.05;padding:0 1rem}
+.screen .handle span{display:inline-block}
+.screen .handle span:first-child{color:var(--ink-3)}
+@media (max-width:480px){.screen{aspect-ratio:4/3}.screen .handle{font-size:clamp(1.8rem,9vw,2.4rem)}}
 
 /* ---------- contact ---------- */
 .contact{text-align:center}
 .contact .ctas{width:var(--wrap);margin:0 auto}
+.contact .head h2{font-size:clamp(2.6rem,1rem + 6vw,5.5rem);line-height:1}
 
-footer{background:var(--gray);border-top:1px solid #d2d2d7}
-footer div{width:var(--wrap);margin:0 auto;padding:1.1rem 0;font-size:12px;color:var(--ink-3);text-align:center}
+footer{background:var(--bg);border-top:1px solid var(--line)}
+footer div{width:var(--wrap);margin:0 auto;padding:1.2rem 0;font-family:var(--mono);font-size:12px;color:var(--ink-3);text-align:center;letter-spacing:.04em}
 
 /* ---------- reveal ---------- */
 .rv{opacity:0;transform:translateY(28px);transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1)}
@@ -157,7 +166,7 @@ footer div{width:var(--wrap);margin:0 auto;padding:1.1rem 0;font-size:12px;color
 
 <header class="nav">
   <div class="nav-inner">
-    <a href="#top" class="logo">YKÇ</a>
+    <a href="#top" class="logo">YKÇ<span>.</span></a>
     <nav class="links" aria-label="Ana menü">
       <a href="#fivem">FiveM</a>
       <a href="#github">GitHub</a>
@@ -176,8 +185,8 @@ footer div{width:var(--wrap);margin:0 auto;padding:1.1rem 0;font-size:12px;color
 <main id="top">
   <section class="hero">
     <div>
-      <p class="eyebrow" data-i18n="kicker">Geliştirici. Üretici. Yayıncı.</p>
-      <h1><span>Yusuf Kaan Çelik</span></h1>
+      <p class="eyebrow"><span class="dot"></span><span data-i18n="kicker">Geliştirici · Üretici · Yayıncı</span></p>
+      <h1>Yusuf Kaan <em>Çelik</em></h1>
       <p class="sub" data-i18n-html="hero_sub"></p>
       <div class="ctas">
         <a class="pill fill" href="#fivem" data-i18n="cta_work">İşlerimi gör</a>
@@ -186,59 +195,61 @@ footer div{width:var(--wrap);margin:0 auto;padding:1.1rem 0;font-size:12px;color
     </div>
   </section>
 
-  <section class="s-gray" id="fivem">
+  <div class="ticker" aria-hidden="true"><div class="ticker-track" id="ticker"></div></div>
+
+  <section class="s-b" id="fivem">
     <div class="head rv">
-      <p class="eyebrow">FiveM · QBCore</p>
-      <h2 data-i18n="fivem_title"></h2>
+      <p class="eyebrow">CH 01 — FiveM · QBCore</p>
+      <h2 data-i18n-html="fivem_title"></h2>
       <p data-i18n="fivem_desc"></p>
     </div>
     <div class="cards rv" id="fivem-grid"></div>
     <div class="all rv"><p id="all-label"></p><div class="chips" id="all-chips"></div></div>
   </section>
 
-  <section class="s-white" id="github">
+  <section class="s-a" id="github">
     <div class="head rv">
-      <p class="eyebrow">GitHub</p>
-      <h2 data-i18n="gh_title"></h2>
+      <p class="eyebrow">CH 02 — GitHub</p>
+      <h2 data-i18n-html="gh_title"></h2>
       <p data-i18n="gh_desc"></p>
     </div>
     <div class="cards rv" id="gh-grid"></div>
     <p class="note" id="gh-note"></p>
   </section>
 
-  <section class="s-black" id="nft">
+  <section class="s-b" id="nft">
     <div class="head rv">
-      <p class="eyebrow">NFT</p>
-      <h2 data-i18n="nft_title"></h2>
+      <p class="eyebrow">CH 03 — NFT</p>
+      <h2 data-i18n-html="nft_title"></h2>
       <p data-i18n="nft_desc"></p>
     </div>
     <div class="nft-grid rv" id="nft-grid"></div>
     <div class="ctas nft-links rv" id="nft-links"></div>
   </section>
 
-  <section class="s-gray" id="ai">
+  <section class="s-a" id="ai">
     <div class="head rv">
-      <p class="eyebrow" data-i18n="ai_eyebrow">AI içerik</p>
-      <h2 data-i18n="ai_title"></h2>
+      <p class="eyebrow" data-i18n="ai_eyebrow">CH 04 — AI içerik</p>
+      <h2 data-i18n-html="ai_title"></h2>
       <p data-i18n="ai_desc"></p>
     </div>
     <div class="people rv" id="ai-list"></div>
     <p class="ai-intro rv" data-i18n-html="ai_intro"></p>
   </section>
 
-  <section class="s-black kick" id="kick">
+  <section class="s-b kick" id="kick">
     <div class="head rv">
-      <p class="eyebrow">Kick</p>
-      <h2 data-i18n="kick_title"></h2>
+      <p class="eyebrow">CH 05 — Kick</p>
+      <h2 data-i18n-html="kick_title"></h2>
       <p data-i18n="kick_desc"></p>
     </div>
-    <p class="handle rv"><span>kick.com/</span><span id="kick-handle" style="color:#fff"></span></p>
+    <a class="screen rv" id="kick-screen" href="#" target="_blank" rel="noopener"><span class="live"><span class="dot"></span>LIVE</span><span class="handle"><span>kick.com/</span><span id="kick-handle"></span></span></a>
     <div class="ctas rv"><a class="pill fill" id="kick-btn" href="#" target="_blank" rel="noopener"><span data-i18n="kick_btn">Kanala git</span></a></div>
   </section>
 
-  <section class="s-white contact" id="iletisim">
+  <section class="s-a contact" id="iletisim">
     <div class="head rv">
-      <p class="eyebrow" data-i18n="contact_kicker">İletişim</p>
+      <p class="eyebrow" data-i18n="contact_kicker">// İletişim</p>
       <h2 data-i18n-html="contact_title"></h2>
     </div>
     <div class="ctas rv" id="contact-links"></div>
@@ -308,48 +319,50 @@ const CONFIG = {
 const I18N = {
   tr: {
     nav_ai:"AI", nav_contact:"İletişim",
-    kicker:"Geliştirici. Üretici. Yayıncı.",
+    kicker:"Geliştirici · Üretici · Yayıncı",
+    ticker:["FiveM geliştirme","QBCore","Lua","AI karakterler","Higgsfield","NFT sanatı","Kick yayınları","Açık kaynak"],
     hero_sub:"<strong>FiveM scriptleri</strong> yazıyorum, <strong>AI karakterler</strong> ve elle çizdiğim <strong>NFT'ler</strong> üretiyorum, Kick'te yayın yapıyorum.",
     cta_work:"İşlerimi gör", cta_contact:"İletişime geç",
-    fivem_title:"Bir sunucu dolusu script.",
+    fivem_title:"Bir sunucu dolusu <em>script.</em>",
     fivem_desc:"Kendi sunucum için QBCore üzerinde yazdığım ykc serisi: telefon, polis, toplu taşıma, HUD, envanter ve daha fazlası. Çoğu standart qb scriptlerinin yerine birebir takılabiliyor.",
     all_label:"ykc serisindeki tüm resource'lar ({n})",
-    gh_title:"Açık kaynak projeler.",
+    gh_title:"Açık kaynak <em>projeler.</em>",
     gh_desc:"Bu liste GitHub'dan otomatik çekiliyor; yeni bir repo açtığımda burada da görünüyor.",
     gh_loading:"Repolar yükleniyor…", gh_error:"Repolar şu an yüklenemedi.", gh_all:"Tüm repolar GitHub'da ›",
     gh_setup:"GitHub kullanıcı adını CONFIG içinde ayarla.", gh_empty:"Henüz açık repo yok.", gh_nodesc:"Açıklama yok.", updated:"Güncellendi",
-    nft_title:"Elle çizilmiş karakterler.",
+    nft_title:"Elle çizilmiş <em>karakterler.</em>",
     nft_desc:"Her biri elle tasarlanmış karakter koleksiyonum. AI yok, şablon yok; her çizgi benden.",
-    ai_eyebrow:"AI içerik",
-    ai_title:"Her gün yayında olan karakterler.",
+    ai_eyebrow:"CH 04 — AI içerik",
+    ai_title:"Her gün paylaşan <em>karakterler.</em>",
     ai_desc:"Instagram ve TikTok'ta her gün paylaşım yapan AI karakter hesapları yönetiyorum.",
     ai_intro:"Karakterleri Higgsfield ile üretiyorum; senaryo, kurgu ve paylaşım planı bende.",
-    kick_title:"Canlı yayında.", kick_desc:"Sohbet, oyun ve geliştirme süreçleri; kanalı takip et, yayına girdiğimde bildirim al.",
+    kick_title:"Canlı <em>yayında.</em>", kick_desc:"Sohbet, oyun ve geliştirme süreçleri; kanalı takip et, yayına girdiğimde bildirim al.",
     kick_btn:"Kanala git",
-    contact_kicker:"İletişim", contact_title:"Bir proje mi var?<br>Konuşalım.",
+    contact_kicker:"// İletişim", contact_title:"Bir proje mi var?<br><em>Konuşalım.</em>",
     view:"İncele ›", profile:"Profili gör ›"
   },
   en: {
     nav_ai:"AI", nav_contact:"Contact",
-    kicker:"Developer. Creator. Streamer.",
+    kicker:"Developer · Creator · Streamer",
+    ticker:["FiveM development","QBCore","Lua","AI characters","Higgsfield","NFT art","Kick streams","Open source"],
     hero_sub:"I write <strong>FiveM scripts</strong>, create <strong>AI characters</strong> and hand-drawn <strong>NFTs</strong>, and stream on Kick.",
     cta_work:"See my work", cta_contact:"Get in touch",
-    fivem_title:"A server's worth of scripts.",
+    fivem_title:"A server's worth of <em>scripts.</em>",
     fivem_desc:"The ykc series I built on QBCore for my own server: phone, police, public transport, HUD, inventory and more. Most are drop-in replacements for the stock qb scripts.",
     all_label:"Every resource in the ykc series ({n})",
-    gh_title:"Open-source projects.",
+    gh_title:"Open-source <em>projects.</em>",
     gh_desc:"This list is pulled live from GitHub, so new repos show up here automatically.",
     gh_loading:"Loading repos…", gh_error:"Couldn't load repos right now.", gh_all:"All repos on GitHub ›",
     gh_setup:"Set your GitHub username in CONFIG.", gh_empty:"No public repos yet.", gh_nodesc:"No description.", updated:"Updated",
-    nft_title:"Hand-drawn characters.",
+    nft_title:"Hand-drawn <em>characters.</em>",
     nft_desc:"My collection of hand-designed characters. No AI, no templates; every line is mine.",
-    ai_eyebrow:"AI content",
-    ai_title:"Characters that post every day.",
+    ai_eyebrow:"CH 04 — AI content",
+    ai_title:"Characters that post <em>every day.</em>",
     ai_desc:"I run AI character accounts that post daily on Instagram and TikTok.",
     ai_intro:"I create the characters with Higgsfield and handle scripting, editing and the posting plan.",
-    kick_title:"Live on Kick.", kick_desc:"Chats, gaming and development sessions. Follow the channel to get notified when I go live.",
+    kick_title:"Live on <em>Kick.</em>", kick_desc:"Chats, gaming and development sessions. Follow the channel to get notified when I go live.",
     kick_btn:"Go to channel",
-    contact_kicker:"Contact", contact_title:"Got a project?<br>Let's talk.",
+    contact_kicker:"// Contact", contact_title:"Got a project?<br><em>Let's talk.</em>",
     view:"View ›", profile:"View profile ›"
   }
 };
@@ -359,6 +372,11 @@ const $ = (s, r=document) => r.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const t = k => I18N[lang][k] ?? k;
 let ghRepos = null, ghState = "loading";
+
+function renderTicker(){
+  const html = t("ticker").map(i => `<span>${esc(i)}</span>`).join("");
+  $("#ticker").innerHTML = html + html;
+}
 
 function renderFivem(){
   $("#fivem-grid").innerHTML = CONFIG.fivemScripts.map((s,i) => {
@@ -416,8 +434,8 @@ function renderNft(){
   $("#nft-grid").innerHTML = CONFIG.nfts.map((n,i) => {
     const media = n.img
       ? `<img src="nft/${esc(n.img)}" alt="${esc(n.name)}" loading="lazy" decoding="async">`
-      : `<div class="ph">${String(i+1).padStart(2,"0")}</div>`;
-    return `<figure class="nft">${media}<figcaption>${esc(n.name)}</figcaption></figure>`;
+      : `<div class="ph" style="background:${["#c6ff3d","#ff4d2e","#ece8dc","#7fd1ff","#ffb43d","#d6a6ff"][i % 6]}">${String(i+1).padStart(2,"0")}</div>`;
+    return `<figure class="nft">${media}<figcaption><span>${esc(n.name)}</span><span style="color:var(--signal)">${lang === "tr" ? "El yapımı" : "Hand-made"}</span></figcaption></figure>`;
   }).join("");
   $("#nft-links").innerHTML = CONFIG.nftLinks.map((l,i) =>
     `<a class="pill ${i ? "line" : "fill"}" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label[lang])}</a>`).join("");
@@ -429,7 +447,7 @@ function renderAi(){
     const attrs = c.url ? `href="${esc(c.url)}" target="_blank" rel="noopener"` : "";
     const initials = c.name.split(/\s|\|/).filter(Boolean).slice(0,2).map(w=>w[0]).join("");
     return `<${tag} class="person" ${attrs}>
-      <span class="avatar">${esc(initials)}</span>
+      <span class="avatar" style="background:${esc(c.color || "#c6ff3d")}">${esc(initials)}</span>
       <h3>${esc(c.name)}</h3><p>${esc(c[lang])}</p>
       ${c.url ? `<span class="more">${t("profile")}</span>` : ""}
     </${tag}>`;
@@ -437,7 +455,7 @@ function renderAi(){
 }
 
 function renderKick(){
-  $("#kick-btn").href = `https://kick.com/${CONFIG.kickHandle}`;
+  $("#kick-btn").href = $("#kick-screen").href = `https://kick.com/${CONFIG.kickHandle}`;
   $("#kick-handle").textContent = CONFIG.kickHandle;
 }
 
@@ -459,7 +477,7 @@ function applyLang(next){
   document.querySelectorAll("[data-i18n-html]").forEach(el => el.innerHTML = t(el.dataset.i18nHtml));
   document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === lang));
   document.title = lang === "tr" ? "Yusuf Kaan Çelik — Portfolyo" : "Yusuf Kaan Çelik — Portfolio";
-  renderFivem(); renderGithub(); renderNft(); renderAi();
+  renderTicker(); renderFivem(); renderGithub(); renderNft(); renderAi();
   try{ localStorage.setItem("lang", lang); }catch(e){}
 }
 
