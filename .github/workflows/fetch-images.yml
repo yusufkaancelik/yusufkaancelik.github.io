@@ -1,0 +1,39 @@
+name: Fetch images
+on:
+  push:
+    paths: [".github/fetch-images.json"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download and resize
+        run: |
+          command -v convert || (sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick)
+          mkdir -p nft img
+          python3 - <<'PY'
+          import json, subprocess, urllib.request
+          UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36"
+          ok = 0
+          for it in json.load(open(".github/fetch-images.json")):
+              try:
+                  req = urllib.request.Request(it["url"], headers={"User-Agent": UA, "Referer": "https://www.instagram.com/"})
+                  data = urllib.request.urlopen(req, timeout=60).read()
+                  open("/tmp/src", "wb").write(data)
+                  subprocess.run(["convert", "/tmp/src[0]", "-auto-orient", "-resize", f'{it["w"]}x{it["w"]}>', "-strip", "-quality", "82", it["path"]], check=True)
+                  ok += 1
+                  print("OK  ", it["path"], len(data))
+              except Exception as e:
+                  print("FAIL", it["path"], e)
+          print("downloaded", ok)
+          PY
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add nft img
+          git commit -m "Görseller indirildi (NFT, Kick, AI karakterler)" || echo "nothing to commit"
+          git push
