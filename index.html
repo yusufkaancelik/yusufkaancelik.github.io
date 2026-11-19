@@ -223,6 +223,7 @@ section{padding:clamp(5rem,11vw,8.5rem) 0;position:relative}
 .note{width:var(--wrap);margin:2.25rem auto 0;text-align:center;font-size:15px;color:var(--ink-3)}
 .note a{color:var(--signal)}
 .note a:hover{text-decoration:underline}
+.note .guide-link{display:inline-block;margin-top:.6rem;color:var(--ink-3);font-size:14px;text-decoration:underline;text-underline-offset:3px}
 
 /* ---------- nft ---------- */
 .nft-grid{width:var(--wide);margin:0 auto;display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(.6rem,1.4vw,1.1rem)}
@@ -430,7 +431,7 @@ footer div{width:var(--wrap);margin:0 auto;padding:1.2rem 0;font-family:var(--mo
     <div class="cards feat rv" id="fivem-grid"></div>
     <div class="cards compact rv" id="fivem-more"></div>
     <div class="all rv"><p id="all-label"></p><div class="chips" id="all-chips"></div></div>
-    <p class="note rv"><a href="/fivem-script-yaptirma/" data-i18n="fivem_hire">Sunucun için özel FiveM script mi yaptırmak istiyorsun? →</a></p>
+    <p class="note rv"><a href="/fivem-script-yaptirma/" data-i18n="fivem_hire">Sunucun için özel FiveM script mi yaptırmak istiyorsun? →</a><br><a class="guide-link" href="/fivem-leak-script-tehlikeleri/" data-i18n="fivem_guide">Rehber: FiveM leak script neden tehlikeli?</a></p>
   </section>
 
   <section class="s-a" id="github">
@@ -624,7 +625,7 @@ const I18N = {
     cta_work:"İşlerimi gör", cta_contact:"İletişime geç",
     fivem_title:"Bir sunucu dolusu <em>script.</em>",
     fivem_desc:"Kendi sunucum için QBCore üzerinde yazdığım ykc serisi: telefon, polis, toplu taşıma, HUD, envanter ve daha fazlası. Çoğu standart qb scriptlerinin yerine birebir takılabiliyor.",
-    all_label:"ykc serisindeki tüm resource'lar ({n})", fivem_hire:"Sunucun için özel FiveM script mi yaptırmak istiyorsun? →",
+    all_label:"ykc serisindeki tüm resource'lar ({n})", fivem_hire:"Sunucun için özel FiveM script mi yaptırmak istiyorsun? →", fivem_guide:"Rehber: FiveM leak script neden tehlikeli?",
     gh_title:"Açık kaynak <em>projeler.</em>",
     gh_desc:"Bu liste GitHub'dan otomatik çekiliyor; yeni bir repo açtığımda burada da görünüyor.",
     gh_loading:"Repolar yükleniyor…", gh_error:"Repolar şu an yüklenemedi.", gh_all:"Tüm repolar GitHub'da ›",
@@ -668,7 +669,7 @@ const I18N = {
     cta_work:"See my work", cta_contact:"Get in touch",
     fivem_title:"A server's worth of <em>scripts.</em>",
     fivem_desc:"The ykc series I built on QBCore for my own server: phone, police, public transport, HUD, inventory and more. Most are drop-in replacements for the stock qb scripts.",
-    all_label:"Every resource in the ykc series ({n})", fivem_hire:"Want a custom FiveM script for your server? →",
+    all_label:"Every resource in the ykc series ({n})", fivem_hire:"Want a custom FiveM script for your server? →", fivem_guide:"Guide: why leaked FiveM scripts are dangerous",
     gh_title:"Open-source <em>projects.</em>",
     gh_desc:"This list is pulled live from GitHub, so new repos show up here automatically.",
     gh_loading:"Loading repos…", gh_error:"Couldn't load repos right now.", gh_all:"All repos on GitHub ›",
@@ -877,6 +878,7 @@ function applyLang(next){
   document.querySelectorAll("[data-i18n-html]").forEach(el => el.innerHTML = t(el.dataset.i18nHtml));
   document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === lang));
   document.title = lang === "tr" ? "Yusuf Kaan Çelik — Portfolyo" : "Yusuf Kaan Çelik — Portfolio";
+  document.querySelectorAll('a.guide-link').forEach(a => a.setAttribute("href", lang === "tr" ? "/fivem-leak-script-tehlikeleri/" : "/fivem-leaked-scripts/"));
   document.querySelectorAll('a[href^="/fivem-script-yaptirma/"], a[href^="/custom-fivem-scripts/"]').forEach(a => a.setAttribute("href", lang === "tr" ? "/fivem-script-yaptirma/" : "/custom-fivem-scripts/"));
   renderAbout(); renderTicker(); renderFivem(); renderGithub(); renderNft(); renderAi();
   try{ localStorage.setItem("lang", lang); }catch(e){}
