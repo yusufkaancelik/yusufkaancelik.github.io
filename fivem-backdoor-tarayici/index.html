@@ -564,6 +564,9 @@ function scanText(path, t){
   const isLib = isJs && /(\.min\.js|(^|\/)(vue|react|jquery|lodash|moment|axios|howler|three|chart|bootstrap|vendor|chunk|bundle|polyfill)[^\/]*\.js)$/i.test(path);
   if (/cipher-?panel|blum-?panel|warden-?panel|ketamin\.cc|thedreamer\.|cipher\.wtf/i.test(t)) add('panel');
   if (isNui || isLib) return f;
+  // yorumları çıkar: "-- feed load (newest)" gibi açıklamalar kod sanılmasın
+  t = isJs ? t.replace(/\/\*[\s\S]*?\*\//g,'').replace(/^\s*\/\/.*$/gm,'')
+           : t.replace(/--\[(=*)\[[\s\S]*?\]\1\]/g,'').replace(/--.*$/gm,'');
   const http = /PerformHttpRequest|https?\.(get|request)\s*\(|\bfetch\s*\(|XMLHttpRequest|axios\./.test(t);
   if (!isJs){
     const load = /\b(load|loadstring)\s*\(|assert\s*\(\s*load/.test(t);
@@ -617,7 +620,7 @@ async function run(list){
   finds.sort((a,b)=>RANK[a.s]-RANK[b.s]);
   const c = {h:0,m:0,l:0}; finds.forEach(x=>c[x.s]++);
   const lv = c.h ? 'high' : c.m ? 'med' : 'ok';
-  const score = Math.min(100, c.h*35 + c.m*12 + c.l*2);
+  const score = c.h ? Math.min(100, 70 + c.h*10) : c.m ? Math.min(60, 20 + c.m*4) : Math.min(15, c.l*2);
   const esc = s => s.replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
   const SHOW = 3, shown = finds.filter(x=>x.s!=='l').slice(0,SHOW), rest = finds.length - shown.length;
   const li = (x,locked) => `<li class="${locked?'locked':''}"><span class="tag ${locked?'l':x.s}">${locked?'•••':x.s==='h'?S.ch:x.s==='m'?S.cm:S.cl}</span><div><code>${locked?'resource/xxxxxxx/server.lua':esc(x.path)}</code><small>${locked?'••••••••••••••••••••':S.k[x.k]}</small></div></li>`;
