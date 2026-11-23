@@ -554,24 +554,34 @@ document.querySelectorAll(".rv").forEach(el => io ? io.observe(el) : el.classLis
 try{ localStorage.setItem("lang", document.documentElement.lang); }catch(e){}
 
 const S = {"reading": "Reading folder…", "scanning": "Scanning… {n} files", "none": "No .lua or .js files found in the folder. Make sure you selected your resources folder.", "high": "High risk", "highp": "Dangerous patterns seen in backdoors were found. Keeping your server online as it is isn't recommended.", "med": "Needs attention", "medp": "No clear backdoor sign, but there is suspicious code that should be reviewed.", "ok": "No clear signs", "okp": "No known patterns were found. Still, this is a quick first check; well-hidden code can slip through.", "files": "{n} files scanned", "ch": "High", "cm": "Medium", "cl": "Info", "lock": "+{n} more findings", "lockp": "The full list, line numbers and cleanup need a detailed review.", "ctah": "Let's review the findings together", "ctap": "I can review your resources folder by hand, remove the malicious code and close the holes. Tell me what you found and I'll handle the rest.", "ctaok": "Want to be sure?", "ctaokp": "The tool only scans for known patterns. I can review the code by hand and make sure your server really is clean.", "fp": "Note: legitimate features like Discord logging or version checks can also show up as findings. Results are not a definitive diagnosis.", "again": "Scan another folder", "k": {"rce": "Code downloaded from outside is executed", "hex": "Obfuscated (hex/decimal) character string", "eval": "JavaScript eval / new Function", "panel": "Known backdoor panel trace", "exec": "System command execution (os.execute / io.popen)", "long": "Unreadably long single line (may be hidden code)", "charcode": "Text hidden with character codes (fromCharCode)", "http": "Outgoing HTTP request", "loadonly": "Running text as code (load)"}};
-const EXT = /\.(lua|js)$/i, SKIP = /(^|\/)(node_modules|\.git|stream|dist\/assets)(\/|$)/i, MAXSIZE = 3*1024*1024;
-const SEV = {rce:'h',hex:'h',eval:'h',panel:'h',exec:'m',long:'m',charcode:'m',loadonly:'m',http:'l'};
+const EXT = /\.(lua|js)$/i, SKIP = /(^|\/)(node_modules|\.git|stream|\[cfx-default\])(\/|$)/i, MAXSIZE = 3*1024*1024;
+const SEV = {rce:'h',hex:'h',panel:'h',eval:'m',exec:'m',long:'m',charcode:'m',loadonly:'m',http:'l'};
 const RANK = {h:0,m:1,l:2};
 function scanText(path, t){
   const f = [], isJs = /\.js$/i.test(path), add = k => f.push({path,k,s:SEV[k]});
-  const http = /PerformHttpRequest|https?\.get\s*\(|fetch\s*\(|XMLHttpRequest/.test(t);
-  const load = /\b(load|loadstring)\s*\(|assert\s*\(\s*load/.test(t);
-  if (http && load) add('rce'); else if (load && !isJs) add('loadonly');
-  if (/(\\x[0-9a-fA-F]{2}){12,}/.test(t) || /(\\\d{2,3}){16,}/.test(t)) add('hex');
-  if (isJs && (/\beval\s*\(/.test(t) || /new\s+Function\s*\(/.test(t))) add('eval');
+  // NUI / arayüz dosyaları istemcide (CEF) çalışır, sunucuya erişemez; kütüphaneler eval/new Function'ı meşru kullanır
+  const isNui = isJs && /\/(html|ui|nui|web|dist|build|public|assets|static)\//i.test(path);
+  const isLib = isJs && /(\.min\.js|(^|\/)(vue|react|jquery|lodash|moment|axios|howler|three|chart|bootstrap|vendor|chunk|bundle|polyfill)[^\/]*\.js)$/i.test(path);
   if (/cipher-?panel|blum-?panel|warden-?panel|ketamin\.cc|thedreamer\.|cipher\.wtf/i.test(t)) add('panel');
-  if (/\bos\.execute\s*\(|\bio\.popen\s*\(|child_process/.test(t)) add('exec');
+  if (isNui || isLib) return f;
+  const http = /PerformHttpRequest|https?\.(get|request)\s*\(|\bfetch\s*\(|XMLHttpRequest|axios\./.test(t);
+  if (!isJs){
+    const load = /\b(load|loadstring)\s*\(|assert\s*\(\s*load/.test(t);
+    const loadOnlyFiles = load && /LoadResourceFile/.test(t) && !http;
+    if (http && load) add('rce'); else if (load && !loadOnlyFiles) add('loadonly');
+    if (/\bos\.execute\s*\(|\bio\.popen\s*\(/.test(t)) add('exec');
+  } else {
+    const dyn = /\beval\s*\(|new\s+Function\s*\(/.test(t), enc = /atob\s*\(|Buffer\.from\([^)]*base64|fromCharCode/.test(t);
+    if (dyn && (http || enc)) add('rce'); else if (dyn) add('eval');
+    if (/child_process/.test(t)) add('exec');
+  }
+  if (/(\\x[0-9a-fA-F]{2}){12,}/.test(t) || /(\\\d{2,3}){16,}/.test(t)) add('hex');
   if (/fromCharCode\s*\((\s*\d+\s*,){10,}/.test(t)) add('charcode');
-  if (!/\.min\.js$/i.test(path) && t.split('\n').some(l => l.length > 2000)) add('long');
+  if (t.split('\n').some(l => l.length > 3000 && !/^\s*(--|\/\/)/.test(l))) add('long');
   if (http && !f.some(x => x.k==='rce')) add('http');
   return f;
 }
-const SKIPDIR = /^(node_modules|\.git|stream|\.cache)$/i;
+const SKIPDIR = /^(node_modules|\.git|stream|\.cache|\[cfx-default\])$/i;
 async function walkEntry(entry, out, prefix=''){
   if (entry.isFile) { if (EXT.test(entry.name)) await new Promise(r => entry.file(fl => { out.push({file:fl, path:prefix+fl.name}); r(); }, r)); }
   else if (entry.isDirectory) {
