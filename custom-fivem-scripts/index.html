@@ -691,6 +691,9 @@ $("#cform").addEventListener("submit", async e => {
     st.className = "form-status err"; st.innerHTML = "The message couldn't be sent. You can email me directly: " + `<a href="mailto:${MAIL}" style="color:inherit;text-decoration:underline">${MAIL}</a>`;
   }finally{ btn.disabled = false; }
 });
+
+{ const q = new URLSearchParams(location.search), sel = document.querySelector('#cform select[name="service"]');
+  if (sel && ["guvenlik","security"].includes(q.get("hizmet") || q.get("service"))) sel.selectedIndex = 4; }
 </script>
 </body>
 </html>

