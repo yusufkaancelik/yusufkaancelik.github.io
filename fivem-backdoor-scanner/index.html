@@ -435,7 +435,7 @@ footer a{color:var(--ink-2)} footer a:hover{color:var(--signal)}
 .drop p{color:var(--ink-2);font-size:15px;margin:0}
 .drop .ic{font-family:var(--mono);color:var(--signal);font-size:28px}
 .drop .pill{margin-top:1.3rem}
-.priv{font-family:var(--mono);font-size:12px;color:var(--ink-3);margin-top:1rem}
+.drop .priv{font-size:13px;line-height:1.6;color:var(--ink-3);margin:1.2rem auto 0;max-width:32rem}
 #res{width:min(760px,100% - 2.5rem);margin:2rem auto 0;display:none;text-align:left}
 .score{display:flex;gap:1.2rem;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:1.4rem 1.5rem}
 .score .big{font-family:var(--mono);font-size:44px;font-weight:600;line-height:1;min-width:3.2ch;text-align:center}
@@ -486,12 +486,12 @@ footer a{color:var(--ink-2)} footer a:hover{color:var(--signal)}
     </div>
   </section>
   <section style="padding:clamp(2.5rem,6vw,4rem) 0 0">
-    <div class="drop" id="drop" role="button" tabindex="0" aria-label="Drag the folder here">
+    <div class="drop" id="drop" role="button" tabindex="0" aria-label="Drag your resources folder into this box">
       <div class="ic">[ ⇣ ]</div>
-      <b>Drag the folder here</b>
-      <p>or click to select your <strong>resources</strong> folder</p>
-      <span class="pill fill">Select folder</span>
-      <p class="priv">🔒 The scan runs entirely in your browser; your files never leave your computer. Your browser may ask for permission to read the folder; that's a standard prompt.</p>
+      <b>Drag your resources folder into this box</b>
+      <p>This is the easiest way: <strong>no permission prompt</strong>, the scan starts right away.</p>
+      <span class="pill line" style="font-size:14px">or select folder</span>
+      <p class="priv">🔒 The scan runs entirely in your browser; your files are never sent to a server or saved.<br>If you use "Select folder", Chrome asks to "view and copy" files. That's Chrome's standard text on every site; the "copy" here means reading the file so it can be scanned.</p>
     </div>
     <input type="file" id="dir" webkitdirectory directory multiple hidden>
     <p class="prog" id="prog" role="status" aria-live="polite" style="text-align:center"></p>

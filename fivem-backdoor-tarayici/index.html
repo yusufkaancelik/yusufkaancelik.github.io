@@ -435,7 +435,7 @@ footer a{color:var(--ink-2)} footer a:hover{color:var(--signal)}
 .drop p{color:var(--ink-2);font-size:15px;margin:0}
 .drop .ic{font-family:var(--mono);color:var(--signal);font-size:28px}
 .drop .pill{margin-top:1.3rem}
-.priv{font-family:var(--mono);font-size:12px;color:var(--ink-3);margin-top:1rem}
+.drop .priv{font-size:13px;line-height:1.6;color:var(--ink-3);margin:1.2rem auto 0;max-width:32rem}
 #res{width:min(760px,100% - 2.5rem);margin:2rem auto 0;display:none;text-align:left}
 .score{display:flex;gap:1.2rem;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:1.4rem 1.5rem}
 .score .big{font-family:var(--mono);font-size:44px;font-weight:600;line-height:1;min-width:3.2ch;text-align:center}
@@ -486,12 +486,12 @@ footer a{color:var(--ink-2)} footer a:hover{color:var(--signal)}
     </div>
   </section>
   <section style="padding:clamp(2.5rem,6vw,4rem) 0 0">
-    <div class="drop" id="drop" role="button" tabindex="0" aria-label="Klasörü buraya sürükle">
+    <div class="drop" id="drop" role="button" tabindex="0" aria-label="resources klasörünü bu kutuya sürükle">
       <div class="ic">[ ⇣ ]</div>
-      <b>Klasörü buraya sürükle</b>
-      <p>ya da tıklayıp <strong>resources</strong> klasörünü seç</p>
-      <span class="pill fill">Klasör seç</span>
-      <p class="priv">🔒 Tarama tamamen tarayıcında yapılır, dosyaların bilgisayarından çıkmaz. Tarayıcın klasörü okumak için izin isteyebilir; bu standart bir uyarıdır.</p>
+      <b>resources klasörünü bu kutuya sürükle</b>
+      <p>En kolay yol bu: <strong>izin penceresi çıkmaz</strong>, tarama hemen başlar.</p>
+      <span class="pill line" style="font-size:14px">ya da klasör seç</span>
+      <p class="priv">🔒 Tarama tamamen tarayıcında yapılır; dosyaların hiçbir sunucuya gönderilmez ve kaydedilmez.<br>"Klasör seç"i kullanırsan Chrome "görüntüleme ve kopyalama" izni ister. Bu Chrome'un her sitede gösterdiği standart metindir; buradaki "kopya", dosyanın taranmak için okunması demek.</p>
     </div>
     <input type="file" id="dir" webkitdirectory directory multiple hidden>
     <p class="prog" id="prog" role="status" aria-live="polite" style="text-align:center"></p>
