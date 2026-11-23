@@ -491,7 +491,7 @@ footer a{color:var(--ink-2)} footer a:hover{color:var(--signal)}
       <b>Drag the folder here</b>
       <p>or click to select your <strong>resources</strong> folder</p>
       <span class="pill fill">Select folder</span>
-      <p class="priv">🔒 The scan runs entirely in your browser. Your files are never uploaded anywhere.</p>
+      <p class="priv">🔒 The scan runs entirely in your browser; your files never leave your computer. Your browser may ask for permission to read the folder; that's a standard prompt.</p>
     </div>
     <input type="file" id="dir" webkitdirectory directory multiple hidden>
     <p class="prog" id="prog" role="status" aria-live="polite" style="text-align:center"></p>
@@ -553,7 +553,7 @@ const io = "IntersectionObserver" in window ? new IntersectionObserver(es => es.
 document.querySelectorAll(".rv").forEach(el => io ? io.observe(el) : el.classList.add("in"));
 try{ localStorage.setItem("lang", document.documentElement.lang); }catch(e){}
 
-const S = {"scanning": "Scanning… {n} files", "none": "No .lua or .js files found in the folder. Make sure you selected your resources folder.", "high": "High risk", "highp": "Dangerous patterns seen in backdoors were found. Keeping your server online as it is isn't recommended.", "med": "Needs attention", "medp": "No clear backdoor sign, but there is suspicious code that should be reviewed.", "ok": "No clear signs", "okp": "No known patterns were found. Still, this is a quick first check; well-hidden code can slip through.", "files": "{n} files scanned", "ch": "High", "cm": "Medium", "cl": "Info", "lock": "+{n} more findings", "lockp": "The full list, line numbers and cleanup need a detailed review.", "ctah": "Let's review the findings together", "ctap": "I can review your resources folder by hand, remove the malicious code and close the holes. Tell me what you found and I'll handle the rest.", "ctaok": "Want to be sure?", "ctaokp": "The tool only scans for known patterns. I can review the code by hand and make sure your server really is clean.", "fp": "Note: legitimate features like Discord logging or version checks can also show up as findings. Results are not a definitive diagnosis.", "again": "Scan another folder", "k": {"rce": "Code downloaded from outside is executed", "hex": "Obfuscated (hex/decimal) character string", "eval": "JavaScript eval / new Function", "panel": "Known backdoor panel trace", "exec": "System command execution (os.execute / io.popen)", "long": "Unreadably long single line (may be hidden code)", "charcode": "Text hidden with character codes (fromCharCode)", "http": "Outgoing HTTP request", "loadonly": "Running text as code (load)"}};
+const S = {"reading": "Reading folder…", "scanning": "Scanning… {n} files", "none": "No .lua or .js files found in the folder. Make sure you selected your resources folder.", "high": "High risk", "highp": "Dangerous patterns seen in backdoors were found. Keeping your server online as it is isn't recommended.", "med": "Needs attention", "medp": "No clear backdoor sign, but there is suspicious code that should be reviewed.", "ok": "No clear signs", "okp": "No known patterns were found. Still, this is a quick first check; well-hidden code can slip through.", "files": "{n} files scanned", "ch": "High", "cm": "Medium", "cl": "Info", "lock": "+{n} more findings", "lockp": "The full list, line numbers and cleanup need a detailed review.", "ctah": "Let's review the findings together", "ctap": "I can review your resources folder by hand, remove the malicious code and close the holes. Tell me what you found and I'll handle the rest.", "ctaok": "Want to be sure?", "ctaokp": "The tool only scans for known patterns. I can review the code by hand and make sure your server really is clean.", "fp": "Note: legitimate features like Discord logging or version checks can also show up as findings. Results are not a definitive diagnosis.", "again": "Scan another folder", "k": {"rce": "Code downloaded from outside is executed", "hex": "Obfuscated (hex/decimal) character string", "eval": "JavaScript eval / new Function", "panel": "Known backdoor panel trace", "exec": "System command execution (os.execute / io.popen)", "long": "Unreadably long single line (may be hidden code)", "charcode": "Text hidden with character codes (fromCharCode)", "http": "Outgoing HTTP request", "loadonly": "Running text as code (load)"}};
 const EXT = /\.(lua|js)$/i, SKIP = /(^|\/)(node_modules|\.git|stream|dist\/assets)(\/|$)/i, MAXSIZE = 3*1024*1024;
 const SEV = {rce:'h',hex:'h',eval:'h',panel:'h',exec:'m',long:'m',charcode:'m',loadonly:'m',http:'l'};
 const RANK = {h:0,m:1,l:2};
@@ -571,12 +571,27 @@ function scanText(path, t){
   if (http && !f.some(x => x.k==='rce')) add('http');
   return f;
 }
+const SKIPDIR = /^(node_modules|\.git|stream|\.cache)$/i;
 async function walkEntry(entry, out, prefix=''){
-  if (entry.isFile) { await new Promise(r => entry.file(fl => { out.push({file:fl, path:prefix+fl.name}); r(); }, r)); }
+  if (entry.isFile) { if (EXT.test(entry.name)) await new Promise(r => entry.file(fl => { out.push({file:fl, path:prefix+fl.name}); r(); }, r)); }
   else if (entry.isDirectory) {
+    if (SKIPDIR.test(entry.name)) return;
     const rd = entry.createReader(); let batch;
     do { batch = await new Promise(r => rd.readEntries(r, () => r([]))); for (const e of batch) await walkEntry(e, out, prefix+entry.name+'/'); } while (batch.length);
   }
+}
+async function walkHandle(dir, out, prefix){
+  for await (const [name, h] of dir.entries()){
+    if (h.kind === 'directory'){ if (!SKIPDIR.test(name)) await walkHandle(h, out, prefix+name+'/'); }
+    else if (EXT.test(name)){ try{ out.push({file: await h.getFile(), path: prefix+name}); }catch(e){} }
+  }
+}
+async function pick(){
+  if (window.showDirectoryPicker){
+    let dir; try{ dir = await window.showDirectoryPicker({mode:'read'}); }catch(e){ return; }
+    const out = []; document.getElementById('prog').textContent = S.reading;
+    await walkHandle(dir, out, dir.name+'/'); run(out);
+  } else inp.click();
 }
 async function run(list){
   const files = list.filter(x => EXT.test(x.path) && !SKIP.test(x.path) && x.file.size < MAXSIZE);
@@ -609,9 +624,10 @@ async function run(list){
   document.getElementById('again').onclick = e => { e.preventDefault(); res.style.display='none'; document.getElementById('drop').scrollIntoView({behavior:'smooth',block:'center'}); };
 }
 const drop = document.getElementById('drop'), inp = document.getElementById('dir');
-drop.addEventListener('click', () => inp.click());
-drop.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' '){ e.preventDefault(); inp.click(); } });
+drop.addEventListener('click', pick);
+drop.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(); } });
 inp.addEventListener('change', () => run([...inp.files].map(f => ({file:f, path:f.webkitRelativePath||f.name}))));
+
 ['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
 ['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
 drop.addEventListener('drop', async e => {

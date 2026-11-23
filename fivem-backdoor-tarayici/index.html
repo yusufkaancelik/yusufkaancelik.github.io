@@ -491,7 +491,7 @@ footer a{color:var(--ink-2)} footer a:hover{color:var(--signal)}
       <b>Klasörü buraya sürükle</b>
       <p>ya da tıklayıp <strong>resources</strong> klasörünü seç</p>
       <span class="pill fill">Klasör seç</span>
-      <p class="priv">🔒 Tarama tamamen tarayıcında yapılır. Dosyaların hiçbir sunucuya yüklenmez.</p>
+      <p class="priv">🔒 Tarama tamamen tarayıcında yapılır, dosyaların bilgisayarından çıkmaz. Tarayıcın klasörü okumak için izin isteyebilir; bu standart bir uyarıdır.</p>
     </div>
     <input type="file" id="dir" webkitdirectory directory multiple hidden>
     <p class="prog" id="prog" role="status" aria-live="polite" style="text-align:center"></p>
@@ -553,7 +553,7 @@ const io = "IntersectionObserver" in window ? new IntersectionObserver(es => es.
 document.querySelectorAll(".rv").forEach(el => io ? io.observe(el) : el.classList.add("in"));
 try{ localStorage.setItem("lang", document.documentElement.lang); }catch(e){}
 
-const S = {"scanning": "Taranıyor… {n} dosya", "none": "Klasörde .lua ya da .js dosyası bulunamadı. resources klasörünü seçtiğinden emin ol.", "high": "Yüksek risk", "highp": "Backdoor'larda görülen tehlikeli kalıplar bulundu. Sunucunu bu hâliyle açık tutmaman önerilir.", "med": "Dikkat gerekiyor", "medp": "Kesin bir backdoor izi yok ama incelenmesi gereken şüpheli kod var.", "ok": "Belirgin bir iz yok", "okp": "Bilinen kalıplar bulunamadı. Yine de bu hızlı bir ön kontrol; iyi gizlenmiş kod gözden kaçabilir.", "files": "{n} dosya tarandı", "ch": "Yüksek", "cm": "Orta", "cl": "Bilgi", "lock": "+{n} bulgu daha", "lockp": "Tam liste, satır numaraları ve temizlik için detaylı inceleme gerekiyor.", "ctah": "Bulguları birlikte inceleyelim", "ctap": "Resources klasörünü elle inceleyip zararlı kodu temizleyebilir, açıkları kapatabilirim. Ne bulduğunu yaz, gerisini ben hallederim.", "ctaok": "Emin olmak ister misin?", "ctaokp": "Araç sadece bilinen kalıpları tarar. Kodları elle inceleyip sunucunun gerçekten temiz olduğundan emin olabilirim.", "fp": "Not: Discord log, sürüm kontrolü gibi meşru özellikler de bulgu olarak görünebilir. Sonuçlar kesin teşhis değildir.", "again": "Başka klasör tara", "k": {"rce": "Dışarıdan indirilen kod çalıştırılıyor", "hex": "Şifrelenmiş (hex/decimal) karakter dizisi", "eval": "JavaScript eval / new Function kullanımı", "panel": "Bilinen backdoor paneli izi", "exec": "Sistem komutu çalıştırma (os.execute / io.popen)", "long": "Okunamayacak kadar uzun tek satır (gizlenmiş kod olabilir)", "charcode": "Karakter koduyla gizlenmiş metin (fromCharCode)", "http": "Dışarıya HTTP isteği", "loadonly": "Metni kod olarak çalıştırma (load)"}};
+const S = {"reading": "Klasör okunuyor…", "scanning": "Taranıyor… {n} dosya", "none": "Klasörde .lua ya da .js dosyası bulunamadı. resources klasörünü seçtiğinden emin ol.", "high": "Yüksek risk", "highp": "Backdoor'larda görülen tehlikeli kalıplar bulundu. Sunucunu bu hâliyle açık tutmaman önerilir.", "med": "Dikkat gerekiyor", "medp": "Kesin bir backdoor izi yok ama incelenmesi gereken şüpheli kod var.", "ok": "Belirgin bir iz yok", "okp": "Bilinen kalıplar bulunamadı. Yine de bu hızlı bir ön kontrol; iyi gizlenmiş kod gözden kaçabilir.", "files": "{n} dosya tarandı", "ch": "Yüksek", "cm": "Orta", "cl": "Bilgi", "lock": "+{n} bulgu daha", "lockp": "Tam liste, satır numaraları ve temizlik için detaylı inceleme gerekiyor.", "ctah": "Bulguları birlikte inceleyelim", "ctap": "Resources klasörünü elle inceleyip zararlı kodu temizleyebilir, açıkları kapatabilirim. Ne bulduğunu yaz, gerisini ben hallederim.", "ctaok": "Emin olmak ister misin?", "ctaokp": "Araç sadece bilinen kalıpları tarar. Kodları elle inceleyip sunucunun gerçekten temiz olduğundan emin olabilirim.", "fp": "Not: Discord log, sürüm kontrolü gibi meşru özellikler de bulgu olarak görünebilir. Sonuçlar kesin teşhis değildir.", "again": "Başka klasör tara", "k": {"rce": "Dışarıdan indirilen kod çalıştırılıyor", "hex": "Şifrelenmiş (hex/decimal) karakter dizisi", "eval": "JavaScript eval / new Function kullanımı", "panel": "Bilinen backdoor paneli izi", "exec": "Sistem komutu çalıştırma (os.execute / io.popen)", "long": "Okunamayacak kadar uzun tek satır (gizlenmiş kod olabilir)", "charcode": "Karakter koduyla gizlenmiş metin (fromCharCode)", "http": "Dışarıya HTTP isteği", "loadonly": "Metni kod olarak çalıştırma (load)"}};
 const EXT = /\.(lua|js)$/i, SKIP = /(^|\/)(node_modules|\.git|stream|dist\/assets)(\/|$)/i, MAXSIZE = 3*1024*1024;
 const SEV = {rce:'h',hex:'h',eval:'h',panel:'h',exec:'m',long:'m',charcode:'m',loadonly:'m',http:'l'};
 const RANK = {h:0,m:1,l:2};
@@ -571,12 +571,27 @@ function scanText(path, t){
   if (http && !f.some(x => x.k==='rce')) add('http');
   return f;
 }
+const SKIPDIR = /^(node_modules|\.git|stream|\.cache)$/i;
 async function walkEntry(entry, out, prefix=''){
-  if (entry.isFile) { await new Promise(r => entry.file(fl => { out.push({file:fl, path:prefix+fl.name}); r(); }, r)); }
+  if (entry.isFile) { if (EXT.test(entry.name)) await new Promise(r => entry.file(fl => { out.push({file:fl, path:prefix+fl.name}); r(); }, r)); }
   else if (entry.isDirectory) {
+    if (SKIPDIR.test(entry.name)) return;
     const rd = entry.createReader(); let batch;
     do { batch = await new Promise(r => rd.readEntries(r, () => r([]))); for (const e of batch) await walkEntry(e, out, prefix+entry.name+'/'); } while (batch.length);
   }
+}
+async function walkHandle(dir, out, prefix){
+  for await (const [name, h] of dir.entries()){
+    if (h.kind === 'directory'){ if (!SKIPDIR.test(name)) await walkHandle(h, out, prefix+name+'/'); }
+    else if (EXT.test(name)){ try{ out.push({file: await h.getFile(), path: prefix+name}); }catch(e){} }
+  }
+}
+async function pick(){
+  if (window.showDirectoryPicker){
+    let dir; try{ dir = await window.showDirectoryPicker({mode:'read'}); }catch(e){ return; }
+    const out = []; document.getElementById('prog').textContent = S.reading;
+    await walkHandle(dir, out, dir.name+'/'); run(out);
+  } else inp.click();
 }
 async function run(list){
   const files = list.filter(x => EXT.test(x.path) && !SKIP.test(x.path) && x.file.size < MAXSIZE);
@@ -609,9 +624,10 @@ async function run(list){
   document.getElementById('again').onclick = e => { e.preventDefault(); res.style.display='none'; document.getElementById('drop').scrollIntoView({behavior:'smooth',block:'center'}); };
 }
 const drop = document.getElementById('drop'), inp = document.getElementById('dir');
-drop.addEventListener('click', () => inp.click());
-drop.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' '){ e.preventDefault(); inp.click(); } });
+drop.addEventListener('click', pick);
+drop.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(); } });
 inp.addEventListener('change', () => run([...inp.files].map(f => ({file:f, path:f.webkitRelativePath||f.name}))));
+
 ['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
 ['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
 drop.addEventListener('drop', async e => {
